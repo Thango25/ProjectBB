@@ -1,0 +1,188 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Lost&Found</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Project.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid px-5">
+                <a class="navbar-brand fw-bold fs-3" asp-area="" asp-controller="Home" asp-action="Index">Lost&Found</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item mx-2">
+                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#uploadLostItemModal">
+                                <i class="fas fa-upload me-1"></i> Upload Lost Item
+                            </a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">
+                                <i class="fas fa-upload me-1"></i> Upload Found Item
+                            </a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link text-dark" asp-controller="Category" asp-action="Index">Admin Dashboard</a>
+                        </li>
+                        <li class="nav-item mx-2 position-relative">
+                            <a class="nav-link" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-bell me-1"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6em;">
+                                    3 <span class="visually-hidden">unread messages</span>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end glassy-modal" aria-labelledby="notificationsDropdown">
+                                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Weekly reports</strong> generated
+                                    </div>
+                                    <div class="ms-2 d-flex gap-1">
+                                        <button onclick="location.href='/Reports'" class="ViewBtn">View</button>
+                                    </div>
+                                </li>
+                                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Claim made</strong> for your item.
+                                    </div>
+                                    <div class="ms-2 d-flex gap-1">
+                                        <button class="Approve">Approve</button>
+                                        <button class="Decline">Decline</button>
+                                    </div>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#">View All Notifications</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Profile" asp-action="Index">My Profile</a>
+                        </li>
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="flex-grow-1">
+        @RenderBody()
+    </main>
+
+
+    <footer class="footer text-center">
+        <div class="container-fluid px-5">
+            &copy; 2025 - Lost&Found - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-white">Privacy</a>
+        </div>
+    </footer>
+
+    <div class="modal fade" id="uploadLostItemModal" tabindex="-1" aria-labelledby="uploadLostItemModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glassy-modal">
+                <div class="modal-header glassy-modal-header">
+                    <h5 class="modal-title" id="uploadLostItemModalLabel">Upload Lost Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="uploadImage" class="form-label">Upload Image:</label>
+                            <input type="file" class="form-control glassy-input-file" id="uploadImage">
+                        </div>
+                        <div class="mb-3">
+                            <label for="selectCategory" class="form-label">Select Category:</label>
+                            <select class="form-select glassy-input" id="selectCategory">
+                                <option selected disabled>Enter</option>
+                                <option>Animal</option>
+                                <option>Electronics</option>
+                                <option>Wallets</option>
+                                <option>Documents</option>
+                                <option>Keys</option>
+                                <option>Bags</option>
+                                <option>Jewelry</option>
+                                <option>Clothing</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="itemType" class="form-label">Enter Item Type:</label>
+                            <input type="text" class="form-control glassy-input" id="itemType" placeholder="e.g., Dog, Laptop, ID Card">
+                        </div>
+                        <div class="mb-3">
+                            <label for="itemBrand" class="form-label">Enter Brand (Optional):</label>
+                            <input type="text" class="form-control glassy-input" id="itemBrand" placeholder="e.g., Apple, Samsung">
+                        </div>
+                        <div class="mb-3">
+                            <label for="selectColor" class="form-label">Select Colour:</label>
+                            <select class="form-select glassy-input" id="selectColor">
+                                <option selected disabled>Red</option>
+                                <option>Red</option>
+                                <option>Blue</option>
+                                <option>Green</option>
+                                <option>Yellow</option>
+                                <option>Black</option>
+                                <option>White</option>
+                                <option>Grey</option>
+                                <option>Brown</option>
+                                <option>Pink</option>
+                                <option>Purple</option>
+                                <option>Orange</option>
+                                <option>Multi-color</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dateFound" class="form-label">Enter Date Lost:</label>
+                            <input type="date" class="form-control glassy-input" id="dateFound">
+                        </div>
+                        <div class="mb-3">
+                            <label for="lostLocation" class="form-label">Last Known Location:</label>
+                            <input type="text" class="form-control glassy-input" id="lostLocation" placeholder="e.g., Campus Library, Main Hall">
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description (Optional):</label>
+                            <textarea class="form-control glassy-input" id="description" rows="3" placeholder="Any unique features, markings, or details..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer glassy-modal-footer justify-content-center">
+                    <button type="submit" class="btn btn-danger">Report Lost Item</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function () { 
+            $(".Approve").click(function(){
+                $(this).text('Claim approved').css("background-color","orange")
+               $(".Decline").hide();
+                alert("Claim approved!");
+            });
+             $(".Decline").click(function(){
+                $(this).text('Claim declined').css("background-color","orange")
+               $(".Approve").hide();
+                alert("Claim declined!");
+            });
+        });
+       
+    </script>
+
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

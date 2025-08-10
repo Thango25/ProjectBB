@@ -1,0 +1,193 @@
+﻿@model IEnumerable<Project.Models.Category>
+@{
+    ViewData["Title"] = "Admin Dashboard"; 
+}
+
+<div class="background-overlay"></div>
+
+<div class="container">
+
+    <div class="glass-card dashboard-card">
+        <div class="card-header">
+            <h2 class="card-title">
+                <i class="fas fa-tachometer-alt"></i> Admin Dashboard
+            </h2>
+        </div>
+        <div class="dashboard-content">
+            <div class="user-avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="user-info">
+                <div class="info-item">
+                    <span class="label">Username:</span>
+                    <span class="value">@User.Identity?.Name</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Role:</span>
+                    <span class="value">Administrator</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Last Login:</span>
+                    <span class="value">@DateTime.Now.ToString("dddd, dd MMMM yyyy")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-grid">
+
+        <div class="glass-card categories-card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-tags"></i> Categories
+                </h3>
+                <a class="btn btn-primary" asp-action="Create">
+                    <i class="fas fa-plus"></i> Add Category
+                </a>
+            </div>
+            <div class="table-container">
+                <table class="glass-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Icon</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td>
+                                    <i class="@item.IconClass fa-2x"></i>
+                                </td>
+                                <td>
+                                    <a class="btn btn-sm btn-success" asp-action="Edit" asp-route-id="@item.Id">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.Id">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="glass-card analytics-card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-chart-bar"></i> Popular Categories (Last 30 Days)
+                </h3>
+            </div>
+            <div class="chart-container">
+                <canvas id="categoryChart"></canvas>
+            </div>
+             <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-chart-line"></i> Weekly Reports
+                </h3>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush weekly-report-list">
+                    <li class="list-group-item d-flex justify-content-between align-items-center glassy-list-item">
+                        Total Lost Items This Week:
+                        <span class="badge bg-primary rounded-pill">15</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center glassy-list-item">
+                        Total Found Items This Week:
+                        <span class="badge bg-success rounded-pill">10</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center glassy-list-item">
+                        Items Reunited This Week:
+                        <span class="badge bg-info rounded-pill">7</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center glassy-list-item">
+                        New Users This Week:
+                        <span class="badge bg-warning rounded-pill">3</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center glassy-list-item">
+                        Pending Approvals:
+                        <span class="badge bg-danger rounded-pill">2</span>
+                    </li>
+                </ul>
+                <div class="text-center mt-3">
+                    <a asp-controller="Reports" asp-action="Index" class="btn btn-outline-light">
+                        <i class="fas fa-file-alt me-1"></i> View Full Reports
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+       
+        const ctx = document.getElementById('categoryChart');
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'bar', 
+                data: {
+                    labels: ['Electronics', 'Wallets', 'Keys', 'Documents', 'Animals'],
+                    datasets: [{
+                        label: '# of Items',
+                        data: [12, 19, 3, 5, 2],
+                        backgroundColor: [
+                            'rgba(153, 102, 255, 0.7)',
+                            'rgba(255, 159, 64, 0.7)', 
+                            'rgba(75, 192, 192, 0.7)',  
+                            'rgba(255, 99, 132, 0.7)',
+                            'rgba(54, 162, 235, 0.7)'   
+                        ],
+                        borderColor: [
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)' 
+                            },
+                            ticks: {
+                                color: '#ccc' 
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            },
+                            ticks: {
+                                color: '#ccc'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff' 
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+}
