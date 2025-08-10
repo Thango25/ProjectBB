@@ -23,8 +23,21 @@ jobs:
         with:
           dotnet-version: '8.x'
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+      # IMPORTANT CHANGE: Specify the working directory for dotnet commands.
+
+      # The path 'Project bet/Project' is relative to your repository root.
+
+      - name: Restore, Build, and Publish with dotnet
+
+        working-directory: './Project bet/Project' # <-- This is the crucial change
+
+        run: |
+
+          dotnet restore
+
+          dotnet build --configuration Release
+
+          dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: dotnet publish
         run: dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
