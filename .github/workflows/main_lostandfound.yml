@@ -63,6 +63,21 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'lostandfound'
-          slot-name: 'Production'
-          package: .
+         app-name: 'lostandfound'
+         slot-name: 'Production'
+         package: .
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+         dotnet-version: '8.x' # Or your specific .NET version, e.g., '7.x' or '6.x'
+
+      - name: Install dotnet-ef tool
+        run: dotnet tool install --global dotnet-ef --version 8.0.* # Match your EF Core version
+
+      - name: Run EF Core Migrations
+        run: dotnet-ef database update --project "./Project.csproj" --startup-project "./Project.csproj"
+        working-directory: './' # Assuming Project.csproj is in the root of your deployed package
+        env:
+          # Pass ASPNETCORE_ENVIRONMENT if needed for specific migration logic, but App Service settings override generally
+          ASPNETCORE_ENVIRONMENT: Production
