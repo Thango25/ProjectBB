@@ -9,7 +9,8 @@ on:
 env:
   AZURE_WEBAPP_NAME: lostandfound # Replace with your App Service name
   # IMPORTANT: This path has been updated based on your screenshot
-  PROJECT_SOURCE_PATH: './ProjectBB/Project' # <--- UPDATED: Correct path to your main project folder
+  # We will use this in combination with github.workspace for robustness
+  RELATIVE_PROJECT_PATH: 'ProjectBB/Project' # <--- UPDATED: Relative path to your main project folder
   AZURE_WEBAPP_PACKAGE_PATH: '.' # Adjust if your build output is in a subfolder, e.g., './publish'
   DOTNET_VERSION: '8.x' # Ensure this matches your project's target .NET version
   EF_CORE_VERSION: '8.0.*' # Ensure this matches your Entity Framework Core NuGet package version
@@ -29,16 +30,16 @@ jobs:
 
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: ${{ env.PROJECT_SOURCE_PATH }} # Execute from project directory
+      working-directory: ${{ github.workspace }}/${{ env.RELATIVE_PROJECT_PATH }} # <--- UPDATED: Use github.workspace with relative path
 
     - name: Build the application
       run: dotnet build --configuration Release --no-restore
-      working-directory: ${{ env.PROJECT_SOURCE_PATH }} # Execute from project directory
+      working-directory: ${{ github.workspace }}/${{ env.RELATIVE_PROJECT_PATH }} # <--- UPDATED: Use github.workspace with relative path
 
     - name: Publish the application
       # Publishes the application to a 'publish' folder at the root of the workspace
       run: dotnet publish --configuration Release --no-build --output ${{ github.workspace }}/publish
-      working-directory: ${{ env.PROJECT_SOURCE_PATH }} # Execute from project directory
+      working-directory: ${{ github.workspace }}/${{ env.RELATIVE_PROJECT_PATH }} # <--- UPDATED: Use github.workspace with relative path
 
     - name: Deploy to Azure Web App
       id: deploy-to-webapp
@@ -68,8 +69,8 @@ jobs:
       # Execute database migrations against your Azure SQL Database
       # --project and --startup-project point to your main project file (e.g., 'Project.csproj')
       # The working-directory MUST be where your .csproj file resides for EF Core to find it.
-      run: dotnet-ef database update --project "Project.csproj" --startup-project "Project.csproj" # <--- ADJUSTED: Use my actual project file name
-      working-directory: ${{ env.PROJECT_SOURCE_PATH }} # Run EF migrations from source project path
+      run: dotnet-ef database update --project "Project.csproj" --startup-project "Project.csproj" # <--- ADJUSTED: Use your actual project file name
+      working-directory: ${{ github.workspace }}/${{ env.RELATIVE_PROJECT_PATH }} # <--- UPDATED: Use github.workspace with relative path
       env:
         # ASPNETCORE_ENVIRONMENT is typically set in Azure App Service config,
         # but can be set here if needed for migration-specific logic
