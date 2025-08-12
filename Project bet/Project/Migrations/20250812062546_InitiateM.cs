@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Project.Migrations
 {
     /// <inheritdoc />
-    public partial class Initiate : Migration
+    public partial class InitiateM : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -64,6 +64,26 @@ namespace Project.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Items",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    Brand = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateLost = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PhotoPath = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -190,36 +210,6 @@ namespace Project.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Items",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    Brand = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Color = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    DateReported = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DateLostFound = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    PhotoPath = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    IsClaimed = table.Column<bool>(type: "bit", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Items", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Items_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "Id", "IconClass", "Name" },
@@ -277,11 +267,6 @@ namespace Project.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Items_CategoryId",
-                table: "Items",
-                column: "CategoryId");
         }
 
         /// <inheritdoc />
@@ -303,6 +288,9 @@ namespace Project.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Categories");
+
+            migrationBuilder.DropTable(
                 name: "Items");
 
             migrationBuilder.DropTable(
@@ -313,9 +301,6 @@ namespace Project.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "Categories");
         }
     }
 }

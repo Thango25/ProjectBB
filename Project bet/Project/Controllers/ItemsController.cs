@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Project.Data;
 using Project.Models;
@@ -13,118 +13,138 @@ namespace Project.Controllers
     public class ItemsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ItemsController(ApplicationDbContext context)
+        public ItemsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Items
         public async Task<IActionResult> Index()
         {
-            var recentItems = await _context.Items
-                .OrderByDescending(i => i.DateReported)
-                .Take(8)
-                .ToListAsync();
-
-            return View(recentItems);
+            return View(await _context.Items.ToListAsync());
         }
 
-        public async Task<IActionResult> Details(int id)
+        // GET: Items/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
-            var item = await _context.Items.FindAsync(id);
+            if (id == null) return NotFound();
+
+            var item = await _context.Items.FirstOrDefaultAsync(m => m.Id == id);
             if (item == null) return NotFound();
+
             return View(item);
         }
 
         // GET: Items/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
             return View();
         }
 
         // POST: Items/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Type,Brand,Color,DateReported,PhotoPath,Location,CategoryId")] Item item)
+        public async Task<IActionResult> Create(Item item)
         {
             if (ModelState.IsValid)
             {
+                // Handle image upload
+                if (item.ImageFile != null)
+                {
+                    string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                    string fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(item.ImageFile.FileName);
+                    string filePath = Path.Combine(uploadDir, fileName);
+
+                    // Ensure folder exists
+                    if (!Directory.Exists(uploadDir))
+                        Directory.CreateDirectory(uploadDir);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await item.ImageFile.CopyToAsync(stream);
+                    }
+
+                    item.PhotoPath = fileName;
+                }
+
                 _context.Add(item);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", item.CategoryId);
             return View(item);
         }
 
         // GET: Items/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var item = await _context.Items.FindAsync(id);
-            if (item == null)
-            {
-                return NotFound();
-            }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", item.CategoryId);
+            if (item == null) return NotFound();
+
             return View(item);
         }
 
         // POST: Items/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Type,Brand,Color,DateReported,PhotoPath,Location,CategoryId")] Item item)
+        public async Task<IActionResult> Edit(int id, Item item)
         {
-            if (id != item.Id)
-            {
-                return NotFound();
-            }
+            if (id != item.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var existingItem = await _context.Items.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+                    if (existingItem == null) return NotFound();
+
+                    // Handle new image upload
+                    if (item.ImageFile != null)
+                    {
+                        string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                        string fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(item.ImageFile.FileName);
+                        string filePath = Path.Combine(uploadDir, fileName);
+
+                        // Ensure folder exists
+                        if (!Directory.Exists(uploadDir))
+                            Directory.CreateDirectory(uploadDir);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await item.ImageFile.CopyToAsync(stream);
+                        }
+
+                        item.PhotoPath = fileName;
+                    }
+                    else
+                    {
+                        item.PhotoPath = existingItem.PhotoPath; // Keep old photo
+                    }
+
                     _context.Update(item);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ItemExists(item.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    if (!ItemExists(item.Id)) return NotFound();
+                    else throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", item.CategoryId);
             return View(item);
         }
 
         // GET: Items/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var item = await _context.Items
-                .Include(i => i.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (item == null)
-            {
-                return NotFound();
-            }
+            var item = await _context.Items.FirstOrDefaultAsync(m => m.Id == id);
+            if (item == null) return NotFound();
 
             return View(item);
         }

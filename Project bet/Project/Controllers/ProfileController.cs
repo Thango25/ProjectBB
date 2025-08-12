@@ -20,6 +20,24 @@ namespace Project.Controllers
         public async Task<IActionResult> Index()
         {
             var profile = await _context.Profiles.FirstOrDefaultAsync();
+
+            // If no profile exists, create a default one
+            if (profile == null)
+            {
+                profile = new Profile
+                {
+                    Name = "John",
+                    Surname = "Doe",
+                    Username = "johndoe",
+                    Email = "john.doe@example.com",
+                    PhoneNumber = "(123) 456-7890",
+                    Location = "Ibhayi, Eastern Cape"
+                };
+
+                _context.Profiles.Add(profile);
+                await _context.SaveChangesAsync();
+            }
+
             return View(profile);
         }
 
@@ -52,27 +70,6 @@ namespace Project.Controllers
             }
 
             return View(model);
-        }
-
-        // Optional: seed a profile if none exists
-        public async Task<IActionResult> Seed()
-        {
-            if (!_context.Profiles.Any())
-            {
-                _context.Profiles.Add(new Profile
-                {
-                    Name = "John",
-                    Surname = "Doe",
-                    Username = "johndoe",
-                    Email = "john.doe@example.com",
-                    PhoneNumber = "(123) 456-7890",
-                    Location = "Ibhayi, Eastern Cape"
-                });
-
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 
 namespace Project.Models
 {
@@ -8,45 +8,33 @@ namespace Project.Models
     {
         public int Id { get; set; }
 
-        [Required]
-        [StringLength(100)]
-        public string Title { get; set; }
+        [Required(ErrorMessage = "Item name is required")]
+        public string Title { get; set; } = string.Empty;
 
-        [StringLength(500)]
-        public string Description { get; set; }
+        [Required(ErrorMessage = "Description is required")]
+        public string Description { get; set; } = string.Empty;
 
-        [Required]
-        [Display(Name = "Item Type")]
-        public string Type { get; set; }
+        [Required(ErrorMessage = "Type is required")]
+        public ItemType Type { get; set; } // ✅ Uses the global enum
 
-        [Display(Name = "Category")]
-        public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public string Brand { get; set; } = string.Empty;
 
-        [StringLength(100)]
-        public string Brand { get; set; } 
+        public string Color { get; set; } = string.Empty;
 
-        [StringLength(50)]
-        public string Color { get; set; } 
+        [Required(ErrorMessage = "Location is required")]
+        public string Location { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Date is required")]
         [Display(Name = "Date Reported")]
         [DataType(DataType.Date)]
-        public DateTime DateReported { get; set; } = DateTime.Now;
+        public DateTime DateLost { get; set; }
 
-        [Display(Name = "Date Lost/Found")]
-        [DataType(DataType.Date)]
-        public DateTime? DateLostFound { get; set; } 
+        [Display(Name = "Photo Path")]
+        public string PhotoPath { get; set; } = string.Empty;
 
-        [Required]
-        [StringLength(200)]
-        public string Location { get; set; } 
-
-        [StringLength(255)]
-        [Display(Name = "Photo")]
-        public string PhotoPath { get; set; } 
-
-        public bool IsClaimed { get; set; } = false; 
-
-        public string UserId { get; set; }
+        [NotMapped]
+        [Display(Name = "Upload Image")]
+        [Required(ErrorMessage = "Please upload an image")]
+        public IFormFile? ImageFile { get; set; }
     }
 }

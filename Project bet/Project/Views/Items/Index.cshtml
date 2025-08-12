@@ -1,37 +1,70 @@
 ﻿@model IEnumerable<Project.Models.Item>
+
 @{
-    ViewData["Title"] = "All Items";
+    ViewData["Title"] = "Reported Lost Items";
 }
 
-<div class="container my-4">
-    <h2 class="mb-4 text-center">All Reported Items</h2>
+<div class="bg-dark text-white min-vh-100 py-4">
+    <div class="container">
+        <h1 class="text-center my-4">Lost & Found Items</h1>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        @foreach (var item in Model)
+        <p class="text-center">
+            <a asp-action="UploadLostItem" class="btn btn-light mb-3 me-2">
+                + Report New Lost Item
+            </a>
+            <a asp-action="UploadFoundItem" class="btn btn-outline-light mb-3">
+                + Report New Found Item
+            </a>
+        </p>
+
+        @if (!Model.Any())
         {
-            <div class="col">
-                <div class="card shadow-sm h-100 border-0">
-                    <img src="~/images/@item.PhotoPath" class="card-img-top" alt="@item.Title" style="height: 200px; object-fit: cover;" />
+            <p class="text-center text-muted">No items reported yet.</p>
+        }
+        else
+        {
+            <div class="row row-cols-1 g-4">
+                @foreach (var item in Model)
+                {
+                    <div class="col bg-secondary rounded p-4 shadow">
+                        <h3>
+                            @item.Title
+                            <span class="badge @(item.Type == Project.Models.ItemType.Lost ? "bg-danger" : "bg-success")">
+                                @(item.Type == Project.Models.ItemType.Lost ? "Lost" : "Found")
+                            </span>
+                        </h3>
 
-                    <div class="card-body">
-                        <h5 class="card-title">@item.Title</h5>
-                        <p class="card-text">
-                            <span class="badge bg-@(item.Type == "Lost" ? "danger" : "success")">@item.Type</span>
-                            <br />
-                            <strong>Category:</strong> @item.Category?.Name <br />
-                            <strong>Color:</strong> @item.Color <br />
-                            <strong>Brand:</strong> @item.Brand <br />
-                            <strong>Location:</strong> @item.Location <br />
-                            <strong>Reported:</strong> @item.DateReported.ToString("dd MMM yyyy")
-                        </p>
-                    </div>
+                        <hr />
+                        <dl class="row">
+                            <dt class="col-sm-3">Description</dt>
+                            <dd class="col-sm-9">@item.Description</dd>
 
-                    <div class="card-footer bg-white border-top-0 d-flex justify-content-between">
-                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">View</a>
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-success">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                            <dt class="col-sm-3">Location</dt>
+                            <dd class="col-sm-9">@item.Location</dd>
+
+                            <dt class="col-sm-3">Date @(item.Type == Project.Models.ItemType.Lost ? "Lost" : "Found")</dt>
+                            <dd class="col-sm-9">@item.DateLost.ToShortDateString()</dd>
+
+                            <dt class="col-sm-3">Image</dt>
+                            <dd class="col-sm-9">
+                                @if (!string.IsNullOrEmpty(item.PhotoPath))
+                                {
+                                    <img src="~/uploads/@item.PhotoPath" alt="Item Image" style="max-width: 200px; max-height: 200px; object-fit: cover;" />
+                                }
+                                else
+                                {
+                                    <span>No image uploaded</span>
+                                }
+                            </dd>
+                        </dl>
+
+                        <div class="mt-3">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning me-2">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info me-2">Details</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
         }
     </div>

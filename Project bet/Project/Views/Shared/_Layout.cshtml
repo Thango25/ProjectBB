@@ -21,13 +21,8 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item mx-2">
-                            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#uploadLostItemModal">
-                                <i class="fas fa-upload me-1"></i> Upload Lost Item
-                            </a>
-                        </li>
-                        <li class="nav-item mx-2">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">
-                                <i class="fas fa-upload me-1"></i> Upload Found Item
+                            <a class="nav-link text-white" asp-area="" asp-controller="Items" asp-action="Index">
+                                <i class="fas fa-upload me-1"></i> Upload Item
                             </a>
                         </li>
                         <li class="nav-item mx-2">
@@ -65,8 +60,12 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Profile" asp-action="Index">My Profile</a>
                         </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link text-white" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
+                                <i class="fas fa-sign-in-alt me-1"></i> Login
+                            </a>
+                        </li>
                     </ul>
-                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
@@ -83,82 +82,11 @@
         </div>
     </footer>
 
-    <div class="modal fade" id="uploadLostItemModal" tabindex="-1" aria-labelledby="uploadLostItemModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content glassy-modal">
-                <div class="modal-header glassy-modal-header">
-                    <h5 class="modal-title" id="uploadLostItemModalLabel">Upload Lost Item</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="uploadImage" class="form-label">Upload Image:</label>
-                            <input type="file" class="form-control glassy-input-file" id="uploadImage">
-                        </div>
-                        <div class="mb-3">
-                            <label for="selectCategory" class="form-label">Select Category:</label>
-                            <select class="form-select glassy-input" id="selectCategory">
-                                <option selected disabled>Enter</option>
-                                <option>Animal</option>
-                                <option>Electronics</option>
-                                <option>Wallets</option>
-                                <option>Documents</option>
-                                <option>Keys</option>
-                                <option>Bags</option>
-                                <option>Jewelry</option>
-                                <option>Clothing</option>
-                                <option>Other</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="itemType" class="form-label">Enter Item Type:</label>
-                            <input type="text" class="form-control glassy-input" id="itemType" placeholder="e.g., Dog, Laptop, ID Card">
-                        </div>
-                        <div class="mb-3">
-                            <label for="itemBrand" class="form-label">Enter Brand (Optional):</label>
-                            <input type="text" class="form-control glassy-input" id="itemBrand" placeholder="e.g., Apple, Samsung">
-                        </div>
-                        <div class="mb-3">
-                            <label for="selectColor" class="form-label">Select Colour:</label>
-                            <select class="form-select glassy-input" id="selectColor">
-                                <option selected disabled>Red</option>
-                                <option>Red</option>
-                                <option>Blue</option>
-                                <option>Green</option>
-                                <option>Yellow</option>
-                                <option>Black</option>
-                                <option>White</option>
-                                <option>Grey</option>
-                                <option>Brown</option>
-                                <option>Pink</option>
-                                <option>Purple</option>
-                                <option>Orange</option>
-                                <option>Multi-color</option>
-                                <option>Other</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="dateFound" class="form-label">Enter Date Lost:</label>
-                            <input type="date" class="form-control glassy-input" id="dateFound">
-                        </div>
-                        <div class="mb-3">
-                            <label for="lostLocation" class="form-label">Last Known Location:</label>
-                            <input type="text" class="form-control glassy-input" id="lostLocation" placeholder="e.g., Campus Library, Main Hall">
-                        </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description (Optional):</label>
-                            <textarea class="form-control glassy-input" id="description" rows="3" placeholder="Any unique features, markings, or details..."></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer glassy-modal-footer justify-content-center">
-                    <button type="submit" class="btn btn-danger">Report Lost Item</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <!-- Both modals are now loaded into the layout -->
+    <partial name="/Areas/Identity/Pages/Account/_LoginModalPartial.cshtml" model="new Project.Models.LoginViewModel()" />
+    <partial name="/Areas/Identity/Pages/Account/_RegisterModalPartial.cshtml" model="new Project.Models.RegisterViewModel()" />
+    <div id="toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;"></div>
+    
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
