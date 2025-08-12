@@ -8,6 +8,9 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: lostandfound # Replace with your App Service name
+  # IMPORTANT: Replace 'ProjectBB' below with the actual folder name
+  # where your .csproj or .sln file is located within your repository.
+  PROJECT_SOURCE_PATH: './ProjectBB' # <--- ADDED/MODIFIED: Path to your main project folder
   AZURE_WEBAPP_PACKAGE_PATH: '.' # Adjust if your build output is in a subfolder, e.g., './publish'
   DOTNET_VERSION: '8.x' # Ensure this matches your project's target .NET version
   EF_CORE_VERSION: '8.0.*' # Ensure this matches your Entity Framework Core NuGet package version
@@ -27,12 +30,16 @@ jobs:
 
     - name: Restore dependencies
       run: dotnet restore
+      working-directory: ${{ env.PROJECT_SOURCE_PATH }} # <--- ADDED: Execute from project directory
 
     - name: Build the application
       run: dotnet build --configuration Release --no-restore
+      working-directory: ${{ env.PROJECT_SOURCE_PATH }} # <--- ADDED: Execute from project directory
 
     - name: Publish the application
+      # Publishes the application to a 'publish' folder at the root of the workspace
       run: dotnet publish --configuration Release --no-build --output ${{ github.workspace }}/publish
+      working-directory: ${{ env.PROJECT_SOURCE_PATH }} # <--- ADDED: Execute from project directory
 
     - name: Deploy to Azure Web App
       id: deploy-to-webapp
@@ -41,7 +48,7 @@ jobs:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
         slot-name: 'Production' # Or your specific deployment slot
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} # Ensure this secret is set in GitHub
-        package: ${{ github.workspace }}/publish
+        package: ${{ github.workspace }}/publish # Package path from the publish step
 
     # --- Database Migrations (Crucial for Schema Updates) ---
     # This section ensures your Azure SQL Database schema is up-to-date
@@ -60,10 +67,10 @@ jobs:
 
     - name: Run EF Core Database Migrations
       # Execute database migrations against your Azure SQL Database
-      # --project and --startup-project point to your main project file
-      # The working-directory should be where your .csproj file resides in the published output
-      run: dotnet-ef database update --project "./Project.csproj" --startup-project "./Project.csproj"
-      working-directory: './publish' # Adjust this path if your Project.csproj is nested differently within the 'publish' output
+      # --project and --startup-project point to your main project file (e.g., 'ProjectBB.csproj')
+      # The working-directory MUST be where your .csproj file resides for EF Core to find it.
+      run: dotnet-ef database update --project "ProjectBB.csproj" --startup-project "ProjectBB.csproj" # <--- ADJUSTED: Use your actual project file name
+      working-directory: ${{ env.PROJECT_SOURCE_PATH }} # <--- ADDED/MODIFIED: Run EF migrations from source project path
       env:
         # ASPNETCORE_ENVIRONMENT is typically set in Azure App Service config,
         # but can be set here if needed for migration-specific logic
