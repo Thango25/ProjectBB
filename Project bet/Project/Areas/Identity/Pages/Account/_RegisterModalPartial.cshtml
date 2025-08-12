@@ -1,33 +1,30 @@
-﻿@model Project.Models.RegisterViewModel
+﻿<!-- === _RegisterModalPartial.cshtml === -->
+@model Project.Models.RegisterViewModel
 
-@{
-    ViewData["Title"] = "Register";
-}
-
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card p-4">
-                <h2 class="card-title text-center mb-4">Register</h2>
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-black text-white">
+                <h5 class="modal-title" id="registerModalLabel">Register</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
                 <form asp-page="/Account/Register" method="post">
                     <div class="mb-3">
                         <label asp-for="Name" class="form-label">Name <span class="text-danger">*</span></label>
                         <input asp-for="Name" class="form-control" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
-
                     <div class="mb-3">
                         <label asp-for="Surname" class="form-label">Surname <span class="text-danger">*</span></label>
                         <input asp-for="Surname" class="form-control" />
                         <span asp-validation-for="Surname" class="text-danger"></span>
                     </div>
-
                     <div class="mb-3">
                         <label asp-for="Email" class="form-label">Email Address <span class="text-danger">*</span></label>
                         <input asp-for="Email" class="form-control" autocomplete="username" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
-
                     <div class="mb-3">
                         <label asp-for="Password" class="form-label">Password <span class="text-danger">*</span></label>
                         <div class="input-group">
@@ -38,7 +35,6 @@
                         </div>
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
-
                     <div class="mb-3">
                         <label asp-for="ConfirmPassword" class="form-label">Re-enter Password <span class="text-danger">*</span></label>
                         <div class="input-group">
@@ -49,11 +45,10 @@
                         </div>
                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                     </div>
-
-                    <button type="submit" class="btn btn-primary btn-blue w-50 mx-auto d-block mt-3">Register</button>
+                    <button type="submit" class="btn btn-primary btn-blue w-50 mx-auto d-block">Register</button>
                 </form>
                 <hr />
-                <div class="text-center mt-3">
+                <div class="text-center">
                     <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
                         Already have an account? Login
                     </a>

@@ -1,45 +1,57 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\",
+  "WorkspaceRootPath": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\bbdnet3411\\documents\\bsc cs\\project bet 5\\project bet\\project\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\bbdnet3411\\documents\\bsc cs\\project bet 5\\project bet\\project\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\bbdnet3411\\documents\\bsc cs\\project bet 5\\project bet\\project\\migrations\\applicationdbcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:migrations\\applicationdbcontextmodelsnapshot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\bbdnet3411\\documents\\bsc cs\\project bet 5\\project bet\\project\\migrations\\20250728075341_initiate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:migrations\\20250728075341_initiate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\bbdnet3411\\documents\\bsc cs\\project bet 5\\project bet\\project\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\onedrive\\desktop\\projectbb\\project bet\\project\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\bbdnet3411\\documents\\bsc cs\\project bet 5\\project bet\\project\\views\\profile\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:views\\profile\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\bbdnet3411\\documents\\bsc cs\\project bet 5\\project bet\\project\\wwwroot\\css\\profile.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:wwwroot\\css\\profile.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\bbdnet3411\\documents\\bsc cs\\project bet 5\\project bet\\project\\views\\profile\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:views\\profile\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\bbdnet3411\\documents\\bsc cs\\project bet 5\\project bet\\project\\controllers\\profilecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\onedrive\\desktop\\projectbb\\project bet\\project\\controllers\\profilecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:controllers\\profilecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\bbdnet3411\\documents\\bsc cs\\project bet 5\\project bet\\project\\models\\profile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Migrations\\20250812062546_InitiateM.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Migrations\\20250812062546_InitiateM.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\onedrive\\desktop\\projectbb\\project bet\\project\\models\\itemtype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:models\\itemtype.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\onedrive\\desktop\\projectbb\\project bet\\project\\models\\item.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:models\\item.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\onedrive\\desktop\\projectbb\\project bet\\project\\views\\reports\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:views\\reports\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\onedrive\\desktop\\projectbb\\project bet\\project\\views\\category\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:views\\category\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\onedrive\\desktop\\projectbb\\project bet\\project\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\onedrive\\desktop\\projectbb\\project bet\\project\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\onedrive\\desktop\\projectbb\\project bet\\project\\views\\profile\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:views\\profile\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\onedrive\\desktop\\projectbb\\project bet\\project\\wwwroot\\css\\profile.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:wwwroot\\css\\profile.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\onedrive\\desktop\\projectbb\\project bet\\project\\views\\profile\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:views\\profile\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\onedrive\\desktop\\projectbb\\project bet\\project\\models\\profile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:models\\profile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -50,52 +62,117 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ApplicationDbContextModelSnapshot.cs",
-              "DocumentMoniker": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\Migrations\\ApplicationDbContextModelSnapshot.cs",
-              "RelativeDocumentMoniker": "Migrations\\ApplicationDbContextModelSnapshot.cs",
-              "ToolTip": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\Migrations\\ApplicationDbContextModelSnapshot.cs",
-              "RelativeToolTip": "Migrations\\ApplicationDbContextModelSnapshot.cs",
-              "ViewState": "AgIAAHwBAAAAAAAAAAAAAIYBAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-29T03:06:48.092Z"
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "20250728075341_Initiate.cs",
-              "DocumentMoniker": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\Migrations\\20250728075341_Initiate.cs",
-              "RelativeDocumentMoniker": "Migrations\\20250728075341_Initiate.cs",
-              "ToolTip": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\Migrations\\20250728075341_Initiate.cs",
-              "RelativeToolTip": "Migrations\\20250728075341_Initiate.cs",
-              "ViewState": "AgIAACMBAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
+              "Title": "ItemType.cs",
+              "DocumentMoniker": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Models\\ItemType.cs",
+              "RelativeDocumentMoniker": "Models\\ItemType.cs",
+              "ToolTip": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Models\\ItemType.cs",
+              "RelativeToolTip": "Models\\ItemType.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-29T03:06:28.197Z"
+              "WhenOpened": "2025-08-12T06:10:24.947Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAsAAAAAAAAAA==",
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFcAAABlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-07-28T07:50:15.803Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "20250812062546_InitiateM.cs",
+              "DocumentMoniker": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Migrations\\20250812062546_InitiateM.cs",
+              "RelativeDocumentMoniker": "Migrations\\20250812062546_InitiateM.cs",
+              "ToolTip": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Migrations\\20250812062546_InitiateM.cs",
+              "RelativeToolTip": "Migrations\\20250812062546_InitiateM.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-29T03:05:27.67Z",
+              "WhenOpened": "2025-08-12T06:25:47.204Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ProfileController.cs",
+              "DocumentMoniker": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Controllers\\ProfileController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ProfileController.cs",
+              "ToolTip": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Controllers\\ProfileController.cs",
+              "RelativeToolTip": "Controllers\\ProfileController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-28T07:25:43.209Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Item.cs",
+              "DocumentMoniker": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Models\\Item.cs",
+              "RelativeDocumentMoniker": "Models\\Item.cs",
+              "ToolTip": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Models\\Item.cs",
+              "RelativeToolTip": "Models\\Item.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-11T15:34:06.372Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Views\\Reports\\Details.cshtml",
+              "RelativeDocumentMoniker": "Views\\Reports\\Details.cshtml",
+              "ToolTip": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Views\\Reports\\Details.cshtml",
+              "RelativeToolTip": "Views\\Reports\\Details.cshtml",
+              "ViewState": "AgIAABcAAAAAAAAAAAAswDAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-12T06:13:13.275Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Views\\Category\\Details.cshtml",
+              "RelativeDocumentMoniker": "Views\\Category\\Details.cshtml",
+              "ToolTip": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Views\\Category\\Details.cshtml",
+              "RelativeToolTip": "Views\\Category\\Details.cshtml",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-08-12T06:07:48.898Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-29T03:05:27.67Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "Profile.css",
-              "DocumentMoniker": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\wwwroot\\css\\Profile.css",
+              "DocumentMoniker": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\wwwroot\\css\\Profile.css",
               "RelativeDocumentMoniker": "wwwroot\\css\\Profile.css",
-              "ToolTip": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\wwwroot\\css\\Profile.css",
+              "ToolTip": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\wwwroot\\css\\Profile.css",
               "RelativeToolTip": "wwwroot\\css\\Profile.css",
               "ViewState": "AgIAAE8AAAAAAAAAAAAAAI4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
@@ -103,23 +180,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAADYAAAAAAAAAAAAowE0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-07-28T07:50:15.803Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "Edit.cshtml",
-              "DocumentMoniker": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\Views\\Profile\\Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Views\\Profile\\Edit.cshtml",
               "RelativeDocumentMoniker": "Views\\Profile\\Edit.cshtml",
-              "ToolTip": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\Views\\Profile\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Views\\Profile\\Edit.cshtml",
               "RelativeToolTip": "Views\\Profile\\Edit.cshtml",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAAAoAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
@@ -127,11 +192,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 7,
               "Title": "ApplicationDbContext.cs",
-              "DocumentMoniker": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\Data\\ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Data\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "Data\\ApplicationDbContext.cs",
-              "ToolTip": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Data\\ApplicationDbContext.cs",
               "RelativeToolTip": "Data\\ApplicationDbContext.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -139,23 +204,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "ProfileController.cs",
-              "DocumentMoniker": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\Controllers\\ProfileController.cs",
-              "RelativeDocumentMoniker": "Controllers\\ProfileController.cs",
-              "ToolTip": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\Controllers\\ProfileController.cs",
-              "RelativeToolTip": "Controllers\\ProfileController.cs",
-              "ViewState": "AgIAAAsAAAAAAAAAAAAAwBgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-28T07:25:43.209Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 12,
               "Title": "Profile.cs",
-              "DocumentMoniker": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\Models\\Profile.cs",
+              "DocumentMoniker": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Models\\Profile.cs",
               "RelativeDocumentMoniker": "Models\\Profile.cs",
-              "ToolTip": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\Models\\Profile.cs",
+              "ToolTip": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Models\\Profile.cs",
               "RelativeToolTip": "Models\\Profile.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -163,11 +216,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 11,
               "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\Views\\Profile\\Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Views\\Profile\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Profile\\Index.cshtml",
-              "ToolTip": "C:\\Users\\bbdnet3411\\Documents\\Bsc CS\\Project bet 5\\Project bet\\Project\\Views\\Profile\\Index.cshtml",
+              "ToolTip": "C:\\Users\\phume\\OneDrive\\Desktop\\ProjectBB\\Project bet\\Project\\Views\\Profile\\Index.cshtml",
               "RelativeToolTip": "Views\\Profile\\Index.cshtml",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
