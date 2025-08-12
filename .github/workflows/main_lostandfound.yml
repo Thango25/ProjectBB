@@ -20,35 +20,32 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Debug Workspace and Repository Paths # <--- ADDED: Debugging step
+      run: |
+        echo "github.workspace: ${{ github.workspace }}"
+        echo "github.repository: ${{ github.repository }}"
+        echo "Current directory (pwd):"
+        pwd
+        echo "Listing contents of current directory:"
+        ls -la
+
     - name: Set up .NET Core SDK
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    # Calculate the exact project path. This accounts for the D:\a\<repo>\<repo> structure
-    - name: Set Project Directory Variable
-      id: set_project_dir
-      run: |
-        $repoName = (Get-Item ${{ github.workspace }}).Name
-        # Construct the path using string concatenation or alternative Join-Path syntax
-        $projectPath = "${{ github.workspace }}\${{ github.repository }}" -replace "$repoName\\$repoName", "$repoName" # This attempts to correct the duplicated repo name
-        $projectPath = Join-Path $projectPath "Project" # <--- UPDATED: Correct Join-Path usage
-        echo "PROJECT_DIR=$projectPath" >> $env:GITHUB_OUTPUT
-        echo "Debug: Project path calculated as $projectPath" # For debugging
-      shell: powershell
-
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: ${{ steps.set_project_dir.outputs.PROJECT_DIR }}
+      working-directory: ./ProjectBB/Project # <--- UPDATED: Direct relative path
 
     - name: Build the application
       run: dotnet build --configuration Release --no-restore
-      working-directory: ${{ steps.set_project_dir.outputs.PROJECT_DIR }}
+      working-directory: ./ProjectBB/Project # <--- UPDATED: Direct relative path
 
     - name: Publish the application
       # Publishes the application to a 'publish' folder at the root of the workspace
       run: dotnet publish --configuration Release --no-build --output ${{ github.workspace }}/publish
-      working-directory: ${{ steps.set_project_dir.outputs.PROJECT_DIR }}
+      working-directory: ./ProjectBB/Project # <--- UPDATED: Direct relative path
 
     - name: Deploy to Azure Web App
       id: deploy-to-webapp
@@ -79,7 +76,7 @@ jobs:
       # --project and --startup-project point to your main project file (e.g., 'Project.csproj')
       # The working-directory MUST be where your .csproj file resides for EF Core to find it.
       run: dotnet-ef database update --project "Project.csproj" --startup-project "Project.csproj"
-      working-directory: ${{ steps.set_project_dir.outputs.PROJECT_DIR }}
+      working-directory: ./ProjectBB/Project # <--- UPDATED: Direct relative path
       env:
         # ASPNETCORE_ENVIRONMENT is typically set in Azure App Service config,
         # but can be set here if needed for migration-specific logic
