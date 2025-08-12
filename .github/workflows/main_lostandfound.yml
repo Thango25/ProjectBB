@@ -1,65 +1,84 @@
-name: Build and deploy ASP.Net Core app to Azure Web App - lostandfound
+name: Deploy ASP.NET Core App to Azure App Service
 
 on:
   push:
     branches:
-      - main
-  workflow_dispatch:
+      - main # Ensure this matches your main branch name
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+env:
+  AZURE_WEBAPP_NAME: lostandfound # Replace with your App Service name
+  AZURE_WEBAPP_PACKAGE_PATH: '.' # Adjust if your build output is in a subfolder, e.g., './publish'
+  DOTNET_VERSION: '8.x' # Ensure this matches your project's target .NET version
+  EF_CORE_VERSION: '8.0.*' # Ensure this matches your Entity Framework Core NuGet package version
 
 jobs:
-  build:
-    runs-on: windows-latest
-    permissions:
-      contents: read #This is required for actions/checkout
+  build-and-deploy:
+    runs-on: windows-latest # Using Windows agent as it's an ASP.NET Core app
 
     steps:
-      - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.x'
+    - name: Debug Workspace and Repository Paths
+      run: |
+        echo "github.workspace: ${{ github.workspace }}"
+        echo "github.repository: ${{ github.repository }}"
+        echo "Current directory (pwd):"
+        pwd
+        echo "Listing contents of current directory:"
+        Get-ChildItem -Force
+      shell: powershell
 
-      # IMPORTANT CHANGE: Specify the working directory for dotnet commands.
-      # The path 'Project bet/Project' is relative to your repository root.
-      - name: Restore, Build, and Publish with dotnet
-        working-directory: './Project bet/Project' # <-- This is the crucial change
-        run: |
-          dotnet restore
-          dotnet build --configuration Release
-          dotnet publish -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+    - name: Set up .NET Core SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      # Removed the duplicate 'dotnet publish' step here
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: "./ProjectBB/Project bet/Project" # <--- UPDATED: Full nested path with quotes
 
-  deploy:
-    runs-on: windows-latest
-    needs: build
-    permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
+    - name: Build the application
+      run: dotnet build --configuration Release --no-restore
+      working-directory: "./ProjectBB/Project bet/Project" # <--- UPDATED: Full nested path with quotes
 
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: .net-app
-          
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_C2600942D677431C94AF8976D021FDCB }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_0736C3964F69466991916DC289664062 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_0BBE8727B5B140F5A3C66AF2DBDD4903 }}
+    - name: Publish the application
+      # Publishes the application to a 'publish' folder at the root of the workspace
+      run: dotnet publish --configuration Release --no-build --output ${{ github.workspace }}/publish
+      working-directory: "./ProjectBB/Project bet/Project" # <--- UPDATED: Full nested path with quotes
 
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: 'lostandfound'
-          slot-name: 'Production'
-          package: .
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v3
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        slot-name: 'Production' # Or your specific deployment slot
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }} # Ensure this secret is set in GitHub
+        package: ${{ github.workspace }}/publish # Package path from the publish step
+
+    # --- Database Migrations (Crucial for Schema Updates) ---
+    # This section ensures your Azure SQL Database schema is up-to-date
+    # after your application is deployed.
+    - name: Install dotnet-ef global tool
+      # Install dotnet-ef global tool into the runner's environment
+      # The --version should match your Entity Framework Core NuGet package version
+      run: dotnet tool install --global dotnet-ef --version ${{ env.EF_CORE_VERSION }}
+
+    - name: Add dotnet-ef to PATH for current session
+      # Explicitly add the tools directory to PATH for the current job session
+      # This addresses the "command not recognized" issue in PowerShell on Azure runners
+      run: |
+        $env:PATH = $env:PATH + ";C:\Users\runneradmin\.dotnet\tools" # Default path for global tools on windows-latest runner
+      shell: powershell
+
+    - name: Run EF Core Database Migrations
+      # Execute database migrations against your Azure SQL Database
+      # --project and --startup-project point to your main project file (e.g., 'Project.csproj')
+      # The working-directory MUST be where your .csproj file resides for EF Core to find it.
+      run: dotnet-ef database update --project "Project.csproj" --startup-project "Project.csproj"
+      working-directory: "./ProjectBB/Project bet/Project" # <--- UPDATED: Full nested path with quotes
+      env:
+        # ASPNETCORE_ENVIRONMENT is typically set in Azure App Service config,
+        # but can be set here if needed for migration-specific logic
+        ASPNETCORE_ENVIRONMENT: Production
