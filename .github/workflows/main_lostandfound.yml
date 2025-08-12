@@ -30,22 +30,25 @@ jobs:
       id: set_project_dir
       run: |
         $repoName = (Get-Item ${{ github.workspace }}).Name
-        $projectPath = Join-Path ${{ github.workspace }} $repoName "Project"
+        # Construct the path using string concatenation or alternative Join-Path syntax
+        $projectPath = "${{ github.workspace }}\${{ github.repository }}" -replace "$repoName\\$repoName", "$repoName" # This attempts to correct the duplicated repo name
+        $projectPath = Join-Path $projectPath "Project" # <--- UPDATED: Correct Join-Path usage
         echo "PROJECT_DIR=$projectPath" >> $env:GITHUB_OUTPUT
+        echo "Debug: Project path calculated as $projectPath" # For debugging
       shell: powershell
 
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: ${{ steps.set_project_dir.outputs.PROJECT_DIR }} # <--- UPDATED: Use derived absolute path
+      working-directory: ${{ steps.set_project_dir.outputs.PROJECT_DIR }}
 
     - name: Build the application
       run: dotnet build --configuration Release --no-restore
-      working-directory: ${{ steps.set_project_dir.outputs.PROJECT_DIR }} # <--- UPDATED: Use derived absolute path
+      working-directory: ${{ steps.set_project_dir.outputs.PROJECT_DIR }}
 
     - name: Publish the application
       # Publishes the application to a 'publish' folder at the root of the workspace
       run: dotnet publish --configuration Release --no-build --output ${{ github.workspace }}/publish
-      working-directory: ${{ steps.set_project_dir.outputs.PROJECT_DIR }} # <--- UPDATED: Use derived absolute path
+      working-directory: ${{ steps.set_project_dir.outputs.PROJECT_DIR }}
 
     - name: Deploy to Azure Web App
       id: deploy-to-webapp
@@ -69,14 +72,14 @@ jobs:
       # This addresses the "command not recognized" issue in PowerShell on Azure runners
       run: |
         $env:PATH = $env:PATH + ";C:\Users\runneradmin\.dotnet\tools" # Default path for global tools on windows-latest runner
-      shell: powershell # Specify PowerShell shell for this command
+      shell: powershell
 
     - name: Run EF Core Database Migrations
       # Execute database migrations against your Azure SQL Database
       # --project and --startup-project point to your main project file (e.g., 'Project.csproj')
       # The working-directory MUST be where your .csproj file resides for EF Core to find it.
-      run: dotnet-ef database update --project "Project.csproj" --startup-project "Project.csproj" # <--- ADJUSTED: Use your actual project file name
-      working-directory: ${{ steps.set_project_dir.outputs.PROJECT_DIR }} # <--- UPDATED: Use derived absolute path
+      run: dotnet-ef database update --project "Project.csproj" --startup-project "Project.csproj"
+      working-directory: ${{ steps.set_project_dir.outputs.PROJECT_DIR }}
       env:
         # ASPNETCORE_ENVIRONMENT is typically set in Azure App Service config,
         # but can be set here if needed for migration-specific logic
