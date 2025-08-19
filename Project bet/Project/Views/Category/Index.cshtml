@@ -80,14 +80,17 @@
 
         <!-- Analytics Card -->
         <div class="glass-card analytics-card">
+
             <div class="card-header">
                 <h3 class="card-title">
                     <i class="fas fa-chart-bar"></i> Popular Categories (Last 30 Days)
                 </h3>
             </div>
+
             <div class="chart-container">
                 <canvas id="categoryChart"></canvas>
             </div>
+
             <!-- Generate Reports Card -->
             <div class="glass-card reports-list-card">
                 <div class="card-header">
@@ -100,9 +103,9 @@
                     <a asp-controller="Reports" asp-action="FrequentlyReportedLostItems" class="report-btn gradient-purple">
                         <i class="fas fa-file-alt me-2"></i> Frequently Reported Lost Items Report
                     </a>
-                    <a asp-controller="Reports" asp-action="NewlyAddedItems" class="report-btn gradient-violet">
-                        <i class="fas fa-file-alt me-2"></i> Newly Added Items Report
-                    </a>
+                    <!-- Generate Category reports -->
+                    <a asp-controller="Category" asp-action="Report" class="report-btn gradient-purple" >Newly added Items</a>
+
                     <a asp-controller="Reports" asp-action="LostItemsClaimed" class="report-btn gradient-pink">
                         <i class="fas fa-file-alt me-2"></i> Lost Items Claimed Report
                     </a>
