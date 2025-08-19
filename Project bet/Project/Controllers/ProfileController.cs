@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Project.Data;
 using Project.Models;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Project.Controllers
 {
+    
     public class ProfileController : Controller
     {
         private readonly ApplicationDbContext _context;
