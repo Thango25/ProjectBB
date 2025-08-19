@@ -132,3 +132,125 @@
         });
     });
 });
+
+//**************************** Report - category ****************************
+
+    
+        document.addEventListener('DOMContentLoaded', function () {
+            // Data for the chart from the Model
+            const categoryData = @Html.Raw(JsonSerializer.Serialize(Model.CategoryItemCounts));
+
+            const labels = categoryData.map(item => item.categoryName);
+            const counts = categoryData.map(item => item.itemCount);
+
+            const ctx = document.getElementById('categoryChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar', // You can change this to 'pie', 'doughnut', etc.
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Number of Items',
+                        data: counts,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)',
+                            'rgba(75, 192, 192, 0.6)', 'rgba(153, 102, 255, 0.6)', 'rgba(255, 159, 64, 0.6)',
+                            'rgba(192, 192, 192, 0.6)', 'rgba(128, 0, 128, 0.6)', 'rgba(0, 128, 0, 0.6)',
+                            'rgba(0, 0, 128, 0.6)', 'rgba(128, 128, 0, 0.6)', 'rgba(0, 128, 128, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)',
+                            'rgba(192, 192, 192, 1)', 'rgba(128, 0, 128, 1)', 'rgba(0, 128, 0, 1)',
+                            'rgba(0, 0, 128, 1)', 'rgba(128, 128, 0, 1)', 'rgba(0, 128, 128, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Items'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Category'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false // Hide dataset legend if only one dataset
+                        },
+                        title: {
+                            display: true,
+                            text: 'Number of Items per Category'
+                        }
+                    }
+                }
+            });
+        });
+
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('/Items/GetCategoryItemCounts')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data && data.length > 0) {
+                const labels = data.map(item => item.categoryName);
+                const counts = data.map(item => item.itemCount);
+
+                const ctx = document.getElementById('categoryChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Number of Items',
+                            data: counts,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(54, 162, 235, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(75, 192, 192, 0.6)',
+                                'rgba(153, 102, 255, 0.6)',
+                                'rgba(255, 159, 64, 0.6)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.log('No category data received.');
+            }
+        })
+        .catch(error => console.error('Error fetching category data:', error));
+});
+//**************************** End of Report - category ****************************
+    

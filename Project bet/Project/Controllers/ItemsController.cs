@@ -46,8 +46,9 @@ namespace Project.Controllers
             {
                 if (id == null) return NotFound();
 
-                var item = await _context.Items.FirstOrDefaultAsync(m => m.Id == id);
-                if (item == null) return NotFound();
+            // Include Category to eager load related data if needed
+            var item = await _context.Items.Include(i => i.Category).FirstOrDefaultAsync(m => m.Id == id);
+            if (item == null) return NotFound();
 
                 return View(item);
             }
@@ -309,8 +310,57 @@ namespace Project.Controllers
             {
                 return _context.Items.Any(e => e.Id == id);
             }
+
+        /// <summary>
+        /// Retrieves the 5 most recently reported items.
+        /// </summary>
+        /// <returns>A JSON array of the latest 5 items.</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetLatestItems()
+        {
+            var latestItems = await _context.Items
+                                            .Include(i => i.Category) // Include Category for report
+                                            .OrderByDescending(i => i.DateLost) // Assuming DateLost is the reporting date
+                                            .Take(5)
+                                            .Select(i => new
+                                            {
+                                                i.Id,
+                                                i.Title,
+                                                i.Description,
+                                                i.Location,
+                                                i.DateLost,
+                                                CategoryName = i.Category.Name, // Include category name
+                                                i.PhotoPath,
+                                                i.Type // Lost/Found type
+                                            })
+                                            .ToListAsync();
+
+            return Json(latestItems);
         }
+
+        /// <summary>
+        /// Retrieves the total number of items in each category.
+        /// </summary>
+        /// <returns>A JSON array of category names and their respective item counts.</returns>
+        [HttpGet]
+        public async Task<IActionResult> GetCategoryItemCounts()
+        {
+            var categoryItemCounts = await _context.Items
+                                                    .Include(i => i.Category) // Ensure Category is loaded for grouping
+                                                    .GroupBy(i => i.Category.Name)
+                                                    .Select(g => new
+                                                    {
+                                                        CategoryName = g.Key,
+                                                        ItemCount = g.Count()
+                                                    })
+                                                    .OrderBy(g => g.CategoryName) // Order by category name for consistency
+                                                    .ToListAsync();
+
+            return Json(categoryItemCounts);
+        }
+    }
 }
+
 
 
   

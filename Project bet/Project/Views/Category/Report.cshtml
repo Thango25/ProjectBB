@@ -1,0 +1,63 @@
+﻿@using Project.Models
+@model Project.Models.ReportsViewModel // Set the ViewModel as the page model
+
+@{
+    ViewData["Title"] = "Reports Dashboard";
+}
+
+<h1 class="mb-4 ">@ViewData["Title"]</h1>
+
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <h2 class="mb-3">Items per Category</h2>
+        <div class="chart-container" style="height: 400px; width: 100%;">
+            <canvas id="categoryChart"></canvas>
+        </div>
+    </div>
+
+
+    <div class="col-md-6">
+        <h2 class="mb-3">Recently Added Items (Latest 5)</h2>
+        @if (Model.NewlyAddedItems != null && Model.NewlyAddedItems.Any())
+        {
+            <table class="table table-striped table-bordered">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th>Title</th>
+                        <th>Type</th>
+                        <th>Category</th>
+                        <th>Date Reported</th>
+                        <th>Location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.NewlyAddedItems)
+                    {
+                        <tr>
+                            <td>@item.Title</td>
+                            <td>@item.Type</td>
+                            <td>@item.CategoryName</td>
+                            <td>@item.DateLost.ToShortDateString()</td>
+                            <td>@item.Location</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No recently added items to display.</p>
+        }
+    </div>
+</div>
+
+<hr />
+
+<div class="text-center mt-3">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index" class="btn btn-outline-light">
+        <i class="fas fa-arrow-left me-1"></i>Back
+        </a>
+</div>
+
