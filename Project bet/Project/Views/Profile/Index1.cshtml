@@ -1,4 +1,4 @@
-﻿@model Project.Models.Profile
+﻿@model Project.Models.ApplicationUser;
 
 @{
     ViewData["Title"] = "User Profile";
@@ -234,15 +234,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="d-flex align-items-center bg-light p-2 rounded">
-                                <i class="fas fa-user me-2 text-primary"></i>
-                                <div>
-                                    <small class="text-muted">Username</small>
-                                    <p class="mb-0" id="displayUsername">@Model.Username</p>
-                                </div>
-                            </div>
-                        </div>
+                        
                         <div class="col-md-6">
                             <div class="d-flex align-items-center bg-light p-2 rounded">
                                 <i class="fas fa-venus-mars me-2 text-primary"></i>
@@ -292,12 +284,6 @@
                             <input asp-for="Surname" type="text" class="form-control glassy-input">
                             <span asp-validation-for="Surname" class="text-danger"></span>
                         </div>
-                        <div class="col-md-6">
-                            <label asp-for="Username" class="form-label"></label>
-                            <input asp-for="Username" type="text" class="form-control glassy-input">
-                            <span asp-validation-for="Username" class="text-danger"></span>
-                        </div>
-
                         <div class="col-md-6">
                             <label asp-for="PhoneNumber" class="form-label"></label>
                             <input asp-for="PhoneNumber" type="tel" class="form-control glassy-input">

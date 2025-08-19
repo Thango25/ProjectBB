@@ -1,30 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace Project.Models
 {
-    public class Profile
+    public class Profile : IdentityUser
     {
-        [Key]
-        public int Id { get; set; }
-
-        [Required]
-        public string Name { get; set; }
-
-        [Required]
-        public string Surname { get; set; }
-
-        [Required]
-        public string Username { get; set; }
-
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-
-        [Phone]
-        [Display(Name = "Phone Number")]
-        public string PhoneNumber { get; set; }
-
-        public string Location { get; set; }
+        // These are the only new properties you need to add.
+        public string? Name { get; set; }
+        public string? Surname { get; set; }
+        public string? Location { get; set; }
     }
 }
