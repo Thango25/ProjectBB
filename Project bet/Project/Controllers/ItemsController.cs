@@ -1,120 +1,135 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.IO;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Project.Data;
+using Project.Hubs;
 using Project.Models;
-using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace Project.Controllers
-{
-    [Authorize]
-    public class ItemsController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-
-        public ItemsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        public class ItemsController : Controller
         {
-            _context = context;
-            _webHostEnvironment = webHostEnvironment;
-        }
+            private readonly ApplicationDbContext _context;
+            private readonly IWebHostEnvironment _webHostEnvironment;
+            private readonly IHubContext<NotificationHub> _hubContext;
+            private readonly UserManager<ApplicationUser> _userManager;
 
-        // GET: Items
-        
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Items.ToListAsync());
-        }
-
-        // GET: Items/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null) return NotFound();
-
-            var item = await _context.Items.FirstOrDefaultAsync(m => m.Id == id);
-            if (item == null) return NotFound();
-
-            return View(item);
-        }
-
-        // GET: Items/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Items/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Item item)
-        {
-            if (ModelState.IsValid)
+            public ItemsController(
+                ApplicationDbContext context,
+                IWebHostEnvironment webHostEnvironment,
+                IHubContext<NotificationHub> hubContext,
+                UserManager<ApplicationUser> userManager)
             {
-                // Handle image upload
-                if (item.ImageFile != null)
+                _context = context;
+                _webHostEnvironment = webHostEnvironment;
+                _hubContext = hubContext;
+                _userManager = userManager;
+            }
+
+            // GET: Items
+            [Authorize]
+            public async Task<IActionResult> Index()
+            {
+                return View(await _context.Items.ToListAsync());
+            }
+
+            // GET: Items/Details/5
+            public async Task<IActionResult> Details(int? id)
+            {
+                if (id == null) return NotFound();
+
+                var item = await _context.Items.FirstOrDefaultAsync(m => m.Id == id);
+                if (item == null) return NotFound();
+
+                return View(item);
+            }
+
+            // -------------------------------
+            // 📌 Claim Item
+            // -------------------------------
+            [HttpPost]
+            [Authorize]
+            public async Task<IActionResult> Claim(int id)
+            {
+                var item = await _context.Items.FindAsync(id);
+                if (item == null)
                 {
-                    string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
-                    string fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(item.ImageFile.FileName);
-                    string filePath = Path.Combine(uploadDir, fileName);
-
-                    // Ensure folder exists
-                    if (!Directory.Exists(uploadDir))
-                        Directory.CreateDirectory(uploadDir);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await item.ImageFile.CopyToAsync(stream);
-                    }
-
-                    item.PhotoPath = fileName;
+                    return NotFound();
                 }
 
-                _context.Add(item);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                // Generate the generic verification link.
+                var verifyUrl = Url.Action("Verify", "Items", new { id = item.Id }, Request.Scheme);
+
+                // Send a real-time notification to all connected clients.
+                await _hubContext.Clients.All.SendAsync(
+                    "ReceiveNotification",
+                    "Item Claimed",
+                    $"An item titled '{item.Title}' has been claimed.",
+                    verifyUrl
+                );
+
+                return Ok(new { success = true });
             }
-            return View(item);
-        }
 
-        // GET: Items/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null) return NotFound();
-
-            var item = await _context.Items.FindAsync(id);
-            if (item == null) return NotFound();
-
-            return View(item);
-        }
-
-        // POST: Items/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Item item)
-        {
-            if (id != item.Id) return NotFound();
-
-            if (ModelState.IsValid)
+            // -------------------------------
+            // 📌 Verify Claim
+            // -------------------------------
+            [Authorize]
+            public async Task<IActionResult> Verify(int id)
             {
-                try
-                {
-                    var existingItem = await _context.Items.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
-                    if (existingItem == null) return NotFound();
+                var item = await _context.Items.FindAsync(id);
+                if (item == null) return NotFound();
 
-                    // Handle new image upload
-                    if (item.ImageFile != null)
+                // At this point, you could mark the item as 'claimed' or 'pending verification' in the database.
+                // Example:
+                // item.Status = ItemStatus.Claimed; 
+                // await _context.SaveChangesAsync();
+
+                TempData["Message"] = $"Claim for '{item.Title}' has been verified.";
+
+                return RedirectToAction("Details", new { id = id });
+            }
+
+            // -------------------------------
+            // Upload Lost Item
+            // -------------------------------
+            public IActionResult UploadLostItem()
+            {
+                var item = new Item
+                {
+                    Type = ItemType.Lost,
+                    DateLost = DateTime.Today
+                };
+                return View("UploadItem", item);
+            }
+
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            [Authorize]
+            public async Task<IActionResult> UploadLostItem(Item item)
+            {
+                if (ModelState.IsValid)
+                {
+                    item.Type = ItemType.Lost;
+                    item.PostedById = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                    // Handle image upload
+                    if (item.ImageFile != null && item.ImageFile.Length > 0)
                     {
                         string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
-                        string fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(item.ImageFile.FileName);
-                        string filePath = Path.Combine(uploadDir, fileName);
-
-                        // Ensure folder exists
                         if (!Directory.Exists(uploadDir))
                             Directory.CreateDirectory(uploadDir);
+
+                        string fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(item.ImageFile.FileName);
+                        string filePath = Path.Combine(uploadDir, fileName);
 
                         using (var stream = new FileStream(filePath, FileMode.Create))
                         {
@@ -123,53 +138,179 @@ namespace Project.Controllers
 
                         item.PhotoPath = fileName;
                     }
-                    else
+
+                    _context.Items.Add(item);
+                    await _context.SaveChangesAsync();
+
+                    // Notify all clients via SignalR
+                    await _hubContext.Clients.All.SendAsync(
+                        "ReceiveNotification",
+                        "New Lost Item Reported!",
+                        $"A new lost item, {item.Title}, has been reported."
+                    );
+
+                    return RedirectToAction("Index");
+                }
+
+                return View("UploadItem", item);
+            }
+
+
+            // -------------------------------
+            // Upload Found Item
+            // -------------------------------
+            [Authorize]
+            public IActionResult UploadFoundItem()
+            {
+                var item = new Item
+                {
+                    Type = ItemType.Found,
+                    DateLost = DateTime.Today
+                };
+                return View("UploadItem", item);
+            }
+
+
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            [Authorize]
+            public async Task<IActionResult> UploadFoundItem(Item item)
+            {
+                if (ModelState.IsValid)
+                {
+                    item.Type = ItemType.Found;
+                    item.PostedById = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                    // Handle image upload
+                    if (item.ImageFile != null && item.ImageFile.Length > 0)
                     {
-                        item.PhotoPath = existingItem.PhotoPath; // Keep old photo
+                        string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                        if (!Directory.Exists(uploadDir))
+                            Directory.CreateDirectory(uploadDir);
+
+                        string fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(item.ImageFile.FileName);
+                        string filePath = Path.Combine(uploadDir, fileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await item.ImageFile.CopyToAsync(stream);
+                        }
+
+                        item.PhotoPath = fileName;
                     }
 
-                    _context.Update(item);
+                    _context.Items.Add(item);
                     await _context.SaveChangesAsync();
+
+                    // Notify all clients via SignalR
+                    await _hubContext.Clients.All.SendAsync(
+                        "ReceiveNotification",
+                        "New Found Item Reported!",
+                        $"A new lost item, {item.Title}, has been reported."
+                    );
+
+                    return RedirectToAction("Index");
                 }
-                catch (DbUpdateConcurrencyException)
+
+                return View("UploadItem", item);
+            }
+
+
+            // -------------------------------
+            // Edit Item
+            // -------------------------------
+            public async Task<IActionResult> Edit(int? id)
+            {
+                if (id == null) return NotFound();
+
+                var item = await _context.Items.FindAsync(id);
+                if (item == null) return NotFound();
+
+                return View(item);
+            }
+
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            public async Task<IActionResult> Edit(int id, Item item)
+            {
+                if (id != item.Id) return NotFound();
+
+                if (ModelState.IsValid)
                 {
-                    if (!ItemExists(item.Id)) return NotFound();
-                    else throw;
+                    try
+                    {
+                        var existingItem = await _context.Items.AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+                        if (existingItem == null) return NotFound();
+
+                        if (item.ImageFile != null)
+                        {
+                            string uploadDir = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+                            string fileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(item.ImageFile.FileName);
+                            string filePath = Path.Combine(uploadDir, fileName);
+
+                            if (!Directory.Exists(uploadDir))
+                                Directory.CreateDirectory(uploadDir);
+
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                await item.ImageFile.CopyToAsync(stream);
+                            }
+
+                            item.PhotoPath = fileName;
+                        }
+                        else
+                        {
+                            item.PhotoPath = existingItem.PhotoPath;
+                        }
+
+                        _context.Update(item);
+                        await _context.SaveChangesAsync();
+                    }
+                    catch (DbUpdateConcurrencyException)
+                    {
+                        if (!ItemExists(item.Id)) return NotFound();
+                        else throw;
+                    }
+                    return RedirectToAction(nameof(Index));
                 }
+
+                return View(item);
+            }
+
+            // -------------------------------
+            // Delete Item
+            // -------------------------------
+            public async Task<IActionResult> Delete(int? id)
+            {
+                if (id == null) return NotFound();
+
+                var item = await _context.Items.FirstOrDefaultAsync(m => m.Id == id);
+                if (item == null) return NotFound();
+
+                return View(item);
+            }
+
+
+            [HttpPost, ActionName("Delete")]
+            [ValidateAntiForgeryToken]
+            public async Task<IActionResult> DeleteConfirmed(int id)
+            {
+                var item = await _context.Items.FindAsync(id);
+                if (item != null)
+                {
+                    _context.Items.Remove(item);
+                }
+
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(item);
-        }
 
-        // GET: Items/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null) return NotFound();
-
-            var item = await _context.Items.FirstOrDefaultAsync(m => m.Id == id);
-            if (item == null) return NotFound();
-
-            return View(item);
-        }
-
-        // POST: Items/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var item = await _context.Items.FindAsync(id);
-            if (item != null)
+            private bool ItemExists(int id)
             {
-                _context.Items.Remove(item);
+                return _context.Items.Any(e => e.Id == id);
             }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
-
-        private bool ItemExists(int id)
-        {
-            return _context.Items.Any(e => e.Id == id);
-        }
-    }
 }
+
+
+  

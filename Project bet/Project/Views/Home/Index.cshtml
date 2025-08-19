@@ -1,9 +1,8 @@
-﻿@model List<Project.Models.Category>
+﻿@model Project.Models.HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<!-- Hero Section -->
 <section class="hero-section">
     <div class="hero-overlay"></div>
     <div class="container-fluid px-5">
@@ -11,20 +10,23 @@
             <h1 class="hero-title mb-4">Find What You Lost or Report What You Found</h1>
             <p class="hero-subtitle mb-5">Connecting lost items with their owners</p>
 
-            <div class="search-box bg-white p-4 rounded shadow">
-                <div class="row g-2">
-                    <div class="col-md-3">
-                        <select class="form-select category-dropdown py-3">
-                            <option value="lost">I Lost Something</option>
-                            <option value="found">I Found Something</option>
-                        </select>
-                    </div>
+            <div class="search-box bg-white p-4 rounded shadow justify-content-center styles = "width-60%">
+                <div class="row g-2 justify-content-center
+">
+                    
                     <div class="col-md-7">
                         <select class="form-select location-input py-3">
                             <option value="">Select Item Category</option>
-                            @foreach (var category in Model)
+                            @if (Model?.Categories != null && Model.Categories.Any())
                             {
-                                <option value="@category.Name.ToLower()">@category.Name</option>
+                                foreach (var category in Model.Categories)
+                                {
+                                    <option value="@category.Id">@category.Name</option>
+                                }
+                            }
+                            else
+                            {
+                                <option disabled>No categories available</option>
                             }
                         </select>
                     </div>
@@ -39,22 +41,22 @@
     </div>
 </section>
 
-<!-- Browse Categories -->
 <section class="section bg-light">
     <div class="container-fluid px-5">
         <h2 class="section-title text-center">Browse Items By Category</h2>
 
         <div id="categoriesCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-
                 @{
                     int chunkSize = 6;
-                    int totalChunks = (int)Math.Ceiling(Model.Count / (double)chunkSize);
+                    int totalChunks = (Model?.Categories != null && Model.Categories.Any())
+                    ? (int)Math.Ceiling(Model.Categories.Count / (double)chunkSize)
+                    : 0;
                 }
 
                 @for (int i = 0; i < totalChunks; i++)
                 {
-                    var chunk = Model.Skip(i * chunkSize).Take(chunkSize).ToList();
+                    var chunk = Model.Categories.Skip(i * chunkSize).Take(chunkSize).ToList();
                     var activeClass = i == 0 ? "active" : "";
 
                     <div class="carousel-item @activeClass">
@@ -66,7 +68,6 @@
                                         <div class="card-body text-center">
                                             <i class="@category.IconClass fa-3x mb-3 text-primary"></i>
                                             <h5 class="card-title">@category.Name</h5>
-                                            <p class="text-muted"> 
                                         </div>
                                     </div>
                                 </div>
@@ -88,93 +89,94 @@
     </div>
 </section>
 
-
-<!-- How It Works -->
-<section class="section">
-    <div class="container-fluid px-5">
-        <h2 class="section-title text-center">How It Works</h2>
-        <div class="row g-4">
-            <div class="col-lg-3 col-md-6 text-center">
-                <div class="step-icon bg-primary text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 100px; height: 100px;">
-                    <i class="fas fa-upload fa-3x"></i>
-                </div>
-                <h4>1. Report Item</h4>
-                <p class="px-3">Upload details of your lost or found item with photos and location</p>
-            </div>
-            <div class="col-lg-3 col-md-6 text-center">
-                <div class="step-icon bg-primary text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 100px; height: 100px;">
-                    <i class="fas fa-search fa-3x"></i>
-                </div>
-                <h4>2. Search Items</h4>
-                <p class="px-3">Browse through our extensive database of lost and found items</p>
-            </div>
-            <div class="col-lg-3 col-md-6 text-center">
-                <div class="step-icon bg-primary text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 100px; height: 100px;">
-                    <i class="fas fa-check-circle fa-3x"></i>
-                </div>
-                <h4>3. Verify Match</h4>
-                <p class="px-3">Confirm the item matches your description through our verification system</p>
-            </div>
-            <div class="col-lg-3 col-md-6 text-center">
-                <div class="step-icon bg-primary text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 100px; height: 100px;">
-                    <i class="fas fa-handshake fa-3x"></i>
-                </div>
-                <h4>4. Reunite</h4>
-                <p class="px-3">Arrange pickup or delivery through our secure messaging system</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Recent Lost Items -->
 <section class="section bg-light">
     <div class="container-fluid px-5">
         <h2 class="section-title text-center">Recently Added Lost Items</h2>
         <div class="row g-4">
-            <div class="col-xl-3 col-lg-4 col-md-6">
-                <div class="card h-100 border-0 shadow-sm hover-effect">
-                    <img src="/images/samsung 23.png" class="card-img-top" alt="Samsung Galaxy S23">
-                    <div class="card-body">
-                        <h5 class="card-title">Samsung Galaxy S23</h5>
-                        <ul class="list-unstyled">
-                            <li><strong>Brand:</strong> Samsung</li>
-                            <li><strong>Color:</strong> Black</li>
-                            <li><strong>Date:</strong> 2025-04-02</li>
-                            <li><strong>Time:</strong> 2:45 PM</li>
-                            <li><strong>Location:</strong> Canary Wharf Station</li>
-                        </ul>
+            @if (Model?.RecentLostItems == null || !Model.RecentLostItems.Any())
+            {
+                <p class="text-center text-muted w-100">No lost items have been reported yet.</p>
+            }
+            else
+            {
+                @foreach (var item in Model.RecentLostItems)
+                {
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="card h-100 border-0 shadow-sm hover-effect">
+                            @if (!string.IsNullOrEmpty(item.PhotoPath))
+                            {
+                                <img src="~/uploads/@item.PhotoPath" class="card-img-top" alt="@item.Title">
+                            }
+                            else
+                            {
+                                <div class="placeholder-image d-flex align-items-center justify-content-center bg-light text-muted" style="height: 200px;">
+                                    <span>No Image</span>
+                                </div>
+                            }
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Title</h5>
+                                <ul class="list-unstyled">
+                                    <li><strong>Description:</strong> @item.Description</li>
+                                    <li><strong>Date:</strong> @item.DateLost.ToShortDateString()</li>
+                                    <li><strong>Location:</strong> @item.Location</li>
+                                </ul>
+                            </div>
+                            <div class="card-footer bg-white border-0 d-flex justify-content-between">
+                                <a asp-controller="Items" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">View Details</a>
+                                <button type="button" class="btn btn-primary claim-btn" data-item-id="@item.Id">Claim Item</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-footer bg-white border-0 d-flex justify-content-between">
-                        <a href="#" class="btn btn-outline-primary">View Details</a>
-                        <a href="#" class="btn btn-primary">Chat</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-4 col-md-6">
-                <div class="card h-100 border-0 shadow-sm hover-effect">
-                    <img src="/images/samsung 23.png" class="card-img-top" alt="Samsung Galaxy S23">
-                    <div class="card-body">
-                        <h5 class="card-title">Samsung Galaxy S23</h5>
-                        <ul class="list-unstyled">
-                            <li><strong>Brand:</strong> Samsung</li>
-                            <li><strong>Color:</strong> Black</li>
-                            <li><strong>Date:</strong> 2025-04-02</li>
-                            <li><strong>Time:</strong> 2:45 PM</li>
-                            <li><strong>Location:</strong> Canary Wharf Station</li>
-                        </ul>
-                    </div>
-                    <div class="card-footer bg-white border-0 d-flex justify-content-between">
-                        <a href="#" class="btn btn-outline-primary">View Details</a>
-                        <a href="#" class="btn btn-primary">Chat</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Additional items would go here -->
+                }
+            }
         </div>
-        <div class="allitemsbtn text-center mt-6 pb-4">
-            <a href="#" class="btn btn-primary px-5 py-3" style="min-height: 56px;">
-                View All Lost Items
-            </a>
+</section>
+<section class="section bg-light">
+    <div class="container-fluid px-5">
+        <h2 class="section-title text-center">Recently Added Found Items</h2>
+        <div class="row g-4">
+            @if (Model?.RecentFoundItems == null || !Model.RecentFoundItems.Any())
+            {
+                <p class="text-center text-muted w-100">No found items have been reported yet.</p>
+            }
+            else
+            {
+                @foreach (var item in Model.RecentFoundItems)
+                {
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="card h-100 border-0 shadow-sm hover-effect">
+                            @if (!string.IsNullOrEmpty(item.PhotoPath))
+                            {
+                                <img src="~/uploads/@item.PhotoPath" class="card-img-top" alt="@item.Title">
+                            }
+                            else
+                            {
+                                <div class="placeholder-image d-flex align-items-center justify-content-center bg-light text-muted" style="height: 200px;">
+                                    <span>No Image</span>
+                                </div>
+                            }
+                            <div class="card-body">
+                                <h5 class="card-title">@item.Title</h5>
+                                <ul class="list-unstyled">
+                                    <li><strong>Description:</strong> @item.Description</li>
+                                    <li><strong>Date:</strong> @item.DateLost.ToShortDateString()</li>
+                                    <li><strong>Location:</strong> @item.Location</li>
+                                </ul>
+                            </div>
+                            <div class="card-footer bg-white border-0 d-flex justify-content-between">
+                                <div class="card-footer bg-white border-0 d-flex justify-content-between">
+                                    <a asp-controller="Items" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">View Details</a>
+                                    <button type="button" class="btn btn-primary claim-btn" data-item-id="@item.Id">Claim Item</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
         </div>
     </div>
 </section>
+
+
+

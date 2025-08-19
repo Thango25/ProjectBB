@@ -1230,11 +1230,14 @@ C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Pro
 C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
 C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
 C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\Microsoft.Extensions.FileProviders.Embedded.dll
+C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\Microsoft.Extensions.Hosting.Abstractions.dll
 C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
 C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\Microsoft.Extensions.ObjectPool.dll
 C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
 C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\Microsoft.Identity.Client.dll
 C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
@@ -1279,6 +1282,7 @@ C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Pro
 C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\System.Drawing.Common.dll
 C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\System.Memory.Data.dll
+C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll
 C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\System.Reflection.MetadataLoadContext.dll
 C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\System.Runtime.Caching.dll
 C:\Users\bbdnet3411\OneDrive - Nelson Mandela University\Documents\ProjectBB\Project bet\Project\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll

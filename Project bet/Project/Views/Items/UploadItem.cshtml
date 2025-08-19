@@ -8,7 +8,9 @@
 <div class="container bg-white p-5 shadow rounded" style="max-width: 800px; margin: auto;">
     <h2 class="text-center mb-4">@ViewData["Title"]</h2>
 
-    <form asp-action="UploadItem" method="post" enctype="multipart/form-data">
+    <form asp-action="@(isLost ? "UploadLostItem" : "UploadFoundItem")"
+          method="post" enctype="multipart/form-data">
+
         <input type="hidden" asp-for="Type" />
 
         <div class="mb-3">
@@ -28,17 +30,13 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="Brand" class="form-label">
-                Brand
-            </label>
+            <label asp-for="Brand" class="form-label">Brand</label>
             <input asp-for="Brand" class="form-control" />
             <span asp-validation-for="Brand" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="Color" class="form-label">
-                Color
-            </label>
+            <label asp-for="Color" class="form-label">Color</label>
             <input asp-for="Color" class="form-control" />
             <span asp-validation-for="Color" class="text-danger"></span>
         </div>
@@ -59,10 +57,26 @@
             <span asp-validation-for="DateLost" class="text-danger"></span>
         </div>
 
+        <!-- 🔑 Verification Question -->
         <div class="mb-3">
-            <label asp-for="ImageFile" class="form-label">
-                Upload Image
+            <label asp-for="VerificationQuestion" class="form-label">
+                Verification Question <span class="text-danger">*</span>
             </label>
+            <input asp-for="VerificationQuestion" class="form-control" />
+            <span asp-validation-for="VerificationQuestion" class="text-danger"></span>
+        </div>
+
+        <!-- 🔑 Verification Answer -->
+        <div class="mb-3">
+            <label asp-for="VerificationAnswer" class="form-label">
+                Verification Answer <span class="text-danger">*</span>
+            </label>
+            <input asp-for="VerificationAnswer" class="form-control" />
+            <span asp-validation-for="VerificationAnswer" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ImageFile" class="form-label">Upload Image</label>
             <input asp-for="ImageFile" class="form-control" type="file" />
             <span asp-validation-for="ImageFile" class="text-danger"></span>
         </div>

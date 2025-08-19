@@ -25,16 +25,9 @@
                                 <i class="fas fa-upload me-1"></i> Upload Item
                             </a>
                         </li>
-                        <li class="nav-item mx-2 position-relative">
-                            <a class="nav-link" href="#" id="notificationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-bell me-1"></i>
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6em;">
-                                    3 <span class="visually-hidden">unread messages</span>
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end glassy-modal" aria-labelledby="notificationsDropdown">
-                            </ul>
-                        </li>
+
+
+
                         <partial name="_LoginPartial" />
                     </ul>
                 </div>
@@ -46,41 +39,104 @@
         @RenderBody()
     </main>
 
-
     <footer class="footer text-center">
         <div class="container-fluid px-5">
-            &copy; 2025 - Lost&Found - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-white">Privacy</a>
+            &copy; 2025 - Lost&Found 
         </div>
     </footer>
 
-    <!-- Both modals are now loaded into the layout 
-    <partial name="/Areas/Identity/Pages/Account/_LoginModalPartial.cshtml" model="new Project.Models.LoginViewModel()" />
-    <partial name="/Areas/Identity/Pages/Account/_RegisterModalPartial.cshtml" model="new Project.Models.RegisterViewModel()" />
-    <div id="toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;"></div> -->
-    
+    <div id="toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;"></div>
+
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <!-- SignalR Client Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
-        $(document).ready(function () { 
-            $(".Approve").click(function(){
-                $(this).text('Claim approved').css("background-color","orange")
-               $(".Decline").hide();
-                alert("Claim approved!");
+        document.addEventListener("DOMContentLoaded", function () {
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl("/notificationHub")
+                .build();
+
+            connection.start().catch(err => console.error(err.toString()));
+
+            const notificationDropdown = document.getElementById("notificationDropdown");
+            const notificationCount = document.getElementById("notificationCount");
+
+            // Handle incoming notifications
+            connection.on("ReceiveNotification", (title, message, verifyUrl) => {
+                const newNotification = document.createElement("li");
+
+                // Add the basic notification content
+                let notificationContent = `
+                    <a class="dropdown-item" href="#">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">${title}</h6>
+                        </div>
+                        <p class="mb-1">${message}</p>
+                    </a>`;
+
+                // If a verifyUrl is provided, add the button to the notification.
+                if (verifyUrl) {
+                    notificationContent += `
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-primary" href="${verifyUrl}">
+                            <i class="fas fa-check-circle"></i> Verify Claim
+                        </a>`;
+                }
+
+                newNotification.innerHTML = notificationContent;
+
+                notificationDropdown.prepend(newNotification);
+
+                // Remove the "No new notifications" placeholder
+                const placeholder = notificationDropdown.querySelector('.dropdown-item.text-muted');
+                if (placeholder) {
+                    placeholder.remove();
+                }
+
+                let count = parseInt(notificationCount.innerText);
+                notificationCount.innerText = count + 1;
+                notificationCount.style.display = "inline";
             });
-             $(".Decline").click(function(){
-                $(this).text('Claim declined').css("background-color","orange")
-               $(".Approve").hide();
-                alert("Claim declined!");
+
+            // Handle the dropdown toggle event to reset the counter
+            const notificationDropdownToggle = document.getElementById("navbarNotificationDropdown");
+            if (notificationDropdownToggle) {
+                notificationDropdownToggle.addEventListener("click", function () {
+                    notificationCount.innerText = "0";
+                    notificationCount.style.display = "none";
+                });
+            }
+
+            // Attach Claim button click event
+            document.querySelectorAll(".claim-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const itemId = this.getAttribute("data-item-id");
+
+                    fetch(`/Items/Claim/${itemId}`, {
+                        method: "POST",
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest"
+                        }
+                    }).then(response => {
+                        if (response.ok) {
+                            alert("Claim request sent successfully!");
+                        } else {
+                            alert("Failed to claim item. Please try again later.");
+                        }
+                    }).catch(err => {
+                        console.error("Error during claim request:", err);
+                        alert("An error occurred. Please check the console.");
+                    });
+                });
             });
         });
-       
     </script>
-
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

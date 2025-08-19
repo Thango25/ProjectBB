@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Project.Models;
 
 namespace Project.Data;
 
-public class ApplicationDbContext : IdentityDbContext
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
@@ -12,7 +13,6 @@ public class ApplicationDbContext : IdentityDbContext
     }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Item> Items { get; set; }
-    public DbSet<Profile> Profiles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -32,6 +32,7 @@ public class ApplicationDbContext : IdentityDbContext
             new Category { Id = 11, Name = "Musical Instruments", IconClass = "fas fa-music" },
             new Category { Id = 12, Name = "Toys & Games", IconClass = "fas fa-gamepad" }
         );
+
 
        
     }
