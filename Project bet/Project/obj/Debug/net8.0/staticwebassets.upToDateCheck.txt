@@ -77,4 +77,7 @@ wwwroot\uploads\6ac44b8c-c2dc-448f-b868-b23d064f7583_Screenshot (1).png
 wwwroot\uploads\83b2c955-836d-45e9-a3b2-1762d1750411_addtocart.PNG
 wwwroot\uploads\93411b0a-9ec8-483d-94b9-17d0ab794a9f_Screenshot 2025-07-23 135836.png
 wwwroot\uploads\a6a56ddf-3b35-4f69-897a-9145ed50ac51_Screenshot (1).png
+wwwroot\uploads\ad6fb315-5966-42c5-b6bb-7451d5036ae3_dicenum1.png
 wwwroot\uploads\bb91452a-e393-47de-994f-a5157cdcc40a_addtocart.PNG
+wwwroot\uploads\c9b7a4d0-b467-4392-83f8-76682d41b65f_WhatsApp Image 2025-08-30 at 14.44.20.jpeg
+wwwroot\uploads\f63750d1-28b9-45ae-80f2-0aa457de21c0_dicenum1.png

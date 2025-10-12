@@ -1,54 +1,189 @@
 ﻿@page
 @model LoginModel
-
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Login";
 }
 
-<h1>@ViewData["Title"]</h1>
-<div class="row justify-content-center">
-    <div class="col-md-4 ">
-        <section>
-            <form id="account" method="post">
-                <h2>Use a local account to log in.</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                    <label asp-for="Input.Email" class="form-label">Email</label>
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                </div>
-                <div>
-                    <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                    </p>
-                </div>
-            </form>
-        </section>
-    </div>
-    
+<!-- Black Bar -->
+<div style="background-color: transparent; color: black; padding: 10px; text-align: center;">
+    <span style="font-size: 20px;">Login</span>
+    <span style="float: right; cursor: pointer;"></span>
 </div>
+
+<div style="display: flex; flex-direction: column; align-items: center; padding: 20px; background-color: #fff; min-height: calc(100vh - 100px);">
+    <form method="post" id="loginForm" style="width: 100%; max-width: 300px; position: relative;">
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px;">Email Address</label>
+            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" />
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+        </div>
+
+        <div style="margin-bottom: 15px; position: relative;">
+            <label style="display: block; margin-bottom: 5px;">Password</label>
+            <input asp-for="Input.Password" type="password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" id="passwordInput" />
+            <button type="button" onclick="togglePassword()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;">
+                <i id="toggleIcon" class="fas fa-eye"></i>
+            </button>
+            <span asp-validation-for="Input.Password" class="text-danger"></span>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <input asp-for="Input.RememberMe" type="checkbox" id="rememberMe" />
+            <label asp-for="Input.RememberMe" style="margin-left: 5px;">Remember me</label>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <button id="login-submit" type="submit" style="width: 100%; padding: 10px; background-color: #9370DB; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
+                <i class="fas fa-sign-in-alt me-2"></i> Login
+            </button>
+        </div>
+
+        <div style="text-align: center; font-size: 12px;">
+            <div style="margin-bottom: 15px;">
+                <a href="#" onclick="showForgotPasswordModal()" style="color: #007bff; text-decoration: none; margin-right: 10px;">Forgot password?</a>
+                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" style="color: #007bff; text-decoration: none;">Create account</a>
+            </div>
+
+            <div class="mt-4">
+                <a href="#" onclick="showResendEmailModal()" style="color: #007bff; text-decoration: none;">
+                    <i class="fas fa-envelope me-1"></i>Resend email confirmation
+                </a>
+            </div>
+        </div>
+
+        <!-- Success Message -->
+        <div id="resendSuccessMessage" style="display: none; position: absolute; top: 0; left: 0; width: 100%; background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; text-align: center; margin-top: 10px;">
+            Email confirmation has been resent successfully. Please check your inbox.
+        </div>
+    </form>
+</div>
+
+<!-- Footer -->
+<div style="background-color: #000; color: #fff; padding: 10px; text-align: center; position: relative; bottom: 0; width: 100%;">
+    <span>© 2025 - Lost&Found</span>
+</div>
+
+<!-- Forgot Password Modal -->
+<div id="forgotPasswordModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 1050; text-align: center; width: 300px;">
+    <h2>Forgot Password?</h2>
+    <p>Please enter your email address to reset your password.</p>
+    <form method="post" asp-page="./ForgotPassword">
+        <div style="margin-bottom: 15px;">
+            <input asp-for="Input.Email" class="form-control" placeholder="Enter your email" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" />
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+        </div>
+        <button type="submit" style="width: 100%; padding: 10px; background-color: #9370DB; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Reset Password</button>
+    </form>
+    <span style="float: right; cursor: pointer; font-size: 20px;" onclick="hideForgotPasswordModal()">X</span>
+</div>
+
+<!-- Resend Email Confirmation Modal -->
+<div id="resendEmailModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.5); z-index: 1050; text-align: center; width: 300px;">
+    <h2>Resend Email Confirmation</h2>
+    <p>Please enter your email address to resend the confirmation email.</p>
+    <form method="post" asp-page-handler="ResendEmail" id="resendEmailForm">
+        @Html.AntiForgeryToken()
+        <div style="margin-bottom: 15px;">
+            <input asp-for="Input.Email" class="form-control" placeholder="Enter your email" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;" />
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+        </div>
+        <button type="submit" id="resendButton" style="width: 100%; padding: 10px; background-color: #9370DB; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Resend</button>
+    </form>
+    <span style="float: right; cursor: pointer; font-size: 20px;" onclick="hideResendEmailModal()">X</span>
+</div>
+
+<div id="modalOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1040;"></div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('passwordInput');
+            const toggleIcon = document.getElementById('toggleIcon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function() {
+            const submitBtn = document.getElementById('login-submit');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Signing In...';
+            submitBtn.disabled = true;
+        });
+
+        function showForgotPasswordModal() {
+            document.getElementById('forgotPasswordModal').style.display = 'block';
+            document.getElementById('modalOverlay').style.display = 'block';
+        }
+
+        function hideForgotPasswordModal() {
+            document.getElementById('forgotPasswordModal').style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+
+        function showResendEmailModal() {
+            document.getElementById('resendEmailModal').style.display = 'block';
+            document.getElementById('modalOverlay').style.display = 'block';
+        }
+
+        function hideResendEmailModal() {
+            document.getElementById('resendEmailModal').style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+
+        document.getElementById('modalOverlay').addEventListener('click', function() {
+            hideForgotPasswordModal();
+            hideResendEmailModal();
+        });
+
+        document.getElementById('resendEmailForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const form = this;
+            const resendButton = document.getElementById('resendButton');
+            const originalButtonText = resendButton.innerHTML;
+            resendButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Resending...';
+            resendButton.disabled = true;
+
+            const formData = new FormData(form);
+            const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            formData.append('__RequestVerificationToken', token);
+
+            fetch('/Login?handler=ResendEmail', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    hideResendEmailModal();
+                    const successMessage = document.getElementById('resendSuccessMessage');
+                    successMessage.style.display = 'block';
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                    }, 5000);
+                } else {
+                    alert('Failed to resend email: ' + (data.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('Error during resend email request:', error);
+                alert('An error occurred while resending the email. Check the console for details.');
+            })
+            .finally(() => {
+                resendButton.innerHTML = originalButtonText;
+                resendButton.disabled = false;
+            });
+        });
+    </script>
 }
