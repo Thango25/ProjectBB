@@ -1,29 +1,24 @@
 ﻿@model IEnumerable<Project.Models.Item>
 
 @{
-    ViewData["Title"] = "Reported Lost Items";
+    ViewData["Title"] = ViewData["Title"] ?? "Matching Items";
 }
 
 <div class="bg-dark text-white min-vh-100 py-4">
     <div class="container">
-        <h1 class="text-center my-4">Lost & Found Items</h1>
-
-        <p class="text-center">
-            <a asp-action="UploadLostItem" class="btn btn-light mb-3 me-2">
-                + Report New Lost Item
-            </a>
-            <a asp-action="UploadFoundItem" class="btn btn-light mb-3 me-2">
-                + Report New Found Item
-            </a>
-        </p>
+        <h1 class="text-center my-4">@ViewData["Title"]</h1>
+        <hr />
 
         @if (!Model.Any())
         {
-            <p class="text-center text-muted">No items reported yet.</p>
+            <div class="alert alert-info text-center">
+                <p>No items found for this category.</p>
+                <a asp-controller="Items" asp-action="Index" class="btn btn-primary mt-3">Back to All Items</a>
+            </div>
         }
         else
         {
-            <div id="itemsCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div id="matchingItemsCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     @{
                         int chunkSize = 3; // Display 3 items per slide
@@ -48,6 +43,9 @@
 
                                             <hr />
                                             <dl class="row">
+                                                <dt class="col-sm-3">Category</dt>
+                                                <dd class="col-sm-9">@item.Category.Name</dd>
+
                                                 <dt class="col-sm-3">Description</dt>
                                                 <dd class="col-sm-9">@item.Description</dd>
 
@@ -85,11 +83,11 @@
 
                 @if (slideCount > 1)
                 {
-                    <button class="carousel-control-prev" type="button" data-bs-target="#itemsCarousel" data-bs-slide="prev">
+                    <button class="carousel-control-prev" type="button" data-bs-target="#matchingItemsCarousel" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#itemsCarousel" data-bs-slide="next">
+                    <button class="carousel-control-next" type="button" data-bs-target="#matchingItemsCarousel" data-bs-slide="next">
                         <span class="carousel-control-next-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>

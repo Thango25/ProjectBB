@@ -12,6 +12,7 @@
           method="post" enctype="multipart/form-data">
 
         <input type="hidden" asp-for="Type" />
+        <input type="hidden" asp-for="DateLost" />
 
         <div class="mb-3">
             <label asp-for="Title" class="form-label">
@@ -27,6 +28,16 @@
             </label>
             <textarea asp-for="Description" class="form-control" rows="3"></textarea>
             <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CategoryId" class="form-label">
+                Category <span class="text-danger">*</span>
+            </label>
+            <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories">
+                <option value="">-- Select Category --</option>
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
@@ -57,7 +68,6 @@
             <span asp-validation-for="DateLost" class="text-danger"></span>
         </div>
 
-        <!-- 🔑 Verification Question -->
         <div class="mb-3">
             <label asp-for="VerificationQuestion" class="form-label">
                 Verification Question <span class="text-danger">*</span>
@@ -66,7 +76,6 @@
             <span asp-validation-for="VerificationQuestion" class="text-danger"></span>
         </div>
 
-        <!-- 🔑 Verification Answer -->
         <div class="mb-3">
             <label asp-for="VerificationAnswer" class="form-label">
                 Verification Answer <span class="text-danger">*</span>

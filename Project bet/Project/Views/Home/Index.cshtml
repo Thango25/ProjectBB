@@ -10,32 +10,37 @@
             <h1 class="hero-title mb-4">Find What You Lost or Report What You Found</h1>
             <p class="hero-subtitle mb-5">Connecting lost items with their owners</p>
 
-            <div class="search-box bg-white p-4 rounded shadow justify-content-center styles = "width-60%">
-                <div class="row g-2 justify-content-center
-">
-                    
-                    <div class="col-md-7">
-                        <select class="form-select location-input py-3">
-                            <option value="">Select Item Category</option>
-                            @if (Model?.Categories != null && Model.Categories.Any())
-                            {
-                                foreach (var category in Model.Categories)
+            <div class="search-box bg-white p-4 rounded shadow d-flex justify-content-center">
+                <form asp-controller="Items" asp-action="Search" method="get" class="w-100">
+                    <div class="row g-2 justify-content-center">
+                        <div class="col-md-3">
+                            <select name="type" class="form-select location-input py-3">
+                                <option value="">Select Item Type</option>
+                                <option value="Lost">Lost</option>
+                                <option value="Found">Found</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select name="categoryId" class="form-select location-input py-3">
+                                <option value="">Select Item Category</option>
+                                @if (Model?.Categories != null && Model.Categories.Any())
                                 {
-                                    <option value="@category.Id">@category.Name</option>
+                                    foreach (var category in Model.Categories)
+                                    {
+                                        <option value="@category.Id">@category.Name</option>
+                                    }
                                 }
-                            }
-                            else
-                            {
-                                <option disabled>No categories available</option>
-                            }
-                        </select>
+                                else
+                                {
+                                    <option disabled>No categories available</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn search-btn w-100 py-3">SEARCH</button>
+                        </div>
                     </div>
-                    <div class="col-md-2">
-                        <form asp-controller="Items" asp-action="Index" method="get">
-                            <button class="btn search-btn w-100 py-3">SEARCH</button>
-                        </form>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -43,8 +48,6 @@
 
 <section class="section bg-light">
     <div class="container-fluid px-5">
-        <h2 class="section-title text-center">Browse Items By Category</h2>
-
         <div id="categoriesCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 @{
@@ -64,12 +67,12 @@
                             @foreach (var category in chunk)
                             {
                                 <div class="col-xl-2 col-lg-3 col-md-4 col-6">
-                                    <div class="card h-100 border-0 shadow-sm hover-effect">
+                                    <a asp-controller="Items" asp-action="ByCategory" asp-route-categoryId="@category.Id" class="card h-100 border-0 shadow-sm hover-effect text-decoration-none text-dark">
                                         <div class="card-body text-center">
                                             <i class="@category.IconClass fa-3x mb-3 text-primary"></i>
                                             <h5 class="card-title">@category.Name</h5>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                             }
                         </div>
@@ -91,92 +94,136 @@
 
 <section class="section bg-light">
     <div class="container-fluid px-5">
-        <h2 class="section-title text-center">Recently Added Lost Items</h2>
-        <div class="row g-4">
-            @if (Model?.RecentLostItems == null || !Model.RecentLostItems.Any())
-            {
-                <p class="text-center text-muted w-100">No lost items have been reported yet.</p>
-            }
-            else
-            {
-                @foreach (var item in Model.RecentLostItems)
-                {
-                    <div class="col-xl-3 col-lg-4 col-md-6">
-                        <div class="card h-100 border-0 shadow-sm hover-effect">
-                            @if (!string.IsNullOrEmpty(item.PhotoPath))
-                            {
-                                <img src="~/uploads/@item.PhotoPath" class="card-img-top" alt="@item.Title">
-                            }
-                            else
-                            {
-                                <div class="placeholder-image d-flex align-items-center justify-content-center bg-light text-muted" style="height: 200px;">
-                                    <span>No Image</span>
-                                </div>
-                            }
-                            <div class="card-body">
-                                <h5 class="card-title">@item.Title</h5>
-                                <ul class="list-unstyled">
-                                    <li><strong>Description:</strong> @item.Description</li>
-                                    <li><strong>Date:</strong> @item.DateLost.ToShortDateString()</li>
-                                    <li><strong>Location:</strong> @item.Location</li>
-                                </ul>
-                            </div>
-                            <div class="card-footer bg-white border-0 d-flex justify-content-between">
-                                <a asp-controller="Items" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">View Details</a>
-                                <button type="button" class="btn btn-primary claim-btn" data-item-id="@item.Id">Claim Item</button>
+        @if (Model?.RecentLostItems == null || !Model.RecentLostItems.Any())
+        {
+            <p class="text-center text-muted w-100">No lost items have been reported yet.</p>
+        }
+        else
+        {
+            <div id="lostItemsCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @{
+                        int lostChunkSize = 4;
+                        var lostChunks = Model.RecentLostItems.Chunk(lostChunkSize);
+                    }
+                    @foreach (var (chunk, index) in lostChunks.Select((item, i) => (item, i)))
+                    {
+                        <div class="carousel-item @(index == 0 ? "active" : "")">
+                            <div class="row g-4">
+                                @foreach (var item in chunk)
+                                {
+                                    <div class="col-xl-3 col-lg-4 col-md-6">
+                                        <div class="card h-100 border-0 shadow-sm hover-effect">
+                                            @if (!string.IsNullOrEmpty(item.PhotoPath))
+                                            {
+                                                <img src="~/uploads/@item.PhotoPath" class="card-img-top" alt="@item.Title" style="height: 200px; object-fit: cover;">
+                                            }
+                                            else
+                                            {
+                                                <div class="placeholder-image d-flex align-items-center justify-content-center bg-light text-muted" style="height: 200px;">
+                                                    <span>No Image</span>
+                                                </div>
+                                            }
+                                            <div class="card-body">
+                                                <h5 class="card-title">@item.Title</h5>
+                                                <ul class="list-unstyled">
+                                                    <li><strong>Description:</strong> @item.Description</li>
+                                                    <li><strong>Date:</strong> @item.DateLost.ToShortDateString()</li>
+                                                    <li><strong>Location:</strong> @item.Location</li>
+                                                </ul>
+                                            </div>
+                                            <div class="card-footer bg-white border-0 d-flex justify-content-between">
+                                                <a asp-controller="Items" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">View Details</a>
+                                                <button type="button" class="btn btn-primary claim-btn" data-item-id="@item.Id">Claim Item</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
                             </div>
                         </div>
-                    </div>
-                }
-            }
-        </div>
-</section>
-<section class="section bg-light">
-    <div class="container-fluid px-5">
-        <h2 class="section-title text-center">Recently Added Found Items</h2>
-        <div class="row g-4">
-            @if (Model?.RecentFoundItems == null || !Model.RecentFoundItems.Any())
-            {
-                <p class="text-center text-muted w-100">No found items have been reported yet.</p>
-            }
-            else
-            {
-                @foreach (var item in Model.RecentFoundItems)
-                {
-                    <div class="col-xl-3 col-lg-4 col-md-6">
-                        <div class="card h-100 border-0 shadow-sm hover-effect">
-                            @if (!string.IsNullOrEmpty(item.PhotoPath))
-                            {
-                                <img src="~/uploads/@item.PhotoPath" class="card-img-top" alt="@item.Title">
-                            }
-                            else
-                            {
-                                <div class="placeholder-image d-flex align-items-center justify-content-center bg-light text-muted" style="height: 200px;">
-                                    <span>No Image</span>
-                                </div>
-                            }
-                            <div class="card-body">
-                                <h5 class="card-title">@item.Title</h5>
-                                <ul class="list-unstyled">
-                                    <li><strong>Description:</strong> @item.Description</li>
-                                    <li><strong>Date:</strong> @item.DateLost.ToShortDateString()</li>
-                                    <li><strong>Location:</strong> @item.Location</li>
-                                </ul>
-                            </div>
-                            <div class="card-footer bg-white border-0 d-flex justify-content-between">
-                                <div class="card-footer bg-white border-0 d-flex justify-content-between">
-                                    <a asp-controller="Items" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">View Details</a>
-                                    <button type="button" class="btn btn-primary claim-btn" data-item-id="@item.Id">Claim Item</button>
-                                </div>
+                    }
+                </div>
 
-                            </div>
-                        </div>
-                    </div>
+                @if (Model.RecentLostItems.Count() > lostChunkSize)
+                {
+                    <button class="carousel-control-prev" type="button" data-bs-target="#lostItemsCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#lostItemsCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 }
-            }
-        </div>
+            </div>
+        }
     </div>
 </section>
 
+<section class="section bg-light">
+    <div class="container-fluid px-5">
+        @if (Model?.RecentFoundItems == null || !Model.RecentFoundItems.Any())
+        {
+            <p class="text-center text-muted w-100">No found items have been reported yet.</p>
+        }
+        else
+        {
+            <div id="foundItemsCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @{
+                        int foundChunkSize = 4;
+                        var foundChunks = Model.RecentFoundItems.Chunk(foundChunkSize);
+                    }
+                    @foreach (var (chunk, index) in foundChunks.Select((item, i) => (item, i)))
+                    {
+                        <div class="carousel-item @(index == 0 ? "active" : "")">
+                            <div class="row g-4">
+                                @foreach (var item in chunk)
+                                {
+                                    <div class="col-xl-3 col-lg-4 col-md-6">
+                                        <div class="card h-100 border-0 shadow-sm hover-effect">
+                                            @if (!string.IsNullOrEmpty(item.PhotoPath))
+                                            {
+                                                <img src="~/uploads/@item.PhotoPath" class="card-img-top" alt="@item.Title" style="height: 200px; object-fit: cover;">
+                                            }
+                                            else
+                                            {
+                                                <div class="placeholder-image d-flex align-items-center justify-content-center bg-light text-muted" style="height: 200px;">
+                                                    <span>No Image</span>
+                                                </div>
+                                            }
+                                            <div class="card-body">
+                                                <h5 class="card-title">@item.Title</h5>
+                                                <ul class="list-unstyled">
+                                                    <li><strong>Description:</strong> @item.Description</li>
+                                                    <li><strong>Date:</strong> @item.DateLost.ToShortDateString()</li>
+                                                    <li><strong>Location:</strong> @item.Location</li>
+                                                </ul>
+                                            </div>
+                                            <div class="card-footer bg-white border-0 d-flex justify-content-between">
+                                                <a asp-controller="Items" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">View Details</a>
+                                                <button type="button" class="btn btn-primary claim-btn" data-item-id="@item.Id">Claim Item</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
 
-
+                @if (Model.RecentFoundItems.Count() > foundChunkSize)
+                {
+                    <button class="carousel-control-prev" type="button" data-bs-target="#foundItemsCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#foundItemsCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                }
+            </div>
+        }
+    </div>
+</section>
