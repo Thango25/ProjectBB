@@ -26,18 +26,16 @@ namespace ProjectBBB.Controllers
             {
                 Categories = _context.Categories.ToList(),
 
-                // ? Get latest lost items
+                // ? Get all lost items by removing .Take(4)
                 RecentLostItems = _context.Items
                     .Where(i => i.Type == ItemType.Lost)
                     .OrderByDescending(i => i.DateLost)
-                    .Take(4) // Show latest 4
                     .ToList(),
 
-                // ? Get latest found items
+                // ? Get all found items by removing .Take(4)
                 RecentFoundItems = _context.Items
                     .Where(i => i.Type == ItemType.Found)
                     .OrderByDescending(i => i.DateLost)
-                    .Take(4) // Show latest 4
                     .ToList()
             };
 

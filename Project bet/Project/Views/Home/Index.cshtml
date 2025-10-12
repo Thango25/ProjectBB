@@ -1,4 +1,7 @@
-﻿@model Project.Models.HomeViewModel
+﻿@using Project.Models;
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<ApplicationUser> UserManager
+@model Project.Models.HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -10,10 +13,10 @@
             <h1 class="hero-title mb-4">Find What You Lost or Report What You Found</h1>
             <p class="hero-subtitle mb-5">Connecting lost items with their owners</p>
 
-            <div class="search-box bg-white p-4 rounded shadow justify-content-center styles = "width-60%">
+            <<div class="search-box bg-white p-4 rounded shadow justify-content-center" style="width: 60%;">
                 <div class="row g-2 justify-content-center
 ">
-                    
+
                     <div class="col-md-7">
                         <select class="form-select location-input py-3">
                             <option value="">Select Item Category</option>
@@ -164,11 +167,8 @@
                                 </ul>
                             </div>
                             <div class="card-footer bg-white border-0 d-flex justify-content-between">
-                                <div class="card-footer bg-white border-0 d-flex justify-content-between">
-                                    <a asp-controller="Items" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">View Details</a>
-                                    <button type="button" class="btn btn-primary claim-btn" data-item-id="@item.Id">Claim Item</button>
-                                </div>
-
+                                <a asp-controller="Items" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">View Details</a>
+                                <button type="button" class="btn btn-primary claim-btn" data-item-id="@item.Id" data-owner-id="@item.PostedById">Claim Item</button>
                             </div>
                         </div>
                     </div>
@@ -177,6 +177,36 @@
         </div>
     </div>
 </section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Find all "Claim Item" buttons
+            const claimButtons = document.querySelectorAll('.claim-btn');
+            // Get the current signed-in user's ID from the HTML
+            const currentUserId = "@UserManager.GetUserId(User)";
+
+            claimButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    const itemId = this.getAttribute('data-item-id');
+                    const ownerId = this.getAttribute('data-owner-id');
+
+                    // Call a new function to trigger the notification, passing all required data
+                    // You'll need to define a new hub method to handle this
+                    if (ownerId && currentUserId) {
+                         // Invoke the hub method to send the notification to the item owner
+                         // We need a new hub method that sends the itemId and claimerId
+                       connection.invoke("SendClaimNotificationToOwner", ownerId, itemId, currentUserId)
+                               .catch(err => console.error("Error sending claim notification:", err.toString()));
+                    }
+                });
+            });
+        });
+    </script>
+}
 
 
 

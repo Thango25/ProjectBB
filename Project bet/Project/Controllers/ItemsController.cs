@@ -52,38 +52,57 @@ namespace Project.Controllers
 
                 return View(item);
             }
+        // In your ItemsController.cs
 
-            // -------------------------------
-            // 📌 Claim Item
-            // -------------------------------
-            [HttpPost]
-            [Authorize]
-            public async Task<IActionResult> Claim(int id)
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Claim(int id)
+        {
+            var item = await _context.Items.FindAsync(id);
+            if (item == null)
             {
-                var item = await _context.Items.FindAsync(id);
-                if (item == null)
-                {
-                    return NotFound();
-                }
+                return NotFound();
+            }
 
-                // Generate the generic verification link.
-                var verifyUrl = Url.Action("Verify", "Items", new { id = item.Id }, Request.Scheme);
+            // Get the ID of the user who posted the item
+            var ownerId = item.PostedById;
 
-                // Send a real-time notification to all connected clients.
-                await _hubContext.Clients.All.SendAsync(
+            if (!string.IsNullOrEmpty(ownerId))
+            {
+                // 🚨 Corrected code: Use Clients.User() to target the owner 🚨
+                await _hubContext.Clients.User(ownerId).SendAsync(
                     "ReceiveNotification",
                     "Item Claimed",
                     $"An item titled '{item.Title}' has been claimed.",
-                    verifyUrl
+                    Url.Action("Verify", "Items", new { id = item.Id }, Request.Scheme)
                 );
-
-                return Ok(new { success = true });
+            }
+            else
+            {
+                // Optional: Handle the case where the item has no owner ID
+                // Log an error or return a message
+                Console.WriteLine($"Error: Item with ID {id} has no owner specified.");
             }
 
-            // -------------------------------
-            // 📌 Verify Claim
-            // -------------------------------
-            [Authorize]
+            // It's a good idea to add a database entry for the notification here
+            // so it's not lost if the user is offline.
+            var notification = new Notification
+            {
+                RecipientId = ownerId,
+                Message = $"Your item '{item.Title}' has been claimed!",
+                IsRead = false,
+                CreatedAt = DateTime.UtcNow
+            };
+            _context.Notifications.Add(notification);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { success = true });
+        }
+
+        // -------------------------------
+        // 📌 Verify Claim
+        // -------------------------------
+        [Authorize]
             public async Task<IActionResult> Verify(int id)
             {
                 var item = await _context.Items.FindAsync(id);

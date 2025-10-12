@@ -42,9 +42,6 @@ namespace Project.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Surname")]
             public string? Surname { get; set; } // Made nullable
 
-            [Display(Name = "Location")]
-            public string? Location { get; set; } // Made nullable
-
             [Phone]
             [Display(Name = "Phone number")]
             public string? PhoneNumber { get; set; } // Made nullable
@@ -58,7 +55,6 @@ namespace Project.Areas.Identity.Pages.Account.Manage
             // Access custom properties directly from the ApplicationUser object
             var name = user.Name;
             var surname = user.Surname;
-            var location = user.Location;
 
             Username = userName;
 
@@ -66,7 +62,6 @@ namespace Project.Areas.Identity.Pages.Account.Manage
             {
                 Name = name,
                 Surname = surname,
-                Location = location,
                 PhoneNumber = phoneNumber
             };
         }
@@ -79,7 +74,18 @@ namespace Project.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            await LoadAsync(user);
+            var userName = await _userManager.GetUserNameAsync(user);
+            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+
+            Username = userName;
+
+            Input = new InputModel
+            {
+                PhoneNumber = phoneNumber,
+                Name = user.Name,      // Pull Name from the user object
+                Surname = user.Surname // Pull Surname from the user object
+            };
+
             return Page();
         }
 
@@ -91,43 +97,36 @@ namespace Project.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            // A null check for Input before accessing its properties.
-            // This is important because [BindProperty] might not always populate Input if model binding fails severely.
-            if (Input == null)
-            {
-                StatusMessage = "Error: Invalid form submission.";
-                await LoadAsync(user);
-                return Page();
-            }
-
             if (!ModelState.IsValid)
             {
                 await LoadAsync(user);
                 return Page();
             }
 
-            // Check and update phone number
+            // Check and update Name
+            if (Input.Name != user.Name)
+            {
+                user.Name = Input.Name;
+                await _userManager.UpdateAsync(user);
+            }
+
+            // Check and update Surname
+            if (Input.Surname != user.Surname)
+            {
+                user.Surname = Input.Surname;
+                await _userManager.UpdateAsync(user);
+            }
+
+            // Check and update Phone Number
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
+                var setPhoneNumberResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                if (!setPhoneNumberResult.Succeeded)
                 {
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
-            }
-
-            // Update the new custom properties
-            user.Name = Input.Name;
-            user.Surname = Input.Surname;
-            user.Location = Input.Location;
-
-            var updateResult = await _userManager.UpdateAsync(user);
-            if (!updateResult.Succeeded)
-            {
-                StatusMessage = "Unexpected error when trying to update user.";
-                return RedirectToPage();
             }
 
             await _signInManager.RefreshSignInAsync(user);

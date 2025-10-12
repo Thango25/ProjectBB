@@ -4,8 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Project.Data;
 using Project.Models;
-using System.Collections.Generic; // Added for List
-using System.Linq; // Added for Any() and Select()
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 public static class DbInitializer
 {
@@ -57,7 +58,8 @@ public static class DbInitializer
             EmailConfirmed = true,
             Name = "Admin",
             Surname = "User",
-            Location = "Main HQ"
+            // FIX: Added the PhoneNumber property to satisfy the database constraint
+            PhoneNumber = "000-000-0000"
         };
 
         if (await userManager.FindByEmailAsync(adminUser.Email) == null)
@@ -114,7 +116,8 @@ public static class DbInitializer
                 EmailConfirmed = true,
                 Name = $"Client{i}Name",
                 Surname = $"Client{i}Surname",
-                Location = $"Location{i}"
+                // FIX: Add the PhoneNumber property for seeded users
+                PhoneNumber = $"000-000-000{i}"
             };
 
             // Only create if user doesn't already exist
