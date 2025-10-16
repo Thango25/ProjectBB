@@ -1,23 +1,57 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using Project.Data;
+using Project.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace Project.Hubs
 {
     public class NotificationHub : Hub
     {
-        // This method can be called from your controllers to send a notification to a specific user.
-        // It requires the user's unique identifier (e.g., UserId).
+        private readonly ApplicationDbContext _context;
+
+        public NotificationHub(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public async Task SendNotificationToUser(string userId, string title, string message)
         {
-            // The 'User' in the following line is a built-in property of the Hub class
-            // that maps a user ID to their active connections.
+            var notification = new Notification
+            {
+                UserId = userId,
+                Title = title,
+                Message = message,
+                CreatedAt = DateTime.UtcNow,
+                IsRead = false
+            };
+
+            _context.Notifications.Add(notification);
+            await _context.SaveChangesAsync();
+
             await Clients.User(userId).SendAsync("ReceiveNotification", title, message);
         }
 
-        // Example: a method to send a notification to all connected users.
-        public async Task SendNotificationToAll(string title, string message)
+        // NEW: Method to notify the claimant their claim was approved
+        public async Task SendClaimApprovedNotification(string claimantId, string itemTitle)
         {
-            await Clients.All.SendAsync("ReceiveNotification", title, message);
+            const string title = "Claim Approved! 🎉";
+            var message = $"The poster has **approved your claim** for the item '{itemTitle}'. Please check your contact details in your profile for a message from the poster!";
+
+            var notification = new Notification
+            {
+                UserId = claimantId,
+                Title = title,
+                Message = message,
+                CreatedAt = DateTime.UtcNow,
+                IsRead = false
+            };
+
+            _context.Notifications.Add(notification);
+            await _context.SaveChangesAsync();
+
+            await Clients.User(claimantId).SendAsync("ReceiveNotification", title, message);
         }
     }
 }

@@ -134,7 +134,7 @@
                                             </div>
                                             <div class="card-footer bg-white border-0 d-flex justify-content-between">
                                                 <a asp-controller="Items" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">View Details</a>
-                                                <button type="button" class="btn btn-primary claim-btn" data-item-id="@item.Id">Claim Item</button>
+                                                <button type="button" class="btn btn-primary claim-btn" data-item-id="@item.Id" data-owner-id="@item.PostedById">Claim Item</button>
                                             </div>
                                         </div>
                                     </div>
@@ -202,7 +202,7 @@
                                             </div>
                                             <div class="card-footer bg-white border-0 d-flex justify-content-between">
                                                 <a asp-controller="Items" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">View Details</a>
-                                                <button type="button" class="btn btn-primary claim-btn" data-item-id="@item.Id">Claim Item</button>
+                                                <button type="button" class="btn btn-primary claim-btn" data-item-id="@item.Id" data-owner-id="@item.PostedById">Claim Item</button>
                                             </div>
                                         </div>
                                     </div>
@@ -227,3 +227,47 @@
         }
     </div>
 </section>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Find all "Claim Item" buttons
+            const claimButtons = document.querySelectorAll('.claim-btn');
+
+            claimButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    const itemId = this.getAttribute('data-item-id');
+                    const ownerId = this.getAttribute('data-owner-id'); // Get the ownerId
+
+                    if (!itemId || !ownerId) {
+                         showToast("Error", "Item ID or Owner ID is missing.");
+                         return;
+                    }
+
+                    // 1. AJAX call to get the verification question (used for display only)
+                    $.ajax({
+                        url: '/Items/GetVerificationQuestion',
+                        type: 'GET',
+                        data: { itemId: itemId },
+                        success: function(response) {
+                            if (response.success) {
+                                // 2. Pass the item ID, question, AND owner ID to the global function
+                                window.openClaimVerificationModal(itemId, response.question, ownerId);
+                            } else {
+                                // Fallback: If no question, use generic text
+                                window.openClaimVerificationModal(itemId, "Please enter any details that would prove this item is yours:", ownerId);
+                            }
+                        },
+                        error: function(xhr) {
+                            showToast("Error", "Failed to get question. Claiming will proceed on submit.");
+                            // Still open the modal if AJAX fails, using generic text
+                            window.openClaimVerificationModal(itemId, "Please enter any details that would prove this item is yours:", ownerId);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+}

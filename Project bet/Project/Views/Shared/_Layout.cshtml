@@ -18,6 +18,7 @@
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item mx-2">
@@ -38,99 +39,245 @@
 
     <footer class="footer text-center">
         <div class="container-fluid px-5">
-            &copy; 2025 - Lost&Found 
+            &copy; 2025 - Lost&Found
         </div>
     </footer>
 
+    <!-- Toast notification container -->
     <div id="toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;"></div>
 
+    <!-- Verification Modal -->
+    <div class="modal fade" id="verifyClaimModal" tabindex="-1" aria-labelledby="verifyClaimModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content rounded-3 shadow">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="verifyClaimModalLabel">Verify Claim</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="verificationQuestion" class="fw-bold"></p>
+                    <input type="text" id="verificationAnswer" class="form-control" placeholder="Enter your answer here" />
+                    <input type="hidden" id="verifyItemId" />
+                    <input type="hidden" id="verifyOwnerId" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="submitVerificationBtn" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
     <!-- SignalR Client Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const connection = new signalR.HubConnectionBuilder()
-                .withUrl("/notificationHub")
-                .build();
-
-            connection.start().catch(err => console.error(err.toString()));
-
-            const notificationDropdown = document.getElementById("notificationDropdown");
-            const notificationCount = document.getElementById("notificationCount");
-
-            // Handle incoming notifications
-            connection.on("ReceiveNotification", (title, message, verifyUrl) => {
-                const newNotification = document.createElement("li");
-
-                // Add the basic notification content
-                let notificationContent = `
-                    <a class="dropdown-item" href="#">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-1">${title}</h6>
+        // ========================================================
+        // Toast notification helper
+        // ========================================================
+        function showToast(title, message) {
+            const container = document.getElementById('toast-container');
+            const toastHtml = `
+                <div class="toast align-items-center text-white bg-primary border-0" role="alert"
+                     aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <strong>${title}</strong><br>${message}
                         </div>
-                        <p class="mb-1">${message}</p>
-                    </a>`;
-                // If a verifyUrl is provided, add the button to the notification.
-                if (verifyUrl) {
-                    notificationContent += `
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item text-primary" href="${verifyUrl}">
-                            <i class="fas fa-check-circle"></i> Verify Claim
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                                data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>`;
+            container.insertAdjacentHTML('beforeend', toastHtml);
+            const toastEl = container.lastElementChild;
+            new bootstrap.Toast(toastEl).show();
+        }
+
+        // ========================================================
+        // SignalR connection setup
+        // ========================================================
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/notificationHub", { withCredentials: true }) // Auth cookies sent
+            .withAutomaticReconnect()
+            .build();
+
+        connection.start()
+            .then(() => console.log("✅ SignalR Connected"))
+            .catch(err => console.error("❌ SignalR Connection Error:", err.toString()));
+
+
+
+        // ========================================================
+        // Load notifications from the database on login / refresh
+        // ========================================================
+        async function loadStoredNotifications() {
+            try {
+                const response = await fetch('/api/notifications/user');
+                if (!response.ok) return;
+                const data = await response.json();
+
+                const dropdown = document.getElementById("notificationDropdown");
+                const badge = document.getElementById("notificationCount");
+
+                dropdown.innerHTML = ""; // Clear old items
+
+                if (data.length === 0) {
+                    dropdown.innerHTML = `<li><a class="dropdown-item text-muted">No notifications yet</a></li>`;
+                    badge.style.display = "none";
+                    return;
+                }
+
+                let count = 0;
+                data.forEach(n => {
+                    const newItem = document.createElement("li");
+                    newItem.innerHTML = `
+                        <a class="dropdown-item" href="#">
+                            <p class="mb-0 fw-bold">${n.title}</p>
+                            <p class="mb-0 text-muted small">${n.message}</p>
+                            <p class="mb-0 text-secondary small"><i class="fas fa-clock"></i> ${n.createdAt}</p>
                         </a>`;
-                }
-
-                newNotification.innerHTML = notificationContent;
-
-                notificationDropdown.prepend(newNotification);
-
-                // Remove the "No new notifications" placeholder
-                const placeholder = notificationDropdown.querySelector('.dropdown-item.text-muted');
-                if (placeholder) {
-                    placeholder.remove();
-                }
-
-                let count = parseInt(notificationCount.innerText);
-                notificationCount.innerText = count + 1;
-                notificationCount.style.display = "inline";
-            });
-
-            // Handle the dropdown toggle event to reset the counter
-            const notificationDropdownToggle = document.getElementById("navbarNotificationDropdown");
-            if (notificationDropdownToggle) {
-                notificationDropdownToggle.addEventListener("click", function () {
-                    notificationCount.innerText = "0";
-                    notificationCount.style.display = "none";
+                    dropdown.appendChild(newItem);
+                    count++;
                 });
+
+                badge.textContent = count;
+                badge.style.display = 'inline-block';
+            } catch (err) {
+                console.error("❌ Error loading notifications:", err);
+            }
+        }
+
+        // Load notifications when page is ready
+        document.addEventListener('DOMContentLoaded', loadStoredNotifications);
+
+
+        // ========================================================
+        // Notification rendering logic
+        // ========================================================
+        function addNotification(title, message) {
+            const dropdown = document.getElementById("notificationDropdown");
+            const badge = document.getElementById("notificationCount");
+
+            let content = `<p class="mb-0 fw-bold">${title}</p><p class="mb-0 text-muted">${message}</p>`;
+
+            try {
+                const payload = JSON.parse(message);
+                if (payload.NotificationType === "ClaimAttempt") {
+                    content = `
+                        <p class="mb-0 fw-bold text-danger">🚨 NEW CLAIM: ${payload.ItemTitle}</p>
+                        <p class="mb-0 text-muted small">Q: ${payload.VerificationQuestion}</p>
+                        <p class="mb-0 text-muted small">A: ${payload.ClaimantAnswer} (${payload.VerificationStatus})</p>
+                        <div class="mt-2 btn-group" role="group">
+                            <button type="button" class="btn btn-sm btn-success action-btn"
+                                data-action="approve"
+                                data-item-id="${payload.ItemId}"
+                                data-claimant-id="${payload.ClaimantId}">Approve</button>
+                            <button type="button" class="btn btn-sm btn-danger action-btn"
+                                data-action="delete"
+                                data-item-id="${payload.ItemId}"
+                                data-claimant-id="${payload.ClaimantId}">Delete</button>
+                        </div>`;
+                }
+            } catch (e) { /* Fallback: plain message */ }
+
+            // Remove default placeholder
+            const empty = dropdown.querySelector('.dropdown-item.text-muted');
+            if (empty) empty.remove();
+
+            // Add new notification
+            const newItem = document.createElement("li");
+            newItem.innerHTML = `<a class="dropdown-item" href="#">${content}</a>`;
+            dropdown.prepend(newItem);
+
+            // Update badge
+            const currentCount = parseInt(badge.textContent) || 0;
+            badge.textContent = currentCount + 1;
+            badge.style.display = 'inline-block';
+        }
+
+        // Receive normal notifications
+        connection.on("ReceiveNotification", (title, message) => {
+            addNotification(title, message);
+            showToast(title, message);
+        });
+
+        // Receive structured notifications
+        connection.on("ReceiveDetailedNotification", (title, payload) => {
+            addNotification(title, payload);
+            showToast(title, "A new claim attempt requires your attention.");
+        });
+
+        // ========================================================
+        // Approve/Delete Claim actions
+        // ========================================================
+        $(document).on('click', '.action-btn', function (e) {
+            e.stopPropagation();
+            const btn = $(this);
+            const action = btn.data('action');
+            const itemId = btn.data('itemId');
+            const claimantId = btn.data('claimantId');
+            let url = '', successMessage = '';
+
+            if (action === 'approve') {
+                url = '/Items/ApproveClaim';
+                successMessage = 'Claim approved! Claimant has been notified.';
+            } else if (action === 'delete') {
+                url = '/Items/DeleteClaim';
+                successMessage = 'Claim dismissed, and claimant has been notified.';
             }
 
-            // Attach Claim button click event
-            document.querySelectorAll(".claim-btn").forEach(button => {
-                button.addEventListener("click", function () {
-                    const itemId = this.getAttribute("data-item-id");
+            if (!url) return;
 
-                    fetch(`/Items/Claim/${itemId}`, {
-                        method: "POST",
-                        headers: {
-                            "X-Requested-With": "XMLHttpRequest"
-                        }
-                    }).then(response => {
-                        if (response.ok) {
-                            alert("Claim request sent successfully!");
-                        } else {
-                            alert("Failed to claim item. Please try again later.");
-                        }                                                                                                                   
-                    }).catch(err => {
-                        console.error("Error during claim request:", err);
-                        alert("An error occurred. Please check the console.");
-                    });
+            $.post(url, { itemId, claimantId })
+                .done(response => {
+                    if (response.success) {
+                        showToast("Success", successMessage);
+                        btn.closest('li').remove();
+                    } else {
+                        showToast("Error", response.message || "Operation failed.");
+                    }
+                })
+                .fail(() => showToast("Error", "Server error occurred."));
+        });
+
+        // ========================================================
+        // Verification modal logic
+        // ========================================================
+        window.openClaimVerificationModal = function (itemId, question, ownerId) {
+            document.getElementById('verifyItemId').value = itemId;
+            document.getElementById('verificationQuestion').textContent = question;
+            document.getElementById('verifyOwnerId').value = ownerId;
+            document.getElementById('verificationAnswer').value = '';
+
+            new bootstrap.Modal(document.getElementById('verifyClaimModal')).show();
+        };
+
+        document.getElementById('submitVerificationBtn').addEventListener('click', function () {
+            const itemId = $('#verifyItemId').val();
+            const answer = $('#verificationAnswer').val();
+            const ownerId = $('#verifyOwnerId').val();
+
+            if (!itemId || !ownerId) {
+                showToast("Error", "Incomplete claim information.");
+                return;
+            }
+
+            $.post('/Items/SendClaimNotification', { itemId, ownerId, answer })
+                .done(response => {
+                    if (response.success) showToast("Notification Sent", response.message);
+                    else showToast("Error", response.message || "Notification failed.");
+                    bootstrap.Modal.getInstance($('#verifyClaimModal')[0]).hide();
+                })
+                .fail(() => {
+                    showToast("Error", "Communication error. Try again.");
+                    bootstrap.Modal.getInstance($('#verifyClaimModal')[0]).hide();
                 });
-            });
         });
     </script>
 

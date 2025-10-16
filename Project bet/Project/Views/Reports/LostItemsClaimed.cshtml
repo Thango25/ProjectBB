@@ -1,0 +1,154 @@
+﻿@model IEnumerable<Project.Models.Item>
+@{
+    ViewData["Title"] = "Lost Items Claimed Report";
+    var stats = ViewBag.CategoryStats as IEnumerable<dynamic>;
+}
+
+<div class="background-overlay"></div>
+
+<div class="container">
+    <div class="glass-card dashboard-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h2 class="card-title"><i class="fas fa-file-alt"></i> Lost Items Claimed Report</h2>
+
+            <!-- Filter Form -->
+            <form asp-action="LostItemsClaimed" method="get" class="d-flex align-items-center gap-2">
+                <div>
+                    <label class="text-white me-1">Start:</label>
+                    <input type="date" name="startDate" value="@ViewBag.StartDate" class="form-control glass-input" />
+                </div>
+                <div>
+                    <label class="text-white me-1">End:</label>
+                    <input type="date" name="endDate" value="@ViewBag.EndDate" class="form-control glass-input" />
+                </div>
+                <button type="submit" class="btn btn-outline-light ms-2">
+                    <i class="fas fa-filter"></i> Filter
+                </button>
+            </form>
+        </div>
+
+        <div class="card-body">
+            <p class="text-muted">View all claimed lost items, filtered by date if needed.</p>
+
+            <div class="table-container">
+                <table class="glass-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Item Title</th>
+                            <th>Category</th>
+                            <th>Claimed By</th>
+                            <th>Claim Date</th>
+                            <th>Location</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var index = 1;
+                        }
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@index++</td>
+                                <td>@item.Title</td>
+                                <td>@item.Category?.Name</td>
+                                <td>@item.PostedBy?.UserName</td>
+                                <td>@item.ClaimDate?.ToString("dd MMM yyyy")</td>
+                                <td>@item.Location</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    @if (stats != null && stats.Any())
+    {
+        <div class="glass-card analytics-card mt-4">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-chart-bar"></i> Claimed Items by Category</h3>
+            </div>
+            <div class="chart-container">
+                <canvas id="claimedItemsChart"></canvas>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('claimedItemsChart');
+        const labels = @Html.Raw(Json.Serialize(stats?.Select(s => s.Category)));
+        const data = @Html.Raw(Json.Serialize(stats?.Select(s => s.Count)));
+
+        if (ctx && labels && data) {
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Number of Claimed Items',
+                        data: data,
+                        backgroundColor: 'rgba(153, 102, 255, 0.7)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+        }
+    </script>
+}
+
+<style>
+    .glass-input {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: #fff;
+        border-radius: 10px;
+        padding: 6px 10px;
+        backdrop-filter: blur(10px);
+    }
+
+        .glass-input:focus {
+            outline: none;
+            border-color: #f107a3;
+            box-shadow: 0 0 6px rgba(241, 7, 163, 0.5);
+        }
+
+    .glass-table th, .glass-table td {
+        color: #fff;
+    }
+
+    .report-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: 600;
+        color: #fff;
+        text-decoration: none;
+        min-width: 200px;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+        .report-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+    .gradient-purple {
+        background: linear-gradient(90deg, #7b2ff7, #f107a3);
+    }
+
+    .gradient-pink {
+        background: linear-gradient(90deg, #f107a3, #ff6ec7);
+    }
+</style>

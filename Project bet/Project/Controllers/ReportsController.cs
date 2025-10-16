@@ -111,5 +111,37 @@ namespace Project.Controllers
 
             return View(frequentlyReportedItems);
         }
+        [HttpGet]
+        public async Task<IActionResult> LostItemsClaimed(DateTime? startDate, DateTime? endDate)
+        {
+            var query = _context.Items
+                .Include(i => i.Category)
+                .Include(i => i.PostedBy)
+                .Where(i => i.IsClaimed)
+                .AsQueryable();
+
+            if (startDate.HasValue)
+                query = query.Where(i => i.ClaimDate >= startDate.Value);
+
+            if (endDate.HasValue)
+                query = query.Where(i => i.ClaimDate <= endDate.Value);
+
+            var claimedItems = await query
+                .OrderByDescending(i => i.ClaimDate ?? i.DateLost)
+                .ToListAsync();
+
+            // Stats for chart
+            var categoryStats = claimedItems
+                .GroupBy(i => i.Category != null ? i.Category.Name : "Uncategorized")
+                .Select(g => new { Category = g.Key, Count = g.Count() })
+                .ToList();
+
+            ViewBag.CategoryStats = categoryStats;
+            ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
+            ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
+
+            return View(claimedItems);
+        }
+
     }
 }

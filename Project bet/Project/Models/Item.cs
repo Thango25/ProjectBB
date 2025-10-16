@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Project.Models;
-using Project.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -44,12 +43,22 @@ namespace Project.Models
         [Display(Name = "Photo Path")]
         public string PhotoPath { get; set; } = string.Empty;
 
+        public bool IsClaimed { get; set; } = false;
+
         [NotMapped]
         [Display(Name = "Upload Image")]
         public IFormFile? ImageFile { get; set; }
+
         public int CategoryId { get; set; }
 
         [ForeignKey("CategoryId")]
         public Category? Category { get; set; }
+
+        // Navigation property for the poster (if you use ApplicationUser)
+        public ApplicationUser? PostedBy { get; set; }
+
+        [Display(Name = "Date Claimed")]
+        public DateTime? ClaimDate { get; set; }
+
     }
 }

@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Project.Data;
 using Project.Hubs;
 using Project.Models;
+using System.Text.Json;
 
 namespace Project.Controllers
 {
@@ -51,6 +52,21 @@ namespace Project.Controllers
             var item = await _context.Items.Include(i => i.Category).FirstOrDefaultAsync(m => m.Id == id);
             if (item == null) return NotFound();
             return View(item);
+        }
+
+        // --- PRIVATE HELPER FUNCTION: Saves notification to the database ---
+        private async Task SaveNotificationToDb(string userId, string title, string message)
+        {
+            var notification = new Notification
+            {
+                UserId = userId,
+                Title = title,
+                Message = message,
+                CreatedAt = DateTime.UtcNow,
+                IsRead = false
+            };
+            _context.Notifications.Add(notification);
+            await _context.SaveChangesAsync();
         }
 
         // Search Action Method
@@ -101,6 +117,128 @@ namespace Project.Controllers
             var items = await itemsQuery.ToListAsync();
             ViewData["Title"] = "Matching Items";
             return View("DisplayMatchingItems", items);
+        }
+
+        // --- ACTION: GET Verification Question (Used for Display Only) ---
+        [HttpGet]
+        public async Task<IActionResult> GetVerificationQuestion(int itemId)
+        {
+            var item = await _context.Items.FindAsync(itemId);
+
+            if (item == null || string.IsNullOrEmpty(item.VerificationQuestion))
+            {
+                return Json(new { success = false, message = "Question not set." });
+            }
+
+            return Json(new { success = true, question = item.VerificationQuestion });
+        }
+
+        // --- MODIFIED ACTION: POST Send Claim Notification (Saves attempt) ---
+        [HttpPost]
+        public async Task<IActionResult> SendClaimNotification(int itemId, string ownerId, string answer)
+        {
+            var claimantId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(claimantId))
+            {
+                return Json(new { success = false, message = "You must be logged in to claim an item." });
+            }
+
+            var item = await _context.Items.FindAsync(itemId);
+            string itemTitle = item?.Title ?? $"Item ID {itemId}";
+
+            string verificationQuestion = item?.VerificationQuestion?.Trim() ?? "N/A";
+            var storedAnswer = item?.VerificationAnswer?.Trim() ?? string.Empty;
+            string verificationStatus = string.Equals(storedAnswer, answer.Trim(), StringComparison.OrdinalIgnoreCase)
+                ? "VERIFIED (ANSWER MATCHES)."
+                : "UNVERIFIED (ANSWER MISMATCHES).";
+
+            const string title = "New Claim Attempt Received";
+
+            // Create a detailed JSON payload that includes all necessary data for the UI
+            var payload = new
+            {
+                NotificationType = "ClaimAttempt",
+                Title = title,
+                ItemTitle = itemTitle,
+                ItemId = itemId,
+                ClaimantId = claimantId,
+                VerificationQuestion = verificationQuestion,
+                ClaimantAnswer = answer,
+                VerificationStatus = verificationStatus
+            };
+
+            // Serialize the payload into a string
+            string jsonPayload = JsonSerializer.Serialize(payload);
+
+            // 1. Save the detailed notification to the database for the item owner
+            await SaveNotificationToDb(ownerId, title, jsonPayload);
+
+            // 2. Send the FULL JSON Payload via SignalR.
+            await _hubContext.Clients.User(ownerId).SendAsync("ReceiveDetailedNotification", title, jsonPayload);
+
+            return Json(new
+            {
+                success = true,
+                message = "Your claim details have been sent to the item poster."
+            });
+        }
+
+        // --- MODIFIED ACTION: POST Approve Claim (Sets IsClaimed = true) ---
+        [HttpPost]
+        public async Task<IActionResult> ApproveClaim(int itemId, string claimantId)
+        {
+            var posterId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var item = await _context.Items.FindAsync(itemId);
+
+            if (item == null || item.PostedById != posterId)
+            {
+                return Json(new { success = false, message = "Item not found or unauthorized." });
+            }
+
+            // Set the item status to claimed and save the change
+            item.IsClaimed = true;
+            _context.Update(item);
+            await _context.SaveChangesAsync(); // <-- Save the status change
+
+            const string title = "Claim Approved! 🎉";
+            string message = $"The poster has approved your claim for the item '{item.Title}'. Please check your contact details in your profile for a message from the poster!";
+
+            // 1. Save approval notification to the database for the claimant
+            await SaveNotificationToDb(claimantId, title, message);
+
+            // 2. Notify the CLAIMANT of the approval via SignalR
+            await _hubContext.Clients.User(claimantId).SendAsync("ReceiveNotification", title, message);
+
+            // 3. Notify the POSTER of the successful action
+            return Json(new { success = true, message = $"Claim for '{item.Title}' approved. The claimant has been notified." });
+        }
+
+        // -----------------------------------------------------------------------------------------
+
+        // --- CORRECTED ACTION: POST Delete Claim (Saves and Sends rejection notice to claimant) ---
+        [HttpPost]
+        public async Task<IActionResult> DeleteClaim(int itemId, string claimantId)
+        {
+            var posterId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var item = await _context.Items.FindAsync(itemId);
+
+            if (item == null || item.PostedById != posterId)
+            {
+                return Json(new { success = false, message = "Item not found or unauthorized." });
+            }
+
+            const string title = "Claim Rejected 😔";
+            string message = $"The poster has declined your claim for the item '{item.Title}'. The item remains open for others to claim.";
+
+            // 1. Save rejection notification to the database for the claimant
+            await SaveNotificationToDb(claimantId, title, message);
+
+            // 2. Notify the CLAIMANT of the rejection/deletion via SignalR (THIS LINE WAS MISSING/INCORRECTLY REPLACED)
+            await _hubContext.Clients.User(claimantId).SendAsync("ReceiveNotification", title, message);
+
+            // 3. Notify the POSTER of the successful action
+            return Json(new { success = true, message = "Claim notification dismissed, and claimant has been notified of rejection." });
         }
 
         // Claim Item
