@@ -125,7 +125,7 @@
                 const dropdown = document.getElementById("notificationDropdown");
                 const badge = document.getElementById("notificationCount");
 
-                dropdown.innerHTML = ""; // Clear old items
+                dropdown.innerHTML = ""; 
 
                 if (data.length === 0) {
                     dropdown.innerHTML = `<li><a class="dropdown-item text-muted">No notifications yet</a></li>`;
@@ -153,7 +153,6 @@
             }
         }
 
-        // Load notifications when page is ready
         document.addEventListener('DOMContentLoaded', loadStoredNotifications);
 
 
@@ -213,8 +212,8 @@
             showToast(title, "A new claim attempt requires your attention.");
         });
 
-        // ========================================================
-        // Approve/Delete Claim actions
+            // ========================================================
+        // Approve/Delete Claim actions with badge update
         // ========================================================
         $(document).on('click', '.action-btn', function (e) {
             e.stopPropagation();
@@ -227,7 +226,7 @@
             if (action === 'approve') {
                 url = '/Items/ApproveClaim';
                 successMessage = 'Claim approved! Claimant has been notified.';
-            } else if (action === 'delete') {
+            } else if (action === 'decline') {
                 url = '/Items/DeleteClaim';
                 successMessage = 'Claim dismissed, and claimant has been notified.';
             }
@@ -238,7 +237,17 @@
                 .done(response => {
                     if (response.success) {
                         showToast("Success", successMessage);
-                        btn.closest('li').remove();
+
+                        // Remove the notification from the dropdown
+                        const li = btn.closest('li');
+                        li.remove();
+
+                        // Update badge count
+                        const badge = document.getElementById("notificationCount");
+                        let currentCount = parseInt(badge.textContent) || 0;
+                        currentCount = Math.max(currentCount - 1, 0);
+                        badge.textContent = currentCount;
+                        if (currentCount === 0) badge.style.display = 'none';
                     } else {
                         showToast("Error", response.message || "Operation failed.");
                     }

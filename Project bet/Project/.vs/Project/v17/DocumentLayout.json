@@ -7,52 +7,28 @@
       "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:controllers\\itemscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\downloads\\computer science\\3rd year\\second semester\\project\\projectbb\\project bet\\project\\views\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:views\\shared\\_loginpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\downloads\\computer science\\3rd year\\second semester\\project\\projectbb\\project bet\\project\\controllers\\notificationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:controllers\\notificationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\downloads\\computer science\\3rd year\\second semester\\project\\projectbb\\project bet\\project\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\downloads\\computer science\\3rd year\\second semester\\project\\projectbb\\project bet\\project\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\downloads\\computer science\\3rd year\\second semester\\project\\projectbb\\project bet\\project\\hubs\\notificationhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:hubs\\notificationhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\downloads\\computer science\\3rd year\\second semester\\project\\projectbb\\project bet\\project\\models\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:models\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\downloads\\computer science\\3rd year\\second semester\\project\\projectbb\\project bet\\project\\models\\item.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:models\\item.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\downloads\\computer science\\3rd year\\second semester\\project\\projectbb\\project bet\\project\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\downloads\\computer science\\3rd year\\second semester\\project\\projectbb\\project bet\\project\\models\\itemclaimreportentry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:models\\itemclaimreportentry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\downloads\\computer science\\3rd year\\second semester\\project\\projectbb\\project bet\\project\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\downloads\\computer science\\3rd year\\second semester\\project\\projectbb\\project bet\\project\\views\\reports\\lostitemsclaimed.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:views\\reports\\lostitemsclaimed.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\downloads\\computer science\\3rd year\\second semester\\project\\projectbb\\project bet\\project\\areas\\identity\\pages\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:areas\\identity\\pages\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\downloads\\computer science\\3rd year\\second semester\\project\\projectbb\\project bet\\project\\areas\\identity\\pages\\account\\logout.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:areas\\identity\\pages\\account\\logout.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\downloads\\computer science\\3rd year\\second semester\\project\\projectbb\\project bet\\project\\areas\\identity\\pages\\account\\logout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:areas\\identity\\pages\\account\\logout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\downloads\\computer science\\3rd year\\second semester\\project\\projectbb\\project bet\\project\\areas\\identity\\pages\\account\\login.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:areas\\identity\\pages\\account\\login.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|c:\\users\\phume\\downloads\\computer science\\3rd year\\second semester\\project\\projectbb\\project bet\\project\\controllers\\reportscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{167854E8-7229-C63A-099E-C75E793CAF57}|Project.csproj|solutionrelative:controllers\\reportscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -62,46 +38,31 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "NotificationsController.cs",
-              "DocumentMoniker": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Controllers\\NotificationsController.cs",
-              "RelativeDocumentMoniker": "Controllers\\NotificationsController.cs",
-              "ToolTip": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Controllers\\NotificationsController.cs",
-              "RelativeToolTip": "Controllers\\NotificationsController.cs",
-              "ViewState": "AgIAAD8AAAAAAAAAAAAqwGUAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T16:35:24.028Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "_Layout.cshtml",
-              "DocumentMoniker": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Views\\Shared\\_Layout.cshtml",
-              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
-              "ToolTip": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Views\\Shared\\_Layout.cshtml",
-              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAAPcAAAAAAAAAAAAAAB4BAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-09-22T22:22:27.449Z",
-              "EditorCaption": ""
+              "Title": "Item.cs",
+              "DocumentMoniker": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Models\\Item.cs",
+              "RelativeDocumentMoniker": "Models\\Item.cs",
+              "ToolTip": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Models\\Item.cs",
+              "RelativeToolTip": "Models\\Item.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAADwvxsAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-18T08:38:40.352Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "_LoginPartial.cshtml",
-              "DocumentMoniker": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Views\\Shared\\_LoginPartial.cshtml",
-              "RelativeDocumentMoniker": "Views\\Shared\\_LoginPartial.cshtml",
-              "ToolTip": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Views\\Shared\\_LoginPartial.cshtml",
-              "RelativeToolTip": "Views\\Shared\\_LoginPartial.cshtml",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAAADEAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-15T07:06:26.619Z",
-              "EditorCaption": ""
+              "DocumentIndex": 4,
+              "Title": "ItemClaimReportEntry.cs",
+              "DocumentMoniker": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Models\\ItemClaimReportEntry.cs",
+              "RelativeDocumentMoniker": "Models\\ItemClaimReportEntry.cs",
+              "ToolTip": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Models\\ItemClaimReportEntry.cs",
+              "RelativeToolTip": "Models\\ItemClaimReportEntry.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-18T08:37:07.422Z"
             },
             {
               "$type": "Document",
@@ -111,127 +72,58 @@
               "RelativeDocumentMoniker": "Controllers\\ItemsController.cs",
               "ToolTip": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Controllers\\ItemsController.cs",
               "RelativeToolTip": "Controllers\\ItemsController.cs",
-              "ViewState": "AgIAAN8BAAAAAAAAAAAqwAUCAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-22T20:17:08.165Z",
+              "WhenOpened": "2025-10-18T06:45:57.819Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "NotificationHub.cs",
-              "DocumentMoniker": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Hubs\\NotificationHub.cs",
-              "RelativeDocumentMoniker": "Hubs\\NotificationHub.cs",
-              "ToolTip": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Hubs\\NotificationHub.cs",
-              "RelativeToolTip": "Hubs\\NotificationHub.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAAAqwDgAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T14:24:40.624Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Notification.cs",
-              "DocumentMoniker": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Models\\Notification.cs",
-              "RelativeDocumentMoniker": "Models\\Notification.cs",
-              "ToolTip": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Models\\Notification.cs",
-              "RelativeToolTip": "Models\\Notification.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T16:40:33.738Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Item.cs",
-              "DocumentMoniker": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Models\\Item.cs",
-              "RelativeDocumentMoniker": "Models\\Item.cs",
-              "ToolTip": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Models\\Item.cs",
-              "RelativeToolTip": "Models\\Item.cs",
-              "ViewState": "AgIAAC8AAAAAAAAAAAAiwDEAAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-12T14:21:53.467Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-15T07:10:59.2Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 1,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
               "ToolTip": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Views\\Home\\Index.cshtml",
               "RelativeToolTip": "Views\\Home\\Index.cshtml",
-              "ViewState": "AgIAAPgAAAAAAAAAAAAAABABAAABAAAAAAAAAA==",
+              "ViewState": "AgIAALYAAAAAAAAAAAAAAO4AAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-09-22T22:22:50.146Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-18T05:30:16.453Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "Logout.cshtml",
-              "DocumentMoniker": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Areas\\Identity\\Pages\\Account\\Logout.cshtml",
-              "RelativeDocumentMoniker": "Areas\\Identity\\Pages\\Account\\Logout.cshtml",
-              "ToolTip": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Areas\\Identity\\Pages\\Account\\Logout.cshtml",
-              "RelativeToolTip": "Areas\\Identity\\Pages\\Account\\Logout.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAJ0AAAAAAAAAAAAAAMAAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-03T09:27:34.709Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-18T05:30:05.642Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Login.cshtml",
-              "DocumentMoniker": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Areas\\Identity\\Pages\\Account\\Login.cshtml",
-              "RelativeDocumentMoniker": "Areas\\Identity\\Pages\\Account\\Login.cshtml",
-              "ToolTip": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Areas\\Identity\\Pages\\Account\\Login.cshtml",
-              "RelativeToolTip": "Areas\\Identity\\Pages\\Account\\Login.cshtml",
-              "ViewState": "AgIAALcAAAAAAAAAAIBJwLwAAAABAAAAAAAAAA==",
+              "DocumentIndex": 5,
+              "Title": "LostItemsClaimed.cshtml",
+              "DocumentMoniker": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Views\\Reports\\LostItemsClaimed.cshtml",
+              "RelativeDocumentMoniker": "Views\\Reports\\LostItemsClaimed.cshtml",
+              "ToolTip": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Views\\Reports\\LostItemsClaimed.cshtml",
+              "RelativeToolTip": "Views\\Reports\\LostItemsClaimed.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAJoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-09-22T19:22:59.095Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-18T08:36:08.948Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Logout.cshtml.cs",
-              "DocumentMoniker": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Areas\\Identity\\Pages\\Account\\Logout.cshtml.cs",
-              "RelativeDocumentMoniker": "Areas\\Identity\\Pages\\Account\\Logout.cshtml.cs",
-              "ToolTip": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Areas\\Identity\\Pages\\Account\\Logout.cshtml.cs",
-              "RelativeToolTip": "Areas\\Identity\\Pages\\Account\\Logout.cshtml.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAmwCsAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 6,
+              "Title": "ReportsController.cs",
+              "DocumentMoniker": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Controllers\\ReportsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ReportsController.cs",
+              "ToolTip": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Controllers\\ReportsController.cs",
+              "RelativeToolTip": "Controllers\\ReportsController.cs",
+              "ViewState": "AgIAAGQAAAAAAAAAAAAiwJMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-03T13:44:31.188Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "Login.cshtml.cs",
-              "DocumentMoniker": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Areas\\Identity\\Pages\\Account\\Login.cshtml.cs",
-              "RelativeDocumentMoniker": "Areas\\Identity\\Pages\\Account\\Login.cshtml.cs",
-              "ToolTip": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\Areas\\Identity\\Pages\\Account\\Login.cshtml.cs",
-              "RelativeToolTip": "Areas\\Identity\\Pages\\Account\\Login.cshtml.cs",
-              "ViewState": "AgIAAHkAAAAAAAAAAAAcwIgAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-22T19:39:59.043Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-18T08:35:47.171Z"
             }
           ]
         }

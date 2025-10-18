@@ -305,8 +305,16 @@
       "PackagePath": "staticwebassets\\uploads\\4377233d-fa5c-4a61-8af4-a12d47d54c43_Screenshot (2).png"
     },
     {
+      "Id": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\wwwroot\\uploads\\4c3cc60d-f7f2-485f-a294-9fd1f0798710_20250627_155646.jpg",
+      "PackagePath": "staticwebassets\\uploads\\4c3cc60d-f7f2-485f-a294-9fd1f0798710_20250627_155646.jpg"
+    },
+    {
       "Id": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\wwwroot\\uploads\\6ac44b8c-c2dc-448f-b868-b23d064f7583_Screenshot (1).png",
       "PackagePath": "staticwebassets\\uploads\\6ac44b8c-c2dc-448f-b868-b23d064f7583_Screenshot (1).png"
+    },
+    {
+      "Id": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\wwwroot\\uploads\\711ea95d-eb96-41e6-8ac5-b1b59cdeef48_Screenshot 2025-09-16 075724.png",
+      "PackagePath": "staticwebassets\\uploads\\711ea95d-eb96-41e6-8ac5-b1b59cdeef48_Screenshot 2025-09-16 075724.png"
     },
     {
       "Id": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\wwwroot\\uploads\\83b2c955-836d-45e9-a3b2-1762d1750411_addtocart.PNG",
@@ -319,6 +327,10 @@
     {
       "Id": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\wwwroot\\uploads\\a6a56ddf-3b35-4f69-897a-9145ed50ac51_Screenshot (1).png",
       "PackagePath": "staticwebassets\\uploads\\a6a56ddf-3b35-4f69-897a-9145ed50ac51_Screenshot (1).png"
+    },
+    {
+      "Id": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\wwwroot\\uploads\\a99359cf-16ba-4243-b361-088b6357d0c0_Screenshot 2025-09-16 075724.png",
+      "PackagePath": "staticwebassets\\uploads\\a99359cf-16ba-4243-b361-088b6357d0c0_Screenshot 2025-09-16 075724.png"
     },
     {
       "Id": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\wwwroot\\uploads\\ad6fb315-5966-42c5-b6bb-7451d5036ae3_dicenum1.png",
@@ -335,6 +347,10 @@
     {
       "Id": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\wwwroot\\uploads\\f63750d1-28b9-45ae-80f2-0aa457de21c0_dicenum1.png",
       "PackagePath": "staticwebassets\\uploads\\f63750d1-28b9-45ae-80f2-0aa457de21c0_dicenum1.png"
+    },
+    {
+      "Id": "C:\\Users\\phume\\Downloads\\Computer Science\\3rd Year\\Second Semester\\Project\\ProjectBB\\Project bet\\Project\\wwwroot\\uploads\\fd87adfb-e8a5-4295-8f08-db39fc5e7303_Screenshot 2025-10-06 174838.png",
+      "PackagePath": "staticwebassets\\uploads\\fd87adfb-e8a5-4295-8f08-db39fc5e7303_Screenshot 2025-10-06 174838.png"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.Project.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",

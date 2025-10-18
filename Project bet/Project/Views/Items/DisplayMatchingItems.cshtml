@@ -1,98 +1,80 @@
 ﻿@model IEnumerable<Project.Models.Item>
 
 @{
-    ViewData["Title"] = ViewData["Title"] ?? "Matching Items";
+    ViewData["Title"] = "Matching Items";
 }
 
-<div class="bg-dark text-white min-vh-100 py-4">
-    <div class="container">
-        <h1 class="text-center my-4">@ViewData["Title"]</h1>
-        <hr />
+<div class="container-fluid px-5 my-5">
+    <h2 class="mb-4 text-center text-primary fw-bold">Matching Items</h2>
 
-        @if (!Model.Any())
-        {
-            <div class="alert alert-info text-center">
-                <p>No items found for this category.</p>
-                <a asp-controller="Items" asp-action="Index" class="btn btn-primary mt-3">Back to All Items</a>
-            </div>
-        }
-        else
-        {
-            <div id="matchingItemsCarousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    @{
-                        int chunkSize = 3; // Display 3 items per slide
-                        var chunks = Model.Chunk(chunkSize);
-                        var slideCount = chunks.Count();
-                    }
+    @if (!Model.Any(item => !item.IsClaimed)) 
+    {
+        <p class="text-center text-muted">No matching items found.</p>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var item in Model)
+            {
+                if (item.IsClaimed) continue; 
 
-                    @foreach (var (chunk, index) in chunks.Select((item, i) => (item, i)))
-                    {
-                        <div class="carousel-item @(index == 0 ? "active" : "")">
-                            <div class="row g-4 justify-content-center">
-                                @foreach (var item in chunk)
-                                {
-                                    <div class="col-xl-4 col-lg-6 col-md-12">
-                                        <div class="card h-100 bg-secondary rounded p-4 shadow">
-                                            <h3>
-                                                @item.Title
-                                                <span class="badge @(item.Type == Project.Models.ItemType.Lost ? "bg-danger" : "bg-success")">
-                                                    @(item.Type == Project.Models.ItemType.Lost ? "Lost" : "Found")
-                                                </span>
-                                            </h3>
-
-                                            <hr />
-                                            <dl class="row">
-                                                <dt class="col-sm-3">Category</dt>
-                                                <dd class="col-sm-9">@item.Category.Name</dd>
-
-                                                <dt class="col-sm-3">Description</dt>
-                                                <dd class="col-sm-9">@item.Description</dd>
-
-                                                <dt class="col-sm-3">Location</dt>
-                                                <dd class="col-sm-9">@item.Location</dd>
-
-                                                <dt class="col-sm-3">Date @(item.Type == Project.Models.ItemType.Lost ? "Lost" : "Found")</dt>
-                                                <dd class="col-sm-9">@item.DateLost.ToShortDateString()</dd>
-
-                                                <dt class="col-sm-3">Image</dt>
-                                                <dd class="col-sm-9">
-                                                    @if (!string.IsNullOrEmpty(item.PhotoPath))
-                                                    {
-                                                        <img src="~/uploads/@item.PhotoPath" alt="Item Image" style="max-width: 200px; max-height: 200px; object-fit: cover;" />
-                                                    }
-                                                    else
-                                                    {
-                                                        <span>No image uploaded</span>
-                                                    }
-                                                </dd>
-                                            </dl>
-
-                                            <div class="mt-3">
-                                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning me-2">Edit</a>
-                                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info me-2">Details</a>
-                                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="card h-100 border-0 shadow-sm hover-effect">
+                        @if (!string.IsNullOrEmpty(item.PhotoPath))
+                        {
+                            <img src="~/uploads/@item.PhotoPath" class="card-img-top" alt="@item.Title"
+                                 style="height: 200px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <div class="placeholder-image d-flex align-items-center justify-content-center bg-light text-muted"
+                                 style="height: 200px;">
+                                <span>No Image</span>
                             </div>
-                        </div>
-                    }
-                </div>
+                        }
 
-                @if (slideCount > 1)
-                {
-                    <button class="carousel-control-prev" type="button" data-bs-target="#matchingItemsCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#matchingItemsCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                }
-            </div>
-        }
-    </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@item.Title</h5>
+                            <ul class="list-unstyled">
+                                <li><strong>Description:</strong> @item.Description</li>
+                                <li><strong>Date:</strong> @item.DateLost.ToShortDateString()</li>
+                                <li><strong>Location:</strong> @item.Location</li>
+                            </ul>
+                        </div>
+
+                        <div class="card-footer bg-white border-0 d-flex justify-content-between">
+                            <a asp-controller="Items" asp-action="Details" asp-route-id="@item.Id"
+                               class="btn btn-outline-primary">
+                                Details
+                            </a>
+
+                            <button type="button"
+                                    class="btn btn-primary submit-btn"
+                                    data-item-id="@item.Id"
+                                    data-owner-id="@item.PostedById"
+                                    data-question="@item.VerificationQuestion">
+                                Claim Item
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
 </div>
+
+@section Scripts {
+    <script>
+        $(document).on('click', '.submit-btn', function () {
+            const itemId = $(this).data('item-id');
+            const ownerId = $(this).data('owner-id');
+            const question = $(this).data('question') || "Please answer the verification question.";
+
+            if (window.openClaimVerificationModal) {
+                window.openClaimVerificationModal(itemId, question, ownerId);
+            } else {
+                alert("Verification modal not found.");
+            }
+        });
+    </script>
+}

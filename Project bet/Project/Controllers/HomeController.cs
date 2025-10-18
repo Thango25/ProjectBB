@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Project.Data;
 using Project.Models;
@@ -11,8 +10,7 @@ namespace ProjectBBB.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationDbContext _context; // ? Add DbContext
-
+        private readonly ApplicationDbContext _context;
 
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
@@ -26,18 +24,16 @@ namespace ProjectBBB.Controllers
             {
                 Categories = _context.Categories.ToList(),
 
-                // ? Get latest lost items
                 RecentLostItems = _context.Items
-                    .Where(i => i.Type == ItemType.Lost)
+                    .Where(i => i.Type == ItemType.Lost && !i.IsClaimed)
                     .OrderByDescending(i => i.DateLost)
-                    .Take(4) // Show latest 4
+                    .Take(4)
                     .ToList(),
 
-                // ? Get latest found items
                 RecentFoundItems = _context.Items
-                    .Where(i => i.Type == ItemType.Found)
+                    .Where(i => i.Type == ItemType.Found && !i.IsClaimed)
                     .OrderByDescending(i => i.DateLost)
-                    .Take(4) // Show latest 4
+                    .Take(4)
                     .ToList()
             };
 

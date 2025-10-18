@@ -184,7 +184,6 @@ namespace Project.Controllers
             });
         }
 
-        // --- MODIFIED ACTION: POST Approve Claim (Sets IsClaimed = true) ---
         [HttpPost]
         public async Task<IActionResult> ApproveClaim(int itemId, string claimantId)
         {
@@ -196,27 +195,32 @@ namespace Project.Controllers
                 return Json(new { success = false, message = "Item not found or unauthorized." });
             }
 
-            // Set the item status to claimed and save the change
+            var approver = await _userManager.GetUserAsync(User);
+            var approverEmail = approver?.Email ?? "Unknown";
+
+            // ✅ Set claim date when approving
             item.IsClaimed = true;
+            item.ClaimDate = DateTime.Now;
+
             _context.Update(item);
-            await _context.SaveChangesAsync(); // <-- Save the status change
+            await _context.SaveChangesAsync();
 
             const string title = "Claim Approved! 🎉";
-            string message = $"The poster has approved your claim for the item '{item.Title}'. Please check your contact details in your profile for a message from the poster!";
+            string message = $"Title: {title}\nItem: {item.Title}\nApproved by: {approverEmail}";
 
-            // 1. Save approval notification to the database for the claimant
             await SaveNotificationToDb(claimantId, title, message);
 
-            // 2. Notify the CLAIMANT of the approval via SignalR
-            await _hubContext.Clients.User(claimantId).SendAsync("ReceiveNotification", title, message);
+            await _hubContext.Clients.User(claimantId)
+                .SendAsync("ReceiveNotification", title, message);
 
-            // 3. Notify the POSTER of the successful action
-            return Json(new { success = true, message = $"Claim for '{item.Title}' approved. The claimant has been notified." });
+            return Json(new
+            {
+                success = true,
+                message = $"Claim for '{item.Title}' approved. The claimant has been notified (Approver: {approverEmail})."
+            });
         }
 
-        // -----------------------------------------------------------------------------------------
 
-        // --- CORRECTED ACTION: POST Delete Claim (Saves and Sends rejection notice to claimant) ---
         [HttpPost]
         public async Task<IActionResult> DeleteClaim(int itemId, string claimantId)
         {
