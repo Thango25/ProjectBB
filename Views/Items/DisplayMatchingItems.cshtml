@@ -1,0 +1,189 @@
+﻿@model IEnumerable<Project.Models.Item>
+@{
+    ViewData["Title"] = "Matching Items";
+}
+
+<div class="container-fluid px-5 my-5">
+
+    <h2 class="mb-4 text-center text-black fw-bold">Matching Items</h2>
+
+    @if (!Model.Any(item => !item.IsClaimed))
+    {
+        <p class="text-center text-muted">No matching items found.</p>
+    }
+    else
+    {
+        <div class="row g-4 text:dark ">
+            @foreach (var item in Model)
+            {
+                if (item.IsClaimed) continue;
+                <div class="col-xl-1-5 col-lg-6 col-md-6 col-sm-12">
+                    <div class="card h-100 border-0 shadow-sm glass-card-transparent">
+                        @if (!string.IsNullOrEmpty(item.PhotoPath))
+                        {
+                            <a asp-controller="Items" asp-action="Details" asp-route-id="@item.Id" class="card-link-wrapper">
+
+                                <img src="~/uploads/@item.PhotoPath" class="card-img-top" alt="@item.Title" style="height: 200px; object-fit: cover;">
+                            </a>
+                        }
+                        else
+                        {
+                            <div class="placeholder-image d-flex align-items-center justify-content-center bg-dark text-white-50"
+                                 style="height: 200px;">
+                                <span>No Image</span>
+                            </div>
+                        }
+
+                        <a asp-controller="Items" asp-action="Details" asp-route-id="@item.Id" class="card-link-wrapper">
+
+                            <div class="card-body text:dark ">
+                                <h5 class="card-title">@item.Title</h5>
+                                <ul class="list-unstyled small">
+                                    <li><strong>Description:</strong> @(item.Description.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)</li>
+                                    <li><strong>Date:</strong> @item.DateLost.ToShortDateString()</li>
+                                    <li><strong>Location:</strong> @item.Location</li>
+                                </ul>
+                            </div>
+                        </a>
+
+                        <div class="card-footer d-flex justify-content-center">
+                            <button type="button"
+                                    class="btn btn-primary submit-btn"
+                                    data-item-id="@item.Id"
+                                    data-owner-id="@item.PostedById"
+                                    data-question="@item.VerificationQuestion">
+
+                                Claim Item
+
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <br />
+        <br />
+    }
+</div>
+
+
+<style>
+    /* 1. Glassmorphism & Color Theme */
+    body {
+        /* Dark background to suit the overall dark and vibrant theme */
+
+
+
+        background-color: #e6e6e6;
+    }
+
+    /* 2. Glass Card (Kept Transparent Black with White Text) */
+
+    .glass-card-transparent {
+        /* Transparent black/glassy card (kept the same) */
+        background: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: black; /* Text inside the card must remain white */
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+        .glass-card-transparent .card-title,
+        .glass-card-transparent li,
+        .glass-card-transparent strong {
+            color: black
+        }
+
+        .glass-card-transparent .card-footer {
+            background-color: transparent !important;
+            border-top: none;
+        }
+
+    /* 2. Card Link Wrapper Style */
+    .card-link-wrapper {
+        text-decoration: none; /* Remove underline from the link */
+        color: inherit;
+        display: block; /* Make the anchor tag fill the column */
+        height: 100%;
+    }
+
+
+        /* Optional: Small hover effect for better UX */
+        .card-link-wrapper:hover .glass-card-transparent {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5); /* Stronger shadow on hover */
+        }
+
+    /* 3. Grid Adjustments for 5-Column Layout */
+    .col-xl-1-5 {
+        flex: 0 0 auto;
+        width: 20%; /* 100% / 5 = 20% */
+    }
+    /* 4. Grid Adjustments: Custom 5-Column Class */
+
+    /* This custom class ensures 5 columns (20%) on extra-large screens only */
+
+    @@media (min-width: 1200px) {
+
+
+
+        .col-xl-1-5 {
+            flex: 0 0 auto;
+            width: 20%;
+        }
+    }
+
+    /* --- Mobile Grid Overrides (Force 2 columns below 576px) --- */
+
+    @@media (max-width: 575.98px) { /* Standard Bootstrap Mobile Breakpoint (xs) */
+        .row > * {
+            /* This ensures any column class (like col-6) on extra-small screens becomes 50% width */
+            flex: 0 0 auto;
+            width: 50%;
+        }
+    }
+
+</style>
+
+
+@section Scripts {
+
+    <script>
+
+        // CLAIM ITEM BUTTON LOGIC
+
+        // This is kept the same to handle the 'Claim Item' modal functionality
+
+
+
+        $(document).on('click', '.submit-btn', function () {
+
+            const itemId = $(this).data('item-id');
+
+            const ownerId = $(this).data('owner-id');
+
+            const question = $(this).data('question') || "Please answer the verification question.";
+
+
+
+            if (window.openClaimVerificationModal) {
+
+                window.openClaimVerificationModal(itemId, question, ownerId);
+
+            } else {
+
+                alert("Verification modal not found.");
+
+            }
+
+        });
+
+    </script>
+
+}
+
+</script>
+
+
+
+    }

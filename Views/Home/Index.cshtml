@@ -1,0 +1,545 @@
+﻿@model Project.Models.HomeViewModel
+
+@{
+
+    ViewData["Title"] = "Home Page";
+
+}
+
+@{
+    // The cast is now explicit and should succeed.
+    var categoryCounts = ViewData["CategoryCounts"] as Dictionary<int, Project.Models.CategoryCounts>;
+    // You may need to adjust the namespace (e.g., Project.Models)
+}
+
+<div class="background-overlay"></div>
+
+<section class="hero-section">
+
+    <div class="hero-overlay"></div>
+
+    <div class="container-fluid px-5">
+
+        <div class="hero-content text-center text-white justify-content-lg-start">
+
+            <h1 class="hero-title mb-4">Find What You Lost or Report What You Found</h1>
+
+            <br />
+
+            <br />
+
+            <p class="hero-subtitle mb-5">Connecting lost items with their owners</p>
+
+
+
+            <div class="row justify-content-center mb-5">
+
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                    <div class="p-4 rounded shadow dark-glass-card kpi-box">
+                        <h2 id="kpi-total" class="display-4 fw-bold text-light">@(Model?.TotalItems.ToString("N0") ?? "0")</h2>
+                        <p class="lead mb-0 text-white-50">Total Items</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                    <div class="p-4 rounded shadow dark-glass-card kpi-box">
+                        <h2 id="kpi-lost" class="display-4 fw-bold text-warning">@(Model?.TotalLostItems.ToString("N0") ?? "0")</h2>
+                        <p class="lead mb-0 text-white-50">Items Lost</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                    <div class="p-4 rounded shadow dark-glass-card kpi-box">
+                        <h2 id="kpi-found" class="display-4 fw-bold text-success">@(Model?.TotalFoundItems.ToString("N0") ?? "0")</h2>
+                        <p class="lead mb-0 text-white-50">Items Found</p>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="search-box p-4 rounded shadow d-flex justify-content-center dark-glass-card">
+
+                <form asp-controller="Items" asp-action="Search" method="get" class="w-100">
+
+                    <div class="row g-2 justify-content-center">
+
+                        <div class="col-md-3">
+
+                            <select name="type" class="form-select location-input py-3">
+
+                                <option value="">View All</option>
+
+                                <option value="Lost">Lost</option>
+
+                                <option value="Found">Found</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="col-md-4">
+
+                            <select name="categoryId" class="form-select location-input py-3">
+
+                                <option value="">Select All Categories</option>
+
+                                @if (Model?.Categories != null && Model.Categories.Any())
+
+                                {
+
+                                    foreach (var category in Model.Categories)
+
+                                    {
+
+                                        <option value="@category.Id">@category.Name</option>
+
+                                    }
+
+                                }
+
+                                else
+
+                                {
+
+                                    <option disabled>No categories available</option>
+
+                                }
+
+                            </select>
+
+                        </div>
+
+                        <div class="col-md-2">
+
+                            <button type="submit" class="btn search-btn w-100 py-3">SEARCH</button>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class ="section bg-light">
+    <h2 class="text-center text-black fw-bold mb-4">How it works</h2>
+
+    <div class="container py-4">
+        <div class="row text-center">
+
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 p-4 border-0 shadow-lg bg-white">
+                    <div class="card-body text-black">
+                        <i class="fas fa-bullhorn fa-3x mb-3 text-primary"></i>
+                        <h4 class="card-title fw-bold">1. Report It</h4>
+                        <p class="card-text">
+                            Found an item? Report it instantly! Provide a quick description, location, and a photo.
+                            If you've lost something, search for matches or post a missing report.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 p-4 border-0 shadow-lg bg-white">
+                    <div class="card-body text-black">
+                        <i class="fas fa-search fa-3x mb-3 text-primary"></i>
+                        <h4 class="card-title fw-bold">2. Find Matches</h4>
+                        <p class="card-text">
+                            Our system automatically matches your lost reports with recently found items based on category, location, and keywords.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 p-4 border-0 shadow-lg bg-white">
+                    <div class="card-body text-black">
+                        <i class="fas fa-hands-helping fa-3x mb-3 text-primary"></i>
+                        <h4 class="card-title fw-bold">3. Verify & Claim</h4>
+                        <p class="card-text">
+                            To protect the item, you must answer a verification question set by the finder. Once approved, we connect you to arrange pickup.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+    
+<section class="section bg-light">
+        <h2 class="text-center text-black fw-bold mb-4">Browse By Category</h2>
+        <div class="container-fluid px-5">
+
+            <div id="categoriesCarousel" class="carousel slide" data-bs-ride="carousel">
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#categoriesCarousel" data-bs-slide="prev">
+
+                    <span class="carousel-control-prev-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
+
+                    <span class="visually-hidden">Previous</span>
+
+                </button>
+
+                <div class="carousel-inner">
+
+                    @{
+
+                        int chunkSize = 6;
+
+                        int totalChunks = (Model?.Categories != null && Model.Categories.Any())
+
+                        ? (int)Math.Ceiling(Model.Categories.Count / (double)chunkSize)
+
+                        : 0;
+
+                    }
+
+
+
+                    @for (int i = 0; i < totalChunks; i++)
+
+                    {
+
+                        var chunk = Model.Categories.Skip(i * chunkSize).Take(chunkSize).ToList();
+
+                        var activeClass = i == 0 ? "active" : "";
+
+
+
+                        <div class="carousel-item @activeClass">
+
+                            <div class="row g-4">
+
+                                @foreach (var category in chunk)
+
+                                {
+
+                                    // The default is now a new instance of the concrete class
+
+                                    Project.Models.CategoryCounts counts = new Project.Models.CategoryCounts { ItemsLostCount = 0, ItemsFoundCount = 0 };
+
+
+
+                                    if (categoryCounts != null && categoryCounts.TryGetValue(category.Id, out var actualCounts))
+
+                                    {
+
+                                        counts = actualCounts;
+
+                                    }
+
+
+
+                                    <div class="col-xl-2 col-lg-3 col-md-4 col-6">
+
+                                        <a asp-controller="Items" asp-action="ByCategory" asp-route-categoryId="@category.Id"
+                                           class="category-icon-link text-decoration-none shadow-sm hover-effect">
+
+
+
+                                            <div class="card-body text-center p-3">
+
+                                                <i class="@category.IconClass fa-3x mb-2 category-icon"></i>
+
+
+
+                                                <p class="mb-2 fw-semibold category-name">@category.Name</p>
+
+                                                <div class="d-flex justify-content-around mt-2">
+
+                                                    <div class="item-count-badge lost-badge">
+
+                                                        <i class="fas fa-times-circle me-1"></i>
+
+                                                        <span class="fw-bold">@counts.ItemsLostCount</span> Lost
+
+                                                    </div>
+
+
+
+                                                    <div class="item-count-badge found-badge">
+
+                                                        <i class="fas fa-check-circle me-1"></i>
+
+                                                        <span class="fw-bold">@counts.ItemsFoundCount</span> Found
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </a>
+
+                                    </div>
+
+                                }
+
+                            </div>
+
+                        </div>
+
+                    }
+
+                </div>
+
+                <button class="carousel-control-next" type="button" data-bs-target="#categoriesCarousel" data-bs-slide="next">
+
+                    <span class="carousel-control-next-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
+
+                    <span class="visually-hidden">Next</span>
+
+                </button>
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+
+
+    </section>
+
+<section class="section bg-light">
+    <h2 class="text-center text-black fw-bold mb-4">Recently Lost</h2>
+    <div class="container-fluid px-5">
+        @if (Model?.RecentLostItems == null || !Model.RecentLostItems.Any())
+        {
+            <p class="text-center text-muted w-100">No lost items have been reported yet.</p>
+        }
+        else
+        {
+            <div id="lostItemsCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @{
+                        int lostChunkSize = 4;
+                        var lostChunks = Model.RecentLostItems.Chunk(lostChunkSize);
+                    }
+                    @foreach (var (chunk, index) in lostChunks.Select((item, i) => (item, i)))
+                    {
+                        <div class="carousel-item @(index == 0 ? "active" : "")">
+                            <div class="row g-4">
+                                @foreach (var item in chunk)
+                                {
+                                    <div class="col-xl-3 col-lg-4 col-md-6">
+                                        <div class="card h-100 border-0 shadow-sm hover-effect">
+                                            @if (!string.IsNullOrEmpty(item.PhotoPath))
+                                            {
+                                                <img src="~/uploads/@item.PhotoPath" class="card-img-top" alt="@item.Title" style="height: 200px; object-fit: cover;">
+                                            }
+                                            else
+                                            {
+                                                <div class="placeholder-image d-flex align-items-center justify-content-center bg-light text-muted" style="height: 200px;">
+                                                    <span>No Image</span>
+                                                </div>
+                                            }
+                                            <div class="card-body">
+                                                <h5 class="card-title">@item.Title</h5>
+                                                <ul class="list-unstyled">
+                                                    <li><strong>Description:</strong> @item.Description</li>
+                                                    <li><strong>Date:</strong> @item.DateLost.ToShortDateString()</li>
+                                                    <li><strong>Location:</strong> @item.Location</li>
+                                                </ul>
+                                            </div>
+                                            <div class="card-footer bg-white border-0 d-flex justify-content-between">
+                                                <a asp-controller="Items" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">View Details</a>
+                                                <button type="button" class="btn btn-primary claim-btn" data-item-id="@item.Id" data-owner-id="@item.PostedById">Claim Item</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                @if (Model.RecentLostItems.Count() > lostChunkSize)
+                {
+                    <button class="carousel-control-prev" type="button" data-bs-target="#lostItemsCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#lostItemsCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                }
+            </div>
+        }
+    </div>
+</section>
+
+<section class="section bg-light">
+    <h2 class="text-center text-black fw-bold mb-4">Recently Found</h2>
+    <div class="container-fluid px-5">
+        @if (Model?.RecentFoundItems == null || !Model.RecentFoundItems.Any())
+        {
+            <p class="text-center text-muted w-100">No found items have been reported yet.</p>
+        }
+        else
+        {
+            <div id="foundItemsCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @{
+                        int foundChunkSize = 4;
+                        var foundChunks = Model.RecentFoundItems.Chunk(foundChunkSize);
+                    }
+                    @foreach (var (chunk, index) in foundChunks.Select((item, i) => (item, i)))
+                    {
+                        <div class="carousel-item @(index == 0 ? "active" : "")">
+                            <div class="row g-4">
+                                @foreach (var item in chunk)
+                                {
+                                    <div class="col-xl-3 col-lg-4 col-md-6">
+                                        <div class="card h-100 border-0 shadow-sm hover-effect">
+                                            @if (!string.IsNullOrEmpty(item.PhotoPath))
+                                            {
+                                                <img src="~/uploads/@item.PhotoPath" class="card-img-top" alt="@item.Title" style="height: 200px; object-fit: cover;">
+                                            }
+                                            else
+                                            {
+                                                <div class="placeholder-image d-flex align-items-center justify-content-center bg-light text-muted" style="height: 200px;">
+                                                    <span>No Image</span>
+                                                </div>
+                                            }
+                                            <div class="card-body">
+                                                <h5 class="card-title">@item.Title</h5>
+                                                <ul class="list-unstyled">
+                                                    <li><strong>Description:</strong> @item.Description</li>
+                                                    <li><strong>Date:</strong> @item.DateLost.ToShortDateString()</li>
+                                                    <li><strong>Location:</strong> @item.Location</li>
+                                                </ul>
+                                            </div>
+                                            <div class="card-footer bg-white border-0 d-flex justify-content-between">
+                                                <a asp-controller="Items" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">View Details</a>
+                                                <button type="button" class="btn btn-primary claim-btn" data-item-id="@item.Id" data-owner-id="@item.PostedById">Claim Item</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                @if (Model.RecentFoundItems.Count() > foundChunkSize)
+                {
+                    <button class="carousel-control-prev" type="button" data-bs-target="#foundItemsCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#foundItemsCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon bg-primary rounded-circle p-3" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                }
+            </div>
+        }
+    </div>
+</section>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Find all "Claim Item" buttons
+            const claimButtons = document.querySelectorAll('.claim-btn');
+
+            claimButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    const itemId = this.getAttribute('data-item-id');
+                    const ownerId = this.getAttribute('data-owner-id'); // Get the ownerId
+
+                    if (!itemId || !ownerId) {
+                         showToast("Error", "Item ID or Owner ID is missing.");
+                         return;
+                    }
+
+                    // 1. AJAX call to get the verification question (used for display only)
+                    $.ajax({
+                        url: '/Items/GetVerificationQuestion',
+                        type: 'GET',
+                        data: { itemId: itemId },
+                        success: function(response) {
+                            if (response.success) {
+                                // 2. Pass the item ID, question, AND owner ID to the global function
+                                window.openClaimVerificationModal(itemId, response.question, ownerId);
+                            } else {
+                                // Fallback: If no question, use generic text
+                                window.openClaimVerificationModal(itemId, "Please enter any details that would prove this item is yours:", ownerId);
+                            }
+                        },
+                        error: function(xhr) {
+                            showToast("Error", "Failed to get question. Claiming will proceed on submit.");
+                            // Still open the modal if AJAX fails, using generic text
+                            window.openClaimVerificationModal(itemId, "Please enter any details that would prove this item is yours:", ownerId);
+                        }
+                    });
+                });
+            });
+        });
+
+        //*************     KPI         **********/
+                        document.addEventListener('DOMContentLoaded', function() {
+                    // KPI initialization code has been removed.
+
+                    // Find all "Claim Item" buttons
+                    const claimButtons = document.querySelectorAll('.claim-btn');
+
+                    claimButtons.forEach(button => {
+                        button.addEventListener('click', function(event) {
+                            event.preventDefault();
+
+                            const itemId = this.getAttribute('data-item-id');
+                            const ownerId = this.getAttribute('data-owner-id'); // Get the ownerId
+
+                            if (!itemId || !ownerId) {
+                                showToast("Error", "Item ID or Owner ID is missing.");
+                                return;
+                            }
+
+                            // 1. AJAX call to get the verification question (used for display only)
+                            $.ajax({
+                                url: '/Items/GetVerificationQuestion',
+                                type: 'GET',
+                                data: { itemId: itemId },
+                                success: function(response) {
+                                    if (response.success) {
+                                        // 2. Pass the item ID, question, AND owner ID to the global function
+                                        window.openClaimVerificationModal(itemId, response.question, ownerId);
+                                    } else {
+                                        // Fallback: If no question, use generic text
+                                        window.openClaimVerificationModal(itemId, "Please enter any details that would prove this item is yours:", ownerId);
+                                    }
+                                },
+                                error: function(xhr) {
+                                    showToast("Error", "Failed to get question. Claiming will proceed on submit.");
+                                    // Still open the modal if AJAX fails, using generic text
+                                    window.openClaimVerificationModal(itemId, "Please enter any details that would prove this item is yours:", ownerId);
+                                }
+                            });
+                        });
+                    });
+                });
+   
+}
+
+    </script>
+}

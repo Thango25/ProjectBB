@@ -1,0 +1,63 @@
+﻿@model Project.Models.ApplicationUser;
+
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<div class="container py-5">
+    <div class="card shadow-sm border rounded-4 p-4">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Name" class="form-label"><i class="fa-solid fa-user me-1"></i> Full Name</label>
+                    <input asp-for="Name" class="form-control bg-light" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Surname" class="form-label"><i class="fa-solid fa-user me-1"></i> Surname</label>
+                    <input asp-for="Surname" class="form-control bg-light" />
+                    <span asp-validation-for="Surname" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Email" class="form-label"><i class="fa-solid fa-envelope me-1"></i> Email</label>
+                    <input asp-for="Email" class="form-control bg-light" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="PhoneNumber" class="form-label"><i class="fa-solid fa-phone me-1"></i> Phone Number</label>
+                    <input asp-for="PhoneNumber" class="form-control bg-light" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Location" class="form-label"><i class="fa-solid fa-location-dot me-1"></i> Location</label>
+                    <input asp-for="Location" class="form-control bg-light" />
+                    <span asp-validation-for="Location" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mt-4 d-flex justify-content-end gap-3">
+                <button type="submit" class="btn btn-gradient text-white fw-semibold px-4">Save</button>
+                <a asp-action="Index" class="btn btn-outline-secondary fw-semibold px-4">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<style>
+    .btn-gradient {
+        background: linear-gradient(45deg, #7F00FF, #E100FF);
+        border: none;
+        border-radius: 20px;
+    }
+</style>

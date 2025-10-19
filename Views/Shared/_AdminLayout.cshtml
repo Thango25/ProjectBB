@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Lost&Found</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Project.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid px-5">
+                <a class="navbar-brand fw-bold fs-3" asp-area="" asp-controller="Home" asp-action="Index">Lost&Found</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        
+                        
+                        <partial name="_LoginPartial" />
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="flex-grow-1">
+        @RenderBody()
+    </main>
+
+
+    <footer class="footer text-center">
+        <div class="container-fluid px-5">
+            &copy; 2025 - Lost&Found - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-white">Privacy</a>
+        </div>
+    </footer>
+
+    <!-- Both modals are now loaded into the layout
+    <partial name="/Areas/Identity/Pages/Account/_LoginModalPartial.cshtml" model="new Project.Models.LoginViewModel()" />
+    <partial name="/Areas/Identity/Pages/Account/_RegisterModalPartial.cshtml" model="new Project.Models.RegisterViewModel()" />
+    <div id="toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;"></div> -->
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        $(document).ready(function () {
+            $(".Approve").click(function(){
+                $(this).text('Claim approved').css("background-color","orange")
+               $(".Decline").hide();
+                alert("Claim approved!");
+            });
+             $(".Decline").click(function(){
+                $(this).text('Claim declined').css("background-color","orange")
+               $(".Approve").hide();
+                alert("Claim declined!");
+            });
+        });
+
+    </script>
+
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
