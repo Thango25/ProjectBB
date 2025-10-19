@@ -1,0 +1,132 @@
+﻿@model Project.Models.Category
+
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="background-overlay"></div>
+
+<div class="container mt-5">
+
+    <h1 class="text-dark-header mb-4">View Category Details</h1>
+
+    <div class="glass-card details-card">
+
+        <h4 class="card-title gradient-text-dark">Category Information</h4>
+        <hr class="glass-divider" />
+
+        <div class="category-details">
+
+            <dl class="row glass-dl">
+
+                <dt class="col-sm-3 glass-label">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd class="col-sm-9 glass-value">
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+
+                <dt class="col-sm-3 glass-label">
+                    @Html.DisplayNameFor(model => model.IconClass)
+                </dt>
+                <dd class="col-sm-9 glass-value d-flex align-items-center">
+                    <span class="text-info me-3">@Html.DisplayFor(model => model.IconClass)</span>
+
+                    <i class="@Model.IconClass fa-2x text-info vibrant-icon"></i>
+                </dd>
+
+            </dl>
+        </div>
+
+        <hr class="glass-divider" />
+
+        <div class="mt-4 action-links">
+            <a asp-action="Edit" asp-route-id="@Model?.Id" class="text-info action-link edit-link">
+                <i class="fas fa-edit me-2"></i> Edit Category
+            </a>
+            <span class="text-white mx-3">|</span>
+            <a asp-action="Index" class="text-info action-link back-link">
+                <i class="fas fa-arrow-left me-2"></i> Back to List
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Global Styles for Pure Black BG and Font Consistency */
+    body {
+        background-color: #000000;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .text-dark-header {
+        color: #e0e0e0;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    /* === Glass Card Styling (Dark/Black Version) === */
+    .glass-card {
+        background: rgba(20, 20, 20, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.6);
+        margin-top: 30px;
+        color: white;
+    }
+
+    /* Gradient Text for Card Titles */
+    .gradient-text-dark {
+        background: linear-gradient(90deg, #7b2ff7, #f107a3);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        font-weight: 600;
+        font-size: 1.6rem;
+        text-shadow: 0 0 5px rgba(241, 7, 163, 0.3);
+    }
+
+    .glass-divider {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Styling for the Definition List (dl) */
+    .glass-dl .glass-label {
+        color: #b0b0b0; /* Light grey label */
+        font-weight: 500;
+        padding-top: 0.5rem;
+    }
+
+    .glass-dl .glass-value {
+        color: white; /* Bright white value */
+        font-weight: 700;
+        padding-top: 0.5rem;
+    }
+
+    /* Style for the displayed icon */
+    .vibrant-icon {
+        color: #f107a3 !important; /* Use the pink from your gradient for the icon */
+        text-shadow: 0 0 5px rgba(241, 7, 163, 0.5); /* Subtle glow */
+    }
+
+    /* Action Links (Edit and Back) */
+    .action-link {
+        color: #7b2ff7 !important; /* Vibrant purple for all action links */
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s, text-shadow 0.2s;
+    }
+
+        .action-link:hover {
+            color: #f107a3 !important; /* Pink on hover for vibrancy */
+            text-shadow: 0 0 5px rgba(241, 7, 163, 0.5);
+        }
+</style>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

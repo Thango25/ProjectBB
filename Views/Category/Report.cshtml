@@ -1,0 +1,671 @@
+﻿@using Project.Models
+
+@model Project.Models.ReportsViewModel
+
+
+
+@{
+
+    ViewData["Title"] = "Newly Added Items Report";
+
+    // Safely retrieve the list of categories from ViewBag
+
+    // ASSUMPTION: Your Category model has 'Id' (int) and 'Name' (string) properties.
+
+    var categories = ViewBag.AvailableCategories as IEnumerable<Project.Models.Category> ?? new List<Project.Models.Category>();
+
+    int currentLimit = ViewBag.CurrentLimit ?? 5;
+
+}
+
+
+
+<div class="background-overlay"></div>
+
+
+<br />
+@* === NEW BACK LINK AT TOP LEFT === *@
+<div class="mb-4">
+    @* Assuming "Index" in the current controller (or "Category" controller as seen below) is your main dashboard *@
+    <a asp-controller="Category" asp-action="Index" class="back-link back-to-dashboard-top">
+        <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+    </a>
+</div>
+@* ================================= *@
+
+<div class="container mt-5">
+
+    <h1 class="text-dark-header mb-4">@ViewData["Title"]</h1>
+
+
+
+    <div class="glass-card mb-5">
+
+        <h4 class="card-title gradient-text-dark filter-title">Filter Reports</h4>
+
+        <hr class="glass-divider mb-4" />
+
+
+
+        <form asp-action="Report" method="get" id="reportFilterForm">
+
+            <div class="row g-4">
+
+
+
+                <div class="col-md-3">
+
+                    <label for="categoryId" class="control-label glass-label">Filter by Category:</label>
+
+                    <select name="categoryId" id="categoryId" class="form-control glass-input">
+
+                        <option value="">-- All Categories --</option>
+
+                        @foreach (var category in categories)
+
+                        {
+
+                            <option value="@category.Id" selected="@(ViewBag.CurrentCategoryId == category.Id)">@category.Name</option>
+
+                        }
+
+                    </select>
+
+                </div>
+
+
+
+                <div class="col-md-3">
+
+                    <label for="startDate" class="control-label glass-label">Start Date:</label>
+
+                    <input type="date" name="startDate" id="startDate" class="form-control glass-input" value="@(ViewBag.CurrentStartDate)" />
+
+                </div>
+
+
+
+                <div class="col-md-3">
+
+                    <label for="endDate" class="control-label glass-label">End Date:</label>
+
+                    <input type="date" name="endDate" id="endDate" class="form-control glass-input" value="@(ViewBag.CurrentEndDate)" />
+
+                </div>
+
+
+
+                <div class="col-md-3">
+
+                    <label for="limit" class="control-label glass-label">#Items to Show (1-20):</label>
+
+                    <input type="number" name="limit" id="limit" class="form-control glass-input"
+                           value="@currentLimit" min="1" max="20" required />
+
+                </div>
+
+            </div>
+
+
+
+            <div class="d-flex justify-content-end mt-4">
+
+                <button type="submit" class="btn btn-primary gradient-purple me-3">
+
+                    <i class="fas fa-filter me-2"></i> Apply Filters
+
+                </button>
+
+                <a asp-action="Report" class="btn btn-secondary back-link clear-filter-btn">
+
+                    <i class="fas fa-sync-alt me-2"></i> Clear Filters
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <div class="row">
+
+
+
+        <div class="col-md-6 mb-4">
+
+            <div class="glass-card timeline-card">
+
+                <h2 class="card-title gradient-text-dark">Recent Activity Timeline</h2>
+
+                <hr class="glass-divider mb-4" />
+
+
+
+                @if (Model.NewlyAddedItems != null && Model.NewlyAddedItems.Any())
+
+                {
+
+                    <div class="timeline">
+
+                        @* CRITICAL FIX: The data is ALREADY sorted and limited 
+
+                   by the API call in the controller. Just iterate over it. 
+
+                *@
+
+                        @foreach (var item in Model.NewlyAddedItems)
+
+                        {
+
+                            <div class="timeline-item">
+
+                                <div class="timeline-node"></div>
+
+
+
+                                <div class="timeline-content">
+
+                                    <span class="timeline-date">@item.DateLost.ToString("MMM dd, yyyy")</span>
+
+                                    <h5 class="timeline-title">@item.Title</h5>
+
+                                    <p class="timeline-meta">
+
+                                        <i class="fas fa-tag"></i> @item.CategoryName
+
+                                        <span class="mx-2">|</span>
+
+                                        <i class="fas fa-map-marker-alt"></i> @item.Location
+
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        }
+
+                    </div>
+
+                }
+
+                else
+
+                {
+
+                    <p class="text-info-faded">No recent activity to display.</p>
+
+                }
+
+            </div>
+
+        </div>
+
+
+
+        <div class="col-md-6 mb-4">
+
+            <div class="glass-card table-card">
+
+                <h2 class="card-title gradient-text-dark">Filtered Items List</h2>
+
+                <hr class="glass-divider mb-4" />
+
+
+
+                @if (Model.NewlyAddedItems != null && Model.NewlyAddedItems.Any())
+
+                {
+
+                    <div class="table-responsive">
+
+                        <table class="table glass-table">
+
+                            <thead class="glass-table-head">
+
+                                <tr>
+
+                                    <th>Title</th>
+
+                                    <th>Type</th>
+
+                                    <th>Category</th>
+
+                                    <th>Date Reported</th>
+
+                                    <th>Location</th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                @foreach (var item in Model.NewlyAddedItems)
+
+                                {
+
+                                    <tr>
+
+                                        <td>@item.Title</td>
+
+                                        <td>@item.Type</td>
+
+                                        <td>@item.CategoryName</td>
+
+                                        <td>@item.DateLost.ToShortDateString()</td>
+
+                                        <td>@item.Location</td>
+
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                }
+
+                else
+
+                {
+
+                    <p class="text-info-faded">No items found matching the filters.</p>
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <hr class="glass-divider-thick mt-4 mb-4" />
+
+    <div class="text-center mt-3 mb-5">
+        <a asp-controller="Category" asp-action="Index" class="back-link btn-lg">
+
+            <i class="fas fa-arrow-left me-2"></i> Back to Dashboard
+
+        </a>
+    </div>
+
+</div>
+
+
+
+<style>
+
+    /* Global Styles */
+
+    body {
+        background-color: #000000;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+
+
+    .text-dark-header {
+        -webkit-text-fill-color: white;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+
+
+    .gradient-purple {
+        background: linear-gradient(90deg, #7b2ff7, #f107a3);
+    }
+
+
+
+    .gradient-violet {
+        background: linear-gradient(90deg, #7b2ff7, #f107a3);
+    }
+
+
+
+    .gradient-pink {
+        background: linear-gradient(90deg, #7b2ff7, #f107a3);
+    }
+
+
+
+    /* === Glass Card Styling === */
+
+    .glass-card {
+        background: rgba(20, 20, 20, 0.7);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.6);
+        color: white;
+    }
+
+
+
+    .gradient-text-dark {
+        background: linear-gradient(90deg, #7b2ff7, #f107a3);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+        font-weight: 600;
+        font-size: 1.6rem;
+        text-shadow: 0 0 5px rgba(241, 7, 163, 0.3);
+    }
+
+
+
+    .glass-divider {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+
+
+    .glass-divider-thick {
+        border-top: 3px solid rgba(123, 47, 247, 0.5);
+    }
+
+
+
+    .text-info-faded {
+        color: #aaa;
+    }
+
+
+
+    /* === Input/Form Styling (Reused from Edit/Create) === */
+
+    .glass-input {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #e0e0e0;
+        padding: 10px 15px;
+        border-radius: 8px;
+    }
+
+        /* Specific styles for Date and Select inputs */
+
+        .glass-input[type="date"], .glass-input select {
+            /* This ensures the text remains visible in the input */
+
+            color-scheme: dark;
+            padding: 10px 15px;
+        }
+
+
+
+        .glass-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #7b2ff7;
+            box-shadow: 0 0 0 0.25rem rgba(123, 47, 247, 0.25);
+        }
+
+
+
+    .glass-label {
+        color: #b0b0b0;
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+
+
+
+    /* Submit/Apply Button */
+
+    .gradient-purple {
+        background: linear-gradient(90deg, #7b2ff7, #f107a3);
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+
+
+        .gradient-purple:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(123, 47, 247, 0.5);
+            color: white;
+        }
+
+
+
+    /* Clear Filter Button */
+
+    .clear-filter-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #b0b0b0 !important;
+        transition: all 0.2s;
+    }
+
+
+
+        .clear-filter-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white !important;
+        }
+
+
+
+
+
+    /* === Timeline Styling (Left Card) === */
+
+    .timeline {
+        position: relative;
+        padding: 10px 0;
+        border-left: 2px solid #7b2ff7;
+        background-image: linear-gradient(to bottom, #7b2ff7 0%, #f107a3 100%);
+        background-position: left;
+        background-repeat: no-repeat;
+        background-size: 2px 100%;
+        margin-left: 20px;
+        max-height: 450px;
+        overflow-y: auto;
+    }
+
+
+
+    .timeline-item {
+        margin-bottom: 25px;
+        padding-left: 30px;
+        position: relative;
+    }
+
+
+
+    .timeline-node {
+        position: absolute;
+        left: -10px;
+        top: 0;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: linear-gradient(45deg, #7b2ff7, #f107a3);
+        border: 2px solid #000;
+        box-shadow: 0 0 10px rgba(241, 7, 163, 0.5);
+        z-index: 10;
+    }
+
+
+
+    .timeline-content {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+
+
+    .timeline-date {
+        color: #f107a3;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        font-size: 0.85rem;
+    }
+
+
+
+    .timeline-title {
+        color: white;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+    }
+
+
+
+    .timeline-meta {
+        color: #aaa;
+        font-size: 0.85rem;
+        rgba(123, 47, 247, 0.25)
+    }
+
+
+
+
+
+    /* === Table Styling (Right Card) === */
+
+    .glass-table {
+        color: white;
+        background-color: rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+
+
+    .glass-table-head {
+        background: linear-gradient(90deg, #7b2ff7, #f107a3);
+        color: white;
+        font-weight: 600;
+        border: none;
+        -webkit-text-fill-color: white;
+    }
+
+
+
+    .glass-table tbody tr {
+        transition: background-color 0.3s;
+    }
+
+
+
+        .glass-table tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+
+
+    .glass-table th, .glass-table td {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+
+
+    /* Back link button style */
+
+    .back-link {
+        color: #e0e0e0 !important;
+        text-decoration: none;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 10px;
+        border: 2px solid #7b2ff7;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+
+
+
+        .back-link:hover {
+            color: white !important;
+            border-color: #f107a3;
+            box-shadow: 0 4px 15px rgba(123, 47, 247, 0.5);
+        }
+
+    /* === Input/Form Styling (Reused from Edit/Create) === */
+
+    /* ... (Keep your existing styles above) ... */
+
+
+
+    /* === Input/Form Styling === */
+
+    .glass-input {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: rgba(123, 47, 247, 0.25); /* <-- Ensure default text is light */
+
+        padding: 10px 15px;
+        border-radius: 8px;
+        -webkit-text-fill-color: white;
+    }
+
+
+
+        /* Specific styles for Date, Select, and Number inputs */
+
+        .glass-input[type="date"],
+        .glass-input select,
+        .glass-input[type="number"] {
+            /* CRITICAL: Tells the browser to use dark colors for native UI elements (like spinners) */
+
+            color-scheme: dark;
+            padding: 10px 15px;
+            /* Re-emphasize the text color for the input value */
+
+            color: rgba(123, 47, 247, 0.25);
+            -webkit-text-fill-color: white;
+        }
+
+
+
+        .glass-input:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #7b2ff7;
+            box-shadow: 0 0 0 0.25rem rgba(123, 47, 247, 0.25);
+            color: rgba(123, 47, 247, 0.25); /* <-- Ensure text stays bright when focused */
+
+            -webkit-text-fill-color: white;
+        }
+
+   
+
+    /* === NEW STYLE FOR TOP BACK LINK === */
+    .back-to-dashboard-top {
+        padding: 5px 15px;
+        font-size: 0.95rem;
+        display: inline-flex;
+        align-items: center;
+        border-radius: 6px;
+    }
+    /* Keep the existing .back-link hover effects */
+    /* ==================================== */
+
+    /* Back link button style */
+    .back-link {
+        color: #e0e0e0 !important;
+    }
+       
+</style>
+
+
+
+@section Scripts {
+
+}

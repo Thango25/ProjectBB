@@ -1,0 +1,431 @@
+﻿@model Project.Models.Category
+
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="background-overlay"></div>
+<div class="container mt-5">
+
+    <h1 class="text-dark-header mb-4">Create New Category</h1>
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="glass-card form-card">
+                <h4 class="card-title gradient-text-dark">Category Details</h4>
+                <hr class="glass-divider" />
+
+                <form asp-action="Create" id="createCategoryForm">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Name" class="control-label glass-label"></label>
+                        <input asp-for="Name" class="form-control glass-input" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label asp-for="IconClass" class="control-label glass-label">Selected Icon Class</label>
+                        <input asp-for="IconClass" class="form-control glass-input" id="IconClass" readonly />
+                        <span asp-validation-for="IconClass" class="text-danger"></span>
+
+                        <div id="iconPreview" class="icon-preview mt-2">
+                            <i class="fas fa-question-circle fa-2x"></i>
+                            <span class="preview-text">Select an icon from the grid.</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <button type="submit" value="Create" class="btn btn-primary gradient-purple w-100">
+                            <i class="fas fa-save me-2"></i> Create Category
+                        </button>
+                    </div>
+                </form>
+
+                <div class="mt-4">
+                    <a asp-action="Index" class="text-info back-link"><i class="fas fa-arrow-left me-2"></i> Back to Dashboard</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="glass-card icon-selector-card">
+                <h4 class="card-title gradient-text-dark">Icon Selector</h4>
+                <p class="text-muted">Click an icon to select it for the new category.</p>
+
+                <div class="form-group mb-3">
+                    <input type="text" class="form-control glass-input" id="iconSearchInput" placeholder="Search icons (e.g., wallet, phone, book)" />
+                </div>
+
+                <hr class="glass-divider" />
+
+                <div class="icon-grid" id="iconGrid">
+                    @* <div class="icon-item" data-icon-class="fas fa-briefcase" data-search-term="briefcase bag">
+                            <i class="fas fa-briefcase fa-2x"></i><small>Briefcase</small>
+                        </div>
+                        ... (rest of your icons) ...
+                    *@
+                    <div class="icon-item" data-icon-class="fas fa-briefcase" data-search-term="briefcase bag">
+                        <i class="fas fa-briefcase fa-2x"></i><small>Briefcase</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-laptop-code" data-search-term="laptop code computer electronics">
+                        <i class="fas fa-laptop-code fa-2x"></i><small>Laptop</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-key" data-search-term="key keys">
+                        <i class="fas fa-key fa-2x"></i><small>Keys</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-wallet" data-search-term="wallet money cash purse">
+                        <i class="fas fa-wallet fa-2x"></i><small>Wallet/Purse</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-paw" data-search-term="paw animal pet dog cat bird lizard">
+                        <i class="fas fa-paw fa-2x"></i><small>Animal/Pet</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-book-open" data-search-term="book document papers file notebook journal reading">
+                        <i class="fas fa-book-open fa-2x"></i><small>Documents</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-credit-card" data-search-term="credit card bank id debit license identification">
+                        <i class="fas fa-credit-card fa-2x"></i><small>Cards/IDs</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-ring" data-search-term="ring jewellery jewelry diamond gem necklace earrings">
+                        <i class="fas fa-ring fa-2x"></i><small>Jewellery</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-glasses" data-search-term="glasses spectacles eyewear reading sunglasses">
+                        <i class="fas fa-glasses fa-2x"></i><small>Eyewear</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-mobile-alt" data-search-term="mobile phone smartphone device electronics">
+                        <i class="fas fa-mobile-alt fa-2x"></i><small>Mobile Phone</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-headphones" data-search-term="headphones earbuds music audio electronics">
+                        <i class="fas fa-headphones fa-2x"></i><small>Headphones</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-id-card" data-search-term="id card badge license identification">
+                        <i class="fas fa-id-card fa-2x"></i><small>ID Card</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-camera" data-search-term="camera photo video film photography">
+                        <i class="fas fa-camera fa-2x"></i><small>Camera</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-umbrella" data-search-term="umbrella rain shade">
+                        <i class="fas fa-umbrella fa-2x"></i><small>Umbrella</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-hat-cowboy" data-search-term="hat cap clothing accessory apparel">
+                        <i class="fas fa-hat-cowboy fa-2x"></i><small>Hat/Cap</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-tshirt" data-search-term="shirt clothing jacket apparel sweater coat">
+                        <i class="fas fa-tshirt fa-2x"></i><small>Clothing</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-shoe-prints" data-search-term="shoe prints sneakers boots footwear">
+                        <i class="fas fa-shoe-prints fa-2x"></i><small>Footwear</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-gem" data-search-term="gem ring necklace earrings jewellery jewelry diamond">
+                        <i class="fas fa-gem fa-2x"></i><small>Jewellery (Gem)</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-clock" data-search-term="clock watch timepiece wearable accessory">
+                        <i class="fas fa-clock fa-2x"></i><small>Watch</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-flask" data-search-term="flask science school medical prescription bottle">
+                        <i class="fas fa-flask fa-2x"></i><small>Medical/Lab</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-baby" data-search-term="baby stroller toy bottle children">
+                        <i class="fas fa-baby fa-2x"></i><small>Baby Items</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-bicycle" data-search-term="bicycle bike scooter wheels transport">
+                        <i class="fas fa-bicycle fa-2x"></i><small>Bicycle/Scooter</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-toolbox" data-search-term="toolbox tools equipment hardware">
+                        <i class="fas fa-toolbox fa-2x"></i><small>Tools</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-passport" data-search-term="passport travel identification document license">
+                        <i class="fas fa-passport fa-2x"></i><small>Passport</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-box" data-search-term="box package delivery parcel mail">
+                        <i class="fas fa-box fa-2x"></i><small>Package</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-globe-americas" data-search-term="globe map travel souvenir">
+                        <i class="fas fa-globe-americas fa-2x"></i><small>Souvenirs</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-gamepad" data-search-term="gamepad console gaming toy electronics">
+                        <i class="fas fa-gamepad fa-2x"></i><small>Gaming</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-drum" data-search-term="drum music instrument guitar piano audio">
+                        <i class="fas fa-drum fa-2x"></i><small>Instrument</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-trophy" data-search-term="trophy award prize recognition">
+                        <i class="fas fa-trophy fa-2x"></i><small>Award</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-map-pin" data-search-term="map pin location gps tracker">
+                        <i class="fas fa-map-pin fa-2x"></i><small>Tracker</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-dumbbell" data-search-term="dumbbell weight fitness sports gym">
+                        <i class="fas fa-dumbbell fa-2x"></i><small>Sports Gear</small>
+                    </div>
+                    <div class="icon-item" data-icon-class="fas fa-hand-holding-heart" data-search-term="hand heart sentimental keepsake memory personal">
+                        <i class="fas fa-hand-holding-heart fa-2x"></i><small>Personal Item</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Ensure the entire body/page background is pure black */
+    body {
+        background-color: #000000; /* Pure Black */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* A more modern font */
+    }
+
+    /* Style for the main page header 'Create New Category' */
+    .text-dark-header {
+        color: #e0e0e0; /* Very light grey for contrast against pure black */
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    /* === Updated Glass Card Styling to match image === */
+    .glass-card {
+        /* Slightly lighter dark transparent background */
+        background: rgba(20, 20, 20, 0.7); /* Darker, slightly less transparent */
+        backdrop-filter: blur(12px); /* Adjusted blur for softer effect */
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05); /* Very subtle border */
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 5px 25px rgba(0, 0, 0, 0.6); /* Softer shadow */
+        margin-bottom: 20px;
+        color: white; /* Default text color within cards */
+    }
+
+    .card-title {
+        /* Removed direct color, now using gradient-text-dark */
+        font-weight: 600;
+        margin-bottom: 15px; /* Add some space below title */
+    }
+
+    /* New style for card titles with gradient text */
+    .gradient-text-dark {
+        background: linear-gradient(90deg, #7b2ff7, #f107a3); /* Your purple-pink gradient */
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent; /* Fallback for non-webkit */
+        font-size: 1.6rem; /* Slightly larger for prominence */
+        text-shadow: 0 0 5px rgba(241, 7, 163, 0.3); /* Subtle glow */
+    }
+
+    .glass-divider {
+        border-top: 1px solid rgba(255, 255, 255, 0.1); /* Lighter divider */
+    }
+
+    /* Style for the input fields */
+    .glass-input {
+        background: rgba(255, 255, 255, 0.05); /* Very dark input background */
+        border: 1px solid rgba(255, 255, 255, 0.15); /* Subtle border */
+        color: #e0e0e0; /* Light grey text */
+        transition: border-color 0.3s, background-color 0.3s;
+        padding: 10px 15px; /* Slightly more padding */
+        border-radius: 8px; /* Slightly more rounded */
+    }
+    .glass-input::placeholder {
+        color: #999;
+    }
+    .glass-input:focus {
+        background: rgba(255, 255, 255, 0.1); /* Slightly lighter on focus */
+        border-color: #7b2ff7;
+        box-shadow: 0 0 0 0.25rem rgba(123, 47, 247, 0.25);
+        color: white;
+    }
+    .glass-label {
+        color: #b0b0b0; /* Light grey label */
+        margin-bottom: 8px; /* Space between label and input */
+        font-weight: 500;
+    }
+
+    /* Fix for readonly input */
+    .glass-input[readonly] {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        color: #e0e0e0 !important;
+        -webkit-text-fill-color: #e0e0e0 !important;
+        opacity: 1;
+    }
+
+    /* Icon Preview Area */
+    .icon-preview {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border: 1px dashed rgba(255, 255, 255, 0.2); /* Softer dashed border */
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.2); /* Dark background for preview box */
+    }
+    .icon-preview i {
+        color: #7b2ff7;
+        margin-right: 10px;
+        font-size: 1.8rem !important; /* Slightly smaller for icon preview */
+    }
+    .preview-text {
+        font-style: italic;
+        color: #aaa;
+        font-size: 0.9rem; /* Slightly larger text */
+    }
+
+    /* === Icon Grid Styling === */
+    .icon-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 10px;
+        max-height: 400px;
+        overflow-y: auto;
+        padding-right: 5px;
+    }
+
+    /* Style for individual icon item */
+    .icon-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 15px 5px;
+        border-radius: 10px;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.05); /* **Dark background for unselected icon** */
+        transition: background 0.2s, box-shadow 0.2s, transform 0.2s, border-color 0.2s;
+        border: 1px solid rgba(255, 255, 255, 0.08); /* Subtle border for unselected */
+        color: #e0e0e0; /* Light text for icon label */
+    }
+    .icon-item i {
+        color: #bbb; /* Light grey for unselected icons */
+        margin-bottom: 5px;
+    }
+    .icon-item small {
+        font-size: 0.75rem; /* Smaller text for icon description */
+    }
+
+    .icon-item:hover {
+        background: rgba(123, 47, 247, 0.1); /* Lighter purple hover effect */
+        box-shadow: 0 0 12px rgba(123, 47, 247, 0.4);
+        transform: translateY(-2px);
+        border-color: rgba(123, 47, 247, 0.3); /* Purple border on hover */
+    }
+
+    /* Style for the selected icon (matching the image) */
+    .icon-item.selected {
+        background: linear-gradient(90deg, #7b2ff7, #f107a3); /* **Solid gradient background** */
+        border: 1px solid #f107a3; /* Pink border */
+        box-shadow: 0 0 15px rgba(241, 7, 163, 0.6); /* Stronger pink glow */
+        color: white; /* White text for selected icon label */
+        transform: scale(1.02); /* Slight scale to indicate selection */
+    }
+    .icon-item.selected i {
+        color: white; /* White icon for selected */
+    }
+
+    /* Submit Button */
+    .gradient-purple {
+        background: linear-gradient(90deg, #7b2ff7, #f107a3);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 10px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 15px rgba(123, 47, 247, 0.3);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .gradient-purple:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(123, 47, 247, 0.5);
+        color: white;
+    }
+
+    /* Back link style */
+    .back-link {
+        color: #7b2ff7 !important; /* Your vibrant purple for navigation */
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s;
+    }
+    .back-link:hover {
+        color: #f107a3 !important; /* Pink on hover for extra vibrancy */
+    }
+
+    /* Custom scrollbar for icon grid */
+    .icon-grid::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .icon-grid::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 10px;
+    }
+
+    .icon-grid::-webkit-scrollbar-thumb {
+        background: linear-gradient(to bottom, #7b2ff7, #f107a3);
+        border-radius: 10px;
+    }
+
+    .icon-grid::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(to bottom, #f107a3, #7b2ff7);
+    }
+</style>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const iconGrid = document.getElementById('iconGrid');
+            const iconClassInput = document.getElementById('IconClass');
+            const iconPreview = document.getElementById('iconPreview');
+            const iconSearchInput = document.getElementById('iconSearchInput');
+            const iconItems = document.querySelectorAll('.icon-item');
+
+            // --- Icon Selection Logic ---
+            function selectIcon(iconElement) {
+                const iconClass = iconElement.getAttribute('data-icon-class');
+
+                // 1. Update the form field value
+                iconClassInput.value = iconClass;
+
+                // 2. Update the icon preview
+                iconPreview.innerHTML = `<i class="${iconClass} fa-2x"></i> <span class="preview-text">${iconClass}</span>`;
+
+                // 3. Update the visual selection state
+                document.querySelectorAll('.icon-item').forEach(item => {
+                    item.classList.remove('selected');
+                });
+                iconElement.classList.add('selected');
+            }
+
+            // Event listener for the icon grid
+            iconGrid.addEventListener('click', function (event) {
+                let target = event.target.closest('.icon-item');
+                if (target) {
+                    selectIcon(target);
+                }
+            });
+
+            // Optional: Pre-select the first icon on load (if any)
+            const firstIcon = document.querySelector('.icon-item');
+            if(firstIcon) {
+                selectIcon(firstIcon);
+            }
+
+            // --- Icon Search Logic ---
+            iconSearchInput.addEventListener('keyup', function() {
+                const searchTerm = iconSearchInput.value.toLowerCase();
+
+                iconItems.forEach(item => {
+                    const iconName = item.getAttribute('data-search-term').toLowerCase();
+
+                    if (iconName.includes(searchTerm)) {
+                        item.style.display = 'flex'; // Show
+                    } else {
+                        item.style.display = 'none'; // Hide
+                    }
+                });
+            });
+        });
+    </script>
+}
